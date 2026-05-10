@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IronTime | Training</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            font-family: -apple-system, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #222;
+            background: #0a0a0a;
+        }
+
+        #level-display {
+            color: #666;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #exercise-name {
+            color: #ff6b00;
+            font-size: 1.8rem;
+            margin: 5px 0;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        /* 3D Humanoid Display Area */
+        .model-container {
+            width: 95%;
+            height: 45vh;
+            background: #111;
+            margin: 15px 0;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #333;
+            box-shadow: inset 0 0 20px #000;
+        }
+
+        .model-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .timer-section {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .timer-box {
+            font-size: 5rem;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            width: 90%;
+            padding-bottom: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 22px;
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-start {
+            background: #ff6b00;
+            border: none;
+            color: black;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div id="level-display">LOADING...</div>
+        <h2 id="exercise-name">Diamond Pushups</h2>
+    </div>
+
+    <div class="model-container">
+        <img id="humanoid-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h6cTh6YnpvbmN5bm5zbm5zbm5zbm5zbm5zbm5zbm5zbm5zbm5zJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxx6676N9O0/giphy.gif" alt="3D Model">
+    </div>
+
+    <div class="timer-section">
+        <div class="timer-box" id="timer">00:30</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="window.location.href='index.html'">Quit</button>
+        <button class="btn btn-start" id="startBtn" onclick="toggleTimer()">Start Set</button>
+    </div>
+
+    <script>
+        // Set Level Display
+        const currentLevel = localStorage.getItem('workoutLevel') || 'PRO';
+        document.getElementById('level-display').innerText = currentLevel + " MODE";
+
+        let timeLeft = 30;
+        let timerRunning = false;
+        let countdown;
+
+        function toggleTimer() {
+            const btn = document.getElementById('startBtn');
+            const timerDisplay = document.getElementById('timer');
+
+            if (!timerRunning) {
+                timerRunning = true;
+                btn.innerText = "Pause";
+                btn.style.background = "#333";
+                btn.style.color = "white";
+
+                countdown = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.innerText = "00:" + (timeLeft < 10 ? "0" : "") + timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerRunning = false;
+                        alert("Set Done! Take a 30s rest.");
+                        resetTimer();
+                    }
+                }, 1000);
+            } else {
+                clearInterval(countdown);
+                timerRunning = false;
+                btn.innerText = "Resume";
+                btn.style.background = "#ff6b00";
+                btn.style.color = "black";
+            }
+        }
+
+        function resetTimer() {
+            timeLeft = 30;
+            document.getElementById('timer').innerText = "00:30";
+            document.getElementById('startBtn').innerText = "Start Set";
+            document.getElementById('startBtn').style.background = "#ff6b00";
+        }
+    </script>
+</body>
+</html>
