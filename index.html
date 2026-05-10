@@ -92,13 +92,11 @@
 
     <script>
         function selectLevel(level) {
-            // Save level to memory
-            localStorage.setItem('workoutLevel', level);
-            
-            // For now, it shows an alert. Next, we build workout.html!
-            alert(level + " Mode Activated. Get ready!");
-            
-            // window.location.href = 'workout.html';
+    // Save the level so the next page knows what to show
+    localStorage.setItem('workoutLevel', level);
+    
+    // This is the magic line that switches screens
+    window.location.href = 'workout.html';
         }
     </script>
 
