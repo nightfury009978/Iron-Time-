@@ -3,124 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime | OS</title>
+    <title>IronTime | Booting...</title>
     <style>
-        body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        
-        /* Glitch Effect */
-        .glitch { font-size: 1.5rem; font-weight: bold; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 #ff6b00, -0.025em -0.05em 0 #ff0000, 0.025em 0.05em 0 #00ff00; animation: glitch 500ms infinite; text-align: center; padding: 20px; }
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
+        body {
+            background: #000;
+            color: #ff6b00;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* The Glitch Container */
+        .glitch-wrapper {
+            text-align: center;
+            width: 80%;
+        }
+
+        .glitch-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glitch-anim 0.2s infinite;
+        }
+
+        /* Intensified Glitch Effect */
+        @keyframes glitch-anim {
+            0% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
+            25% { transform: translate(-2px, 2px); text-shadow: 2px 0 red, -2px 0 blue; }
+            50% { transform: translate(2px, -2px); text-shadow: -2px 0 blue, 2px 0 red; }
+            75% { transform: translate(-2px, -2px); text-shadow: 2px 0 blue, -2px 0 red; }
             100% { transform: translate(0); }
         }
 
-        /* Setup Form Styles */
-        #setup-form, #main-ui { display: none; width: 90%; max-width: 400px; text-align: center; }
-        .input-group { margin: 15px 0; text-align: left; }
-        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 20px; background: #ff6b00; color: #000; border: none; border-radius: 12px; font-weight: bold; margin-top: 20px; text-transform: uppercase; }
-        
-        .logo { font-size: 2.5rem; color: #ff6b00; letter-spacing: 5px; margin-bottom: 0; }
-        .quote-sub { color: #555; font-size: 0.8rem; margin-top: 10px; }
+        .quote-box {
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            min-height: 50px;
+            line-height: 1.5;
+        }
+
+        /* Loading Bar for that System feel */
+        .loading-bar {
+            width: 150px;
+            height: 2px;
+            background: #111;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .loading-bar::after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: #ff6b00;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { left: -50px; }
+            100% { left: 150px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="glitch-screen">
-        <div class="glitch" id="daily-quote">INITIALIZING SYSTEM...</div>
-        <p class="quote-sub" id="quote-author"></p>
-    </div>
-
-    <div id="setup-form">
-        <h2 style="color:#ff6b00">USER PROFILE</h2>
-        <div class="input-group">
-            <label>Height (cm)</label>
-            <input type="number" id="height" placeholder="e.g. 180">
-        </div>
-        <div class="input-group">
-            <label>Weight (kg)</label>
-            <input type="number" id="weight" placeholder="e.g. 75">
-        </div>
-        <div class="input-group">
-            <label>Training Environment</label>
-            <select id="env">
-                <option value="home_no_eq">Home (No Equipment)</option>
-                <option value="home_db">Home (Dumbbells)</option>
-                <option value="gym">Full Gym Workout</option>
-            </select>
-        </div>
-        <button class="btn" onclick="saveSetup()">ACTIVATE OS</button>
-    </div>
-
-    <div id="main-ui">
-        <h1 class="logo">IRONTIME</h1>
-        <p style="color:#666">SYSTEM READY</p>
-        <div id="user-stat-bar" style="font-size: 0.7rem; color: #ff6b00; margin-bottom: 20px;"></div>
-        <button class="btn" style="background:#111; color:#fff; border:1px solid #333;" onclick="startWorkout('Beginner')">Beginner</button>
-        <button class="btn" style="background:#111; color:#fff; border:1px solid #333;" onclick="startWorkout('Mid')">Mid-Tier</button>
-        <button class="btn" onclick="startWorkout('Pro')">PRO MODE</button>
-        <button class="btn" style="background:transparent; color:#555; font-size:0.7rem;" onclick="localStorage.clear(); location.reload();">RESET DATA</button>
+    <div class="glitch-wrapper">
+        <div class="glitch-text">SYSTEM_AUTHORIZING...</div>
+        <div class="quote-box" id="quote-text"></div>
+        <div class="loading-bar"></div>
     </div>
 
     <script>
         const quotes = [
-            "Suffer the pain of discipline or suffer the pain of regret.",
-            "The only bad workout is the one that didn't happen.",
-            "Your body can stand almost anything. It's your mind that you have to convince.",
-            "Action is the foundational key to all success.",
-            "Discipline is doing what needs to be done, even if you don't want to do it."
+            "THE ONLY LIMIT IS THE ONE YOU BUILD.",
+            "PAIN IS WEAKNESS LEAVING THE BODY.",
+            "DISCIPLINE > MOTIVATION.",
+            "DO TODAY WHAT OTHERS WON'T.",
+            "STAY HUNGRY. STAY HUMBLE.",
+            "YOUR BODY IS A PROJECT. WORK ON IT."
         ];
 
+        function typeWriter(text, i, fnCallback) {
+            if (i < text.length) {
+                document.getElementById("quote-text").innerHTML = text.substring(0, i+1) + '<span aria-hidden="true">|</span>';
+                setTimeout(function() {
+                    typeWriter(text, i + 1, fnCallback)
+                }, 50);
+            } else if (typeof fnCallback == 'function') {
+                setTimeout(fnCallback, 1500);
+            }
+        }
+
         window.onload = function() {
-            // 1. Handle Daily Quote
+            // Logic for "Same Quote All Day"
             const today = new Date().toDateString();
-            let savedQuote = localStorage.getItem('quote');
-            let savedDate = localStorage.getItem('quoteDate');
+            let dailyQuote = localStorage.getItem('iron_daily_quote');
+            let lastDate = localStorage.getItem('iron_quote_date');
 
-            if (savedDate !== today) {
-                savedQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                localStorage.setItem('quote', savedQuote);
-                localStorage.setItem('quoteDate', today);
+            if (lastDate !== today) {
+                dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                localStorage.setItem('iron_daily_quote', dailyQuote);
+                localStorage.setItem('iron_quote_date', today);
             }
-            document.getElementById('daily-quote').innerText = savedQuote;
 
-            // 2. Glitch Transition
+            // Start the typewriter effect
             setTimeout(() => {
-                document.getElementById('glitch-screen').style.display = 'none';
-                checkUser();
-            }, 3000);
+                typeWriter(dailyQuote, 0, function() {
+                    // This is where we will trigger the next step later
+                    console.log("Glitch and Quote finished.");
+                });
+            }, 1000);
         };
-
-        function checkUser() {
-            if (!localStorage.getItem('iron_height')) {
-                document.getElementById('setup-form').style.display = 'block';
-            } else {
-                showMainUI();
-            }
-        }
-
-        function saveSetup() {
-            localStorage.setItem('iron_height', document.getElementById('height').value);
-            localStorage.setItem('iron_weight', document.getElementById('weight').value);
-            localStorage.setItem('iron_env', document.getElementById('env').value);
-            showMainUI();
-        }
-
-        function showMainUI() {
-            document.getElementById('setup-form').style.display = 'none';
-            document.getElementById('main-ui').style.display = 'block';
-            const env = localStorage.getItem('iron_env').replace(/_/g, ' ').toUpperCase();
-            document.getElementById('user-stat-bar').innerText = `PROFILE: ${localStorage.getItem('iron_weight')}KG | ENV: ${env}`;
-        }
-
-        function startWorkout(level) {
-            localStorage.setItem('workoutLevel', level);
-            window.location.href = 'workout.html';
-        }
     </script>
 </body>
 </html>
