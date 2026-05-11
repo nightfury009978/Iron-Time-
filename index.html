@@ -3,127 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime | Booting...</title>
+    <title>IronTime | Initialization</title>
     <style>
         body {
             background: #000;
-            color: #ff6b00;
-            font-family: 'Courier New', monospace;
+            color: #fff;
+            font-family: -apple-system, sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            flex-direction: column;
         }
 
-        /* The Glitch Container */
-        .glitch-wrapper {
+        /* Container to center everything */
+        .intro-container {
+            position: relative;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* The Logo (Initial State) */
+        #logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ff6b00;
+            letter-spacing: 5px;
+            opacity: 1;
+            position: absolute; /* Keep it centered while quote loads */
+            transition: opacity 0.5s ease;
+        }
+
+        /* Shatter Animation Simulation */
+        .shatter {
+            animation: shatter-sim 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes shatter-sim {
+            0% { transform: scale(1); opacity: 1; filter: blur(0px); }
+            30% { transform: scale(1.1) rotate(1deg); filter: blur(1px); }
+            100% { transform: scale(2); opacity: 0; filter: blur(10px); }
+        }
+
+        /* The Quote Area */
+        #quote-text {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.5;
             text-align: center;
-            width: 80%;
+            font-weight: 300;
+            min-height: 3em; /* Reserve space so layout doesn't jump */
+            opacity: 0; /* Hidden initially */
+            transition: opacity 1s ease 0.6s; /* Fade in AFTER shatter */
         }
 
-        .glitch-text {
+        /* Temporary display for main UI */
+        #main-ui-placeholder {
+            display: none;
+            color: #ff6b00;
             font-size: 1.2rem;
             font-weight: bold;
-            position: relative;
-            display: inline-block;
-            color: #fff;
-            text-transform: uppercase;
             letter-spacing: 2px;
-            animation: glitch-anim 0.2s infinite;
+            animation: blink 1s infinite;
         }
 
-        /* Intensified Glitch Effect */
-        @keyframes glitch-anim {
-            0% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
-            25% { transform: translate(-2px, 2px); text-shadow: 2px 0 red, -2px 0 blue; }
-            50% { transform: translate(2px, -2px); text-shadow: -2px 0 blue, 2px 0 red; }
-            75% { transform: translate(-2px, -2px); text-shadow: 2px 0 blue, -2px 0 red; }
-            100% { transform: translate(0); }
-        }
+        @keyframes blink { 0% {opacity: 1} 50% {opacity: 0} 100% {opacity: 1} }
 
-        .quote-box {
-            margin-top: 20px;
-            color: #666;
-            font-size: 0.9rem;
-            min-height: 50px;
-            line-height: 1.5;
-        }
-
-        /* Loading Bar for that System feel */
-        .loading-bar {
-            width: 150px;
-            height: 2px;
-            background: #111;
-            margin-top: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        .loading-bar::after {
-            content: "";
-            position: absolute;
-            width: 50px;
-            height: 2px;
-            background: #ff6b00;
-            animation: loading 1.5s infinite;
-        }
-        @keyframes loading {
-            0% { left: -50px; }
-            100% { left: 150px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="glitch-wrapper">
-        <div class="glitch-text">SYSTEM_AUTHORIZING...</div>
-        <div class="quote-box" id="quote-text"></div>
-        <div class="loading-bar"></div>
+    <div class="intro-container">
+        <div id="logo">IRONTIME</div>
+
+        <div id="quote-text"></div>
+        
+        <div id="main-ui-placeholder">LOAD_SYSTEM_PROFILE...</div>
     </div>
 
     <script>
+        // The Quote Database
         const quotes = [
-            "THE ONLY LIMIT IS THE ONE YOU BUILD.",
-            "PAIN IS WEAKNESS LEAVING THE BODY.",
-            "DISCIPLINE > MOTIVATION.",
-            "DO TODAY WHAT OTHERS WON'T.",
+            "THE ONLY BAD WORKOUT IS THE ONE THAT DIDN'T HAPPEN.",
+            "DISCIPLINE DOESN'T CARE HOW YOU FEEL.",
+            "TRAIN INSANE OR REMAIN THE SAME.",
+            "FOCUS. FORGE. FINISH.",
             "STAY HUNGRY. STAY HUMBLE.",
-            "YOUR BODY IS A PROJECT. WORK ON IT."
+            "DO TODAY WHAT OTHERS WON'T."
         ];
 
+        // Typewriter Effect
         function typeWriter(text, i, fnCallback) {
             if (i < text.length) {
-                document.getElementById("quote-text").innerHTML = text.substring(0, i+1) + '<span aria-hidden="true">|</span>';
+                document.getElementById("quote-text").innerHTML = text.substring(0, i+1) + '<span aria-hidden="true" style="color:#ff6b00;">|</span>';
                 setTimeout(function() {
                     typeWriter(text, i + 1, fnCallback)
-                }, 50);
+                }, 40; // Typing speed (smaller = faster)
             } else if (typeof fnCallback == 'function') {
-                setTimeout(fnCallback, 1500);
-            }
-        }
-
-        window.onload = function() {
-            // Logic for "Same Quote All Day"
-            const today = new Date().toDateString();
-            let dailyQuote = localStorage.getItem('iron_daily_quote');
-            let lastDate = localStorage.getItem('iron_quote_date');
-
-            if (lastDate !== today) {
-                dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                localStorage.setItem('iron_daily_quote', dailyQuote);
-                localStorage.setItem('iron_quote_date', today);
-            }
-
-            // Start the typewriter effect
-            setTimeout(() => {
-                typeWriter(dailyQuote, 0, function() {
-                    // This is where we will trigger the next step later
-                    console.log("Glitch and Quote finished.");
-                });
-            }, 1000);
-        };
-    </script>
-</body>
-</html>
+                setTimeout
+                
