@@ -3,102 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime | Level Select</title>
+    <title>IronTime | OS</title>
     <style>
-        /* Cinematic Dark Theme */
-        body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+        body { background: #000; color: #fff; font-family: 'Courier New', monospace; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        
+        /* Glitch Effect */
+        .glitch { font-size: 1.5rem; font-weight: bold; text-transform: uppercase; position: relative; text-shadow: 0.05em 0 0 #ff6b00, -0.025em -0.05em 0 #ff0000, 0.025em 0.05em 0 #00ff00; animation: glitch 500ms infinite; text-align: center; padding: 20px; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
         }
 
-        .logo {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 6px;
-            color: #ff6b00;
-            text-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
-            margin: 0;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-        }
-
-        .level-container {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .btn {
-            background: #111;
-            border: 1px solid #333;
-            color: white;
-            padding: 22px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-            background: #1a1a1a;
-            border-color: #ff6b00;
-        }
-
-        /* Pro Button Highlight */
-        .btn-pro {
-            border: 1.5px solid #ff0000;
-            color: #ff0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
-        }
-
-        .btn-pro:active {
-            background: rgba(255, 0, 0, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-        }
+        /* Setup Form Styles */
+        #setup-form, #main-ui { display: none; width: 90%; max-width: 400px; text-align: center; }
+        .input-group { margin: 15px 0; text-align: left; }
+        input, select { width: 100%; padding: 15px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 20px; background: #ff6b00; color: #000; border: none; border-radius: 12px; font-weight: bold; margin-top: 20px; text-transform: uppercase; }
+        
+        .logo { font-size: 2.5rem; color: #ff6b00; letter-spacing: 5px; margin-bottom: 0; }
+        .quote-sub { color: #555; font-size: 0.8rem; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <h1 class="logo">IRONTIME</h1>
-    <p class="subtitle">Personal Training OS</p>
+    <div id="glitch-screen">
+        <div class="glitch" id="daily-quote">INITIALIZING SYSTEM...</div>
+        <p class="quote-sub" id="quote-author"></p>
+    </div>
 
-    <div class="level-container">
-        <button class="btn" onclick="selectLevel('Beginner')">Beginner</button>
-        <button class="btn" onclick="selectLevel('Mid')">Mid-Tier</button>
-        <button class="btn btn-pro" onclick="selectLevel('Pro')">Pro Mode</button>
+    <div id="setup-form">
+        <h2 style="color:#ff6b00">USER PROFILE</h2>
+        <div class="input-group">
+            <label>Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 180">
+        </div>
+        <div class="input-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 75">
+        </div>
+        <div class="input-group">
+            <label>Training Environment</label>
+            <select id="env">
+                <option value="home_no_eq">Home (No Equipment)</option>
+                <option value="home_db">Home (Dumbbells)</option>
+                <option value="gym">Full Gym Workout</option>
+            </select>
+        </div>
+        <button class="btn" onclick="saveSetup()">ACTIVATE OS</button>
+    </div>
+
+    <div id="main-ui">
+        <h1 class="logo">IRONTIME</h1>
+        <p style="color:#666">SYSTEM READY</p>
+        <div id="user-stat-bar" style="font-size: 0.7rem; color: #ff6b00; margin-bottom: 20px;"></div>
+        <button class="btn" style="background:#111; color:#fff; border:1px solid #333;" onclick="startWorkout('Beginner')">Beginner</button>
+        <button class="btn" style="background:#111; color:#fff; border:1px solid #333;" onclick="startWorkout('Mid')">Mid-Tier</button>
+        <button class="btn" onclick="startWorkout('Pro')">PRO MODE</button>
+        <button class="btn" style="background:transparent; color:#555; font-size:0.7rem;" onclick="localStorage.clear(); location.reload();">RESET DATA</button>
     </div>
 
     <script>
-        function selectLevel(level) {
-    // Save the level so the next page knows what to show
-    localStorage.setItem('workoutLevel', level);
-    
-    // This is the magic line that switches screens
-    window.location.href = 'workout.html';
+        const quotes = [
+            "Suffer the pain of discipline or suffer the pain of regret.",
+            "The only bad workout is the one that didn't happen.",
+            "Your body can stand almost anything. It's your mind that you have to convince.",
+            "Action is the foundational key to all success.",
+            "Discipline is doing what needs to be done, even if you don't want to do it."
+        ];
+
+        window.onload = function() {
+            // 1. Handle Daily Quote
+            const today = new Date().toDateString();
+            let savedQuote = localStorage.getItem('quote');
+            let savedDate = localStorage.getItem('quoteDate');
+
+            if (savedDate !== today) {
+                savedQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                localStorage.setItem('quote', savedQuote);
+                localStorage.setItem('quoteDate', today);
+            }
+            document.getElementById('daily-quote').innerText = savedQuote;
+
+            // 2. Glitch Transition
+            setTimeout(() => {
+                document.getElementById('glitch-screen').style.display = 'none';
+                checkUser();
+            }, 3000);
+        };
+
+        function checkUser() {
+            if (!localStorage.getItem('iron_height')) {
+                document.getElementById('setup-form').style.display = 'block';
+            } else {
+                showMainUI();
+            }
+        }
+
+        function saveSetup() {
+            localStorage.setItem('iron_height', document.getElementById('height').value);
+            localStorage.setItem('iron_weight', document.getElementById('weight').value);
+            localStorage.setItem('iron_env', document.getElementById('env').value);
+            showMainUI();
+        }
+
+        function showMainUI() {
+            document.getElementById('setup-form').style.display = 'none';
+            document.getElementById('main-ui').style.display = 'block';
+            const env = localStorage.getItem('iron_env').replace(/_/g, ' ').toUpperCase();
+            document.getElementById('user-stat-bar').innerText = `PROFILE: ${localStorage.getItem('iron_weight')}KG | ENV: ${env}`;
+        }
+
+        function startWorkout(level) {
+            localStorage.setItem('workoutLevel', level);
+            window.location.href = 'workout.html';
         }
     </script>
-
 </body>
 </html>
