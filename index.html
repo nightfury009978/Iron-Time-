@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime | Initialization</title>
+    <title>IronTime</title>
     <style>
         body {
             background: #000;
@@ -15,146 +15,154 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            flex-direction: column;
         }
 
-        /* Container to center everything */
-        .intro-container {
-            position: relative;
-            width: 90%;
+        /* 1. Intro Styles */
+        #intro-layer {
+            text-align: center;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
         }
 
-        /* The Logo (Initial State) */
-        #logo {
+        .logo {
             font-size: 3.5rem;
             font-weight: 900;
             color: #ff6b00;
             letter-spacing: 5px;
-            opacity: 1;
-            position: absolute; /* Keep it centered while quote loads */
-            transition: opacity 0.5s ease;
+            margin-bottom: 20px;
         }
 
-        /* Shatter Animation Simulation */
-        .shatter {
-            animation: shatter-sim 0.6s ease-out forwards;
-            pointer-events: none;
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
         }
 
-        @keyframes shatter-sim {
-            0% { transform: scale(1); opacity: 1; filter: blur(0px); }
-            30% { transform: scale(1.1) rotate(1deg); filter: blur(1px); }
-            100% { transform: scale(2); opacity: 0; filter: blur(10px); }
+        .loader-fill {
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            background: #ff6b00;
+            box-shadow: 0 0 10px #ff6b00;
+            animation: loadProgress 2.5s ease-in-out forwards;
         }
 
-        /* The Quote Area */
-        #quote-text {
-            color: #ccc;
-            font-size: 1.1rem;
-            line-height: 1.5;
-            text-align: center;
-            font-weight: 300;
-            min-height: 3em; /* Reserve space so layout doesn't jump */
-            opacity: 0; /* Hidden initially */
-            transition: opacity 1s ease 0.6s; /* Fade in AFTER shatter */
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
         }
 
-        /* Temporary display for main UI */
-        #main-ui-placeholder {
-            display: none;
-            color: #ff6b00;
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            animation: blink 1s infinite;
+        /* 2. Setup Screen Styles */
+        #setup-layer, #main-layer { display: none; width: 85%; max-width: 400px; text-align: center; }
+        
+        .input-box { margin: 20px 0; text-align: left; }
+        label { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        input, select {
+            width: 100%; padding: 15px; background: #111; border: 1px solid #333;
+            color: #fff; border-radius: 10px; margin-top: 5px; box-sizing: border-box;
         }
 
-        @keyframes blink { 0% {opacity: 1} 50% {opacity: 0} 100% {opacity: 1} }
+        .btn-orange {
+            width: 100%; padding: 20px; background: #ff6b00; color: #000;
+            border: none; border-radius: 12px; font-weight: bold; font-size: 1rem;
+            text-transform: uppercase; margin-top: 20px;
+        }
 
+        /* 3. Main Menu Styles */
+        .stat-badge { font-size: 0.7rem; color: #ff6b00; border: 1px solid #ff6b00; padding: 5px 10px; border-radius: 5px; margin-bottom: 20px; display: inline-block; }
     </style>
 </head>
 <body>
 
-    <div class="intro-container">
-        <div id="logo">IRONTIME</div>
+    <div id="intro-layer">
+        <div class="logo">IRONTIME</div>
+        <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
 
-        <div id="quote-text"></div>
+    <div id="setup-layer">
+        <h2 style="color:#ff6b00; margin-bottom: 30px;">INITIALIZE PROFILE</h2>
+        <div class="input-box">
+            <label>Height (cm)</label>
+            <input type="number" id="h-input" placeholder="180">
+        </div>
+        <div class="input-box">
+            <label>Weight (kg)</label>
+            <input type="number" id="w-input" placeholder="75">
+        </div>
+        <div class="input-box">
+            <label>Equipment Access</label>
+            <select id="e-input">
+                <option value="Bodyweight">No Equipment (Home)</option>
+                <option value="Dumbbells">Dumbbells Only</option>
+                <option value="Gym">Full Gym</option>
+            </select>
+        </div>
+        <button class="btn-orange" onclick="saveProfile()">ACTIVATE SYSTEM</button>
+    </div>
+
+    <div id="main-layer">
+        <div class="logo" style="font-size: 2rem;">IRONTIME</div>
+        <div id="user-display" class="stat-badge"></div>
         
-        <div id="main-ui-placeholder">LOAD_SYSTEM_PROFILE...</div>
+        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #333;" onclick="start('Beginner')">Beginner</button>
+        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #333;" onclick="start('Mid')">Mid-Tier</button>
+        <button class="btn-orange" onclick="start('Pro')">PRO MODE</button>
+        
+        <p style="color:#333; margin-top: 40px; font-size: 0.7rem;" onclick="resetSystem()">RESET SYSTEM DATA</p>
     </div>
 
     <script>
-        // The Quote Database
-        const quotes = [
-            "THE ONLY BAD WORKOUT IS THE ONE THAT DIDN'T HAPPEN.",
-            "DISCIPLINE DOESN'T CARE HOW YOU FEEL.",
-            "TRAIN INSANE OR REMAIN THE SAME.",
-            "FOCUS. FORGE. FINISH.",
-            "STAY HUNGRY. STAY HUMBLE.",
-            "DO TODAY WHAT OTHERS WON'T."
-        ];
-
-        // Typewriter Effect
-        function typeWriter(text, i, fnCallback) {
-            if (i < text.length) {
-                document.getElementById("quote-text").innerHTML = text.substring(0, i+1) + '<span aria-hidden="true" style="color:#ff6b00;">|</span>';
-                setTimeout(function() {
-                    typeWriter(text, i + 1, fnCallback)
-                }, 40; // Typing speed (smaller = faster)
-            } else if (typeof fnCallback == 'function') {
-                setTimeout(fnCallback, 4000); // Wait 4 seconds after finishing before moving to next screen
-            }
-        }
-
-        // Logic for "One Quote Per Day"
-        function getDailyQuote() {
-            const today = new Date().toDateString();
-            let dailyQuote = localStorage.getItem('iron_daily_quote');
-            let lastDate = localStorage.getItem('iron_quote_date');
-
-            if (lastDate !== today) {
-                // It's a new day! Pick a fresh quote.
-                dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                localStorage.setItem('iron_daily_quote', dailyQuote);
-                localStorage.setItem('iron_quote_date', today);
-            }
-            return dailyQuote;
-        }
-
-        // Main Sequence Execution
         window.onload = function() {
-            const logo = document.getElementById('logo');
-            const quoteArea = document.getElementById('quote-text');
-            const dailyQuote = getDailyQuote();
-
-            // Sequence 1: Boot Delay (wait 1.5s)
+            // After 2.5s (duration of the loader animation)
             setTimeout(() => {
+                document.getElementById('intro-layer').style.display = 'none';
                 
-                // Sequence 2: The Shatter (apply class to trigger animation)
-                logo.classList.add('shatter');
-
-                // Sequence 3: Typewriter (start typing the quote)
-                // We also fade in the quote area (CSS transition)
-                quoteArea.style.opacity = "1";
-                typeWriter(dailyQuote, 0, function() {
-                    
-                    // Sequence 4: Transition to next step (Onboarding form)
-                    quoteArea.style.opacity = "0"; // Fade out quote
-                    setTimeout(() => {
-                        quoteArea.style.display = "none";
-                        // Now we activate the "System Profile" loader (where step 2 will live)
-                        document.getElementById('main-ui-placeholder').style.display = 'block';
-                        
-                        // Later, this is where we would trigger `checkUserSetup()`!
-                        console.log("Intro complete. Next Step: System Onboarding.");
-                    }, 1000); 
-                });
-            }, 1500); // Initial boot delay
+                // Check if user has already set up
+                if (localStorage.getItem('iron_setup_done')) {
+                    showMain();
+                } else {
+                    document.getElementById('setup-layer').style.display = 'block';
+                }
+            }, 2600);
         };
+
+        function saveProfile() {
+            const h = document.getElementById('h-input').value;
+            const w = document.getElementById('w-input').value;
+            const e = document.getElementById('e-input').value;
+
+            if(!h || !w) return alert("Please enter your stats.");
+
+            localStorage.setItem('iron_h', h);
+            localStorage.setItem('iron_w', w);
+            localStorage.setItem('iron_e', e);
+            localStorage.setItem('iron_setup_done', 'true');
+            showMain();
+        }
+
+        function showMain() {
+            document.getElementById('setup-layer').style.display = 'none';
+            document.getElementById('main-layer').style.display = 'block';
+            
+            const weight = localStorage.getItem('iron_w');
+            const equip = localStorage.getItem('iron_e');
+            document.getElementById('user-display').innerText = `${weight}KG | ${equip.toUpperCase()}`;
+        }
+
+        function start(level) {
+            localStorage.setItem('workoutLevel', level);
+            window.location.href = 'workout.html';
+        }
+
+        function resetSystem() {
+            localStorage.clear();
+            location.reload();
+        }
     </script>
 </body>
 </html>
