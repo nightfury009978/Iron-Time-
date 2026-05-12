@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime</title>
+    <title>IronTime OS</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             background: #000;
             color: #fff;
-            font-family: -apple-system, sans-serif;
+            font-family: sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
@@ -19,27 +20,31 @@
 
         /* INTRO LAYER */
         #intro-layer {
+            position: absolute;
+            width: 100%;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 10;
+            justify-content: center;
         }
 
         .logo {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 900;
             color: #ff6b00;
             letter-spacing: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
         }
 
         .loader-bar {
-            width: 200px;
-            height: 4px;
+            width: 250px;
+            height: 6px;
             background: #222;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
+            border: 1px solid #333;
         }
 
         .loader-fill {
@@ -60,28 +65,22 @@
             display: none; 
             width: 85%; 
             max-width: 400px; 
-            text-align: center; 
-            animation: fadeIn 0.5s ease;
+            text-align: center;
         }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .input-box { margin: 20px 0; text-align: left; }
-        label { color: #666; font-size: 0.8rem; text-transform: uppercase; }
+        .input-box { margin: 15px 0; text-align: left; }
+        label { color: #888; font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
         
         input, select {
-            width: 100%; padding: 15px; background: #111; border: 1px solid #333;
-            color: #fff; border-radius: 10px; margin-top: 5px; box-sizing: border-box;
-            font-size: 1rem;
+            width: 100%; padding: 18px; background: #111; border: 1px solid #333;
+            color: #fff; border-radius: 12px; font-size: 1rem; outline: none;
         }
 
         .btn-orange {
-            width: 100%; padding: 20px; background: #ff6b00; color: #000;
-            border: none; border-radius: 12px; font-weight: bold; font-size: 1rem;
+            width: 100%; padding: 22px; background: #ff6b00; color: #000;
+            border: none; border-radius: 15px; font-weight: bold; font-size: 1.1rem;
             text-transform: uppercase; margin-top: 20px;
         }
-
-        .stat-badge { font-size: 0.7rem; color: #ff6b00; border: 1px solid #ff6b00; padding: 5px 10px; border-radius: 5px; margin-bottom: 20px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -92,41 +91,42 @@
     </div>
 
     <div id="setup-layer">
-        <h2 style="color:#ff6b00;">INITIALIZE</h2>
+        <h2 style="color:#ff6b00; margin-bottom: 30px;">PROFILE SETUP</h2>
         <div class="input-box">
             <label>Height (cm)</label>
-            <input type="number" id="h-input" placeholder="180">
+            <input type="number" id="h-input" placeholder="e.g. 175">
         </div>
         <div class="input-box">
             <label>Weight (kg)</label>
-            <input type="number" id="w-input" placeholder="75">
+            <input type="number" id="w-input" placeholder="e.g. 70">
         </div>
         <div class="input-box">
-            <label>Equipment</label>
+            <label>Your Equipment</label>
             <select id="e-input">
-                <option value="Bodyweight">Home (No Equipment)</option>
-                <option value="Dumbbells">Home (Dumbbells)</option>
+                <option value="Bodyweight">No Equipment</option>
+                <option value="Dumbbells">Dumbbells</option>
                 <option value="Gym">Full Gym</option>
             </select>
         </div>
-        <button class="btn-orange" onclick="saveProfile()">ACTIVATE</button>
+        <button class="btn-orange" onclick="saveProfile()">ACTIVATE SYSTEM</button>
     </div>
 
     <div id="main-layer">
-        <div class="logo" style="font-size: 2.2rem;">IRONTIME</div>
-        <div id="user-display" class="stat-badge"></div>
-        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #333;" onclick="start('Beginner')">Beginner</button>
-        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #333;" onclick="start('Mid')">Mid-Tier</button>
+        <div class="logo" style="font-size: 2rem;">IRONTIME</div>
+        <div id="user-display" style="color:#ff6b00; font-weight:bold; margin-bottom: 20px;"></div>
+        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #444;" onclick="start('Beginner')">Beginner</button>
+        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #444;" onclick="start('Mid')">Mid-Tier</button>
         <button class="btn-orange" onclick="start('Pro')">PRO MODE</button>
-        <p style="color:#222; margin-top: 40px; font-size: 0.6rem;" onclick="resetSystem()">[RESET SYSTEM]</p>
+        <p style="color:#222; margin-top: 50px;" onclick="localStorage.clear(); location.reload();">RESET SYSTEM</p>
     </div>
 
     <script>
-        // Force the transition after 2.2 seconds
+        // MAIN BOOT SEQUENCE
         setTimeout(function() {
             document.getElementById('intro-layer').style.display = 'none';
             
-            if (localStorage.getItem('iron_setup_done')) {
+            // Logic to see if user is new
+            if (localStorage.getItem('iron_setup_done') === 'true') {
                 showMain();
             } else {
                 document.getElementById('setup-layer').style.display = 'block';
@@ -138,10 +138,7 @@
             const w = document.getElementById('w-input').value;
             const e = document.getElementById('e-input').value;
 
-            if(!h || !w) {
-                alert("Enter your stats, athlete.");
-                return;
-            }
+            if(!h || !w) return alert("Fill out the specs, athlete.");
 
             localStorage.setItem('iron_h', h);
             localStorage.setItem('iron_w', w);
@@ -154,19 +151,14 @@
             document.getElementById('setup-layer').style.display = 'none';
             document.getElementById('main-layer').style.display = 'block';
             
-            const weight = localStorage.getItem('iron_w') || '0';
-            const equip = localStorage.getItem('iron_e') || 'NONE';
-            document.getElementById('user-display').innerText = `${weight}KG | ${equip.toUpperCase()}`;
+            const w = localStorage.getItem('iron_w');
+            const e = localStorage.getItem('iron_e');
+            document.getElementById('user-display').innerText = `${w}KG | ${e.toUpperCase()}`;
         }
 
         function start(level) {
             localStorage.setItem('workoutLevel', level);
             window.location.href = 'workout.html';
-        }
-
-        function resetSystem() {
-            localStorage.clear();
-            location.reload();
         }
     </script>
 </body>
