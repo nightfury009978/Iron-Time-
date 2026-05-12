@@ -106,5 +106,55 @@
                     typeWriter(text, i + 1, fnCallback)
                 }, 40; // Typing speed (smaller = faster)
             } else if (typeof fnCallback == 'function') {
-                setTimeout
+                setTimeout(fnCallback, 4000); // Wait 4 seconds after finishing before moving to next screen
+            }
+        }
+
+        // Logic for "One Quote Per Day"
+        function getDailyQuote() {
+            const today = new Date().toDateString();
+            let dailyQuote = localStorage.getItem('iron_daily_quote');
+            let lastDate = localStorage.getItem('iron_quote_date');
+
+            if (lastDate !== today) {
+                // It's a new day! Pick a fresh quote.
+                dailyQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                localStorage.setItem('iron_daily_quote', dailyQuote);
+                localStorage.setItem('iron_quote_date', today);
+            }
+            return dailyQuote;
+        }
+
+        // Main Sequence Execution
+        window.onload = function() {
+            const logo = document.getElementById('logo');
+            const quoteArea = document.getElementById('quote-text');
+            const dailyQuote = getDailyQuote();
+
+            // Sequence 1: Boot Delay (wait 1.5s)
+            setTimeout(() => {
                 
+                // Sequence 2: The Shatter (apply class to trigger animation)
+                logo.classList.add('shatter');
+
+                // Sequence 3: Typewriter (start typing the quote)
+                // We also fade in the quote area (CSS transition)
+                quoteArea.style.opacity = "1";
+                typeWriter(dailyQuote, 0, function() {
+                    
+                    // Sequence 4: Transition to next step (Onboarding form)
+                    quoteArea.style.opacity = "0"; // Fade out quote
+                    setTimeout(() => {
+                        quoteArea.style.display = "none";
+                        // Now we activate the "System Profile" loader (where step 2 will live)
+                        document.getElementById('main-ui-placeholder').style.display = 'block';
+                        
+                        // Later, this is where we would trigger `checkUserSetup()`!
+                        console.log("Intro complete. Next Step: System Onboarding.");
+                    }, 1000); 
+                });
+            }, 1500); // Initial boot delay
+        };
+    </script>
+</body>
+</html>
