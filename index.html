@@ -61,4 +61,435 @@
         .onboarding-container {
             width: 100%;
             max-width: 360px;
-            padding: 40px
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: #FF5500;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #bbb; }
+        input[type="number"], textarea, input[type="email"] {
+            width: 100%; padding: 14px; background-color: #111; border: 1px solid #333;
+            border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 16px;
+        }
+        input:focus, textarea:focus { border-color: #FF5500; outline: none; }
+        .radio-buttons { display: flex; gap: 15px; margin-bottom: 25px; }
+        .loc-btn {
+            flex: 1; padding: 15px; background-color: #111; border: 2px solid #333;
+            color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;
+        }
+        .loc-btn.active { border-color: #FF5500; color: #FF5500; background-color: rgba(255, 85, 0, 0.1); }
+        .primary-btn {
+            width: 100%; padding: 15px; background-color: #FF5500; color: black;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; margin-top: 10px;
+        }
+
+        /* ==========================================
+           INTERFACE 3: MAIN APP DASHBOARD STYLES
+           ========================================== */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        /* Header Profile Area */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+        .user-greet h1 { font-size: 22px; margin: 0; color: #fff; }
+        .user-greet p { font-size: 13px; margin: 3px 0 0 0; color: #888; }
+        .settings-icon { font-size: 24px; color: #FF5500; cursor: pointer; }
+
+        /* Large Neon Level Selection Badges */
+        .level-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .lvl-badge {
+            flex: 1; text-align: center; padding: 14px 8px; font-size: 13px;
+            background-color: #0d0d0d; border: 2px solid #222; border-radius: 12px;
+            cursor: pointer; font-weight: bold; color: #666; text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        
+        /* Neon Highlights for Selected Levels */
+        .lvl-badge#lvl-beginner.active {
+            background-color: #000; color: #00E5FF; border-color: #00E5FF;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+        .lvl-badge#lvl-mid.active {
+            background-color: #000; color: #FFCC00; border-color: #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+        /* Advanced Thunder Badge Glow Styling */
+        .lvl-badge#lvl-advance.active {
+            background-color: #000; color: #FF5500; border-color: #FF5500;
+            animation: thunderGlow 1.5s infinite alternate;
+        }
+        @keyframes thunderGlow {
+            from { box-shadow: 0 0 10px rgba(255, 85, 0, 0.3); }
+            to { box-shadow: 0 0 25px rgba(255, 85, 0, 0.8); }
+        }
+
+        /* Container Content Layout Blocks */
+        .section-card {
+            background-color: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .section-card h3 { margin-top: 0; color: #FF5500; font-size: 16px; text-transform: uppercase; }
+
+        /* Today Target Modifier */
+        .btn-missed {
+            background-color: #1a0d0d; color: #FF3333; border: 1px solid #331111;
+        }
+
+        /* Weekly Split List Layout */
+        .routine-list { display: flex; flex-direction: column; gap: 10px; }
+        .routine-day {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px; background-color: #161616; border-left: 4px solid #333; border-radius: 4px;
+        }
+        .routine-day.today-highlight { border-left-color: #FF5500; background-color: #1e110b; }
+        .day-name { font-weight: bold; font-size: 14px; }
+        .day-workout { font-size: 13px; color: #bbb; }
+
+        /* Neon Calendar Elements */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .cal-header { font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase; }
+        .cal-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background-color: #141414; border: 1px solid #222; border-radius: 6px; font-size: 13px; font-weight: bold;
+            position: relative; color: #666; transition: all 0.3s;
+        }
+        
+        /* Pulse Animation for Current Calendar Day Prior to Midnight */
+        .cal-day.today-active {
+            border-color: #ff5500;
+            color: #fff;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        @keyframes breathe {
+            0% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); background-color: #141414; }
+            50% { box-shadow: 0 0 12px rgba(255, 85, 0, 0.5); background-color: #241108; }
+            100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); background-color: #141414; }
+        }
+
+        /* Neon Completion Glow (Green) */
+        .cal-day.done {
+            background-color: #000;
+            border: 2px solid #00FF66;
+            color: #00FF66;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+            animation: none;
+        }
+        /* Lock Missed Cross Out styling */
+        .cal-day.missed {
+            background-color: #140808;
+            border: 1px solid #FF3333;
+            color: #FF3333;
+            animation: none;
+        }
+
+        /* Settings Slide Drawer Modal */
+        .settings-modal {
+            position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
+            background-color: #111; border-left: 1px solid #222; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            transition: 0.3s ease; z-index: 100; padding: 30px 20px; box-sizing: border-box;
+        }
+        .settings-modal.open { right: 0; }
+        .close-settings { text-align: right; font-size: 20px; cursor: pointer; color: #888; margin-bottom: 20px; }
+        .setting-item {
+            padding: 15px 0; border-bottom: 1px solid #222; display: flex; align-items: center;
+            gap: 12px; font-size: 16px; cursor: pointer; color: #eee;
+        }
+        .setting-item i { color: #FF5500; width: 20px; }
+        .overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7);
+            z-index: 99; display: none;
+        }
+        .overlay.open { display: block; }
+    </style>
+</head>
+<body>
+
+    <div id="screen-loading" class="loading-screen">
+        <div class="brand-title">IRONTIME</div>
+        <div class="spinner"></div>
+    </div>
+
+
+    <div id="screen-onboarding" class="onboarding-container hidden">
+        <h2>Account Setup</h2>
+        
+        <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="name@example.com">
+        </div>
+
+        <div class="input-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 70">
+        </div>
+        
+        <div class="input-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 175">
+        </div>
+
+        <div class="input-group">
+            <label>Where do you train?</label>
+            <div class="radio-buttons">
+                <button type="button" class="loc-btn" id="btn-gym" onclick="selectLocation('gym')">Gym</button>
+                <button type="button" class="loc-btn" id="btn-home" onclick="selectLocation('home')">Home</button>
+            </div>
+        </div>
+
+        <div id="home-equipment-box" class="input-group hidden">
+            <label for="equipment">List your equipment:</label>
+            <textarea id="equipment" rows="2" placeholder="e.g. Dumbbells, Bands..."></textarea>
+        </div>
+
+        <button class="primary-btn" onclick="goToThirdInterface()">Enter Dashboard</button>
+    </div>
+
+
+    <div id="screen-main-app" class="app-container hidden">
+        
+        <div class="app-header">
+            <div class="user-greet">
+                <h1 id="display-user">Welcome, Athlete</h1>
+                <p id="today-date-str">IronTime Dashboard</p>
+            </div>
+            <div class="settings-icon" onclick="toggleSettings(true)">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+        </div>
+
+        <div class="level-selector">
+            <div class="lvl-badge" id="lvl-beginner" onclick="setLevel('Beginner')">Beginner</div>
+            <div class="lvl-badge" id="lvl-mid" onclick="setLevel('Mid Level')">Mid Level</div>
+            <div class="lvl-badge active" id="lvl-advance" onclick="setLevel('Advanced')"><i class="fa-solid fa-bolt"></i> Advanced</div>
+        </div>
+
+        <div class="section-card">
+            <h3>Today's Target</h3>
+            <div id="todays-focus-box" style="font-size: 20px; font-weight: bold; margin-bottom: 15px;">
+                Checking Schedule...
+            </div>
+            <button class="primary-btn" style="padding: 14px;" onclick="logTodayWorkout(true)">Mark Completed ✓</button>
+            <button class="primary-btn btn-missed" style="padding: 14px;" onclick="logTodayWorkout(false)">Mark Missed ❌</button>
+        </div>
+
+        <div class="section-card">
+            <h3>Weekly Routine split</h3>
+            <div class="routine-list">
+                <div class="routine-day" id="day-Monday"><span class="day-name">Monday</span><span class="day-workout">Chest & Triceps</span></div>
+                <div class="routine-day" id="day-Tuesday"><span class="day-name">Tuesday</span><span class="day-workout">Shoulder & Biceps</span></div>
+                <div class="routine-day" id="day-Wednesday"><span class="day-name">Wednesday</span><span class="day-workout">Leg Day</span></div>
+                <div class="routine-day" id="day-Thursday"><span class="day-name">Thursday</span><span class="day-workout">Rest Day 😴</span></div>
+                <div class="routine-day" id="day-Friday"><span class="day-name">Friday</span><span class="day-workout">Abs Workout</span></div>
+                <div class="routine-day" id="day-Saturday"><span class="day-name">Saturday</span><span class="day-workout">Full Body Workout</span></div>
+                <div class="routine-day" id="day-Sunday"><span class="day-name">Sunday</span><span class="day-workout">Rest Day 😴</span></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h3>Progress Calendar (May)</h3>
+            <div class="calendar-grid">
+                <div class="cal-header">Mon</div><div class="cal-header">Tue</div><div class="cal-header">Wed</div>
+                <div class="cal-header">Thu</div><div class="cal-header">Fri</div><div class="cal-header">Sat</div><div class="cal-header">Sun</div>
+            </div>
+            <div id="calendar-days-container" class="calendar-grid" style="margin-top: 0;"></div>
+        </div>
+
+    </div>
+
+    <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
+    <div id="settings-menu" class="settings-modal">
+        <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
+        <div class="setting-item" onclick="alert('Progress history logs will clear when browser cache drops. Permanent cloud accounts coming next!')"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
+        <div class="setting-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+
+
+    <script>
+        // Data Status Tracking variables
+        let workoutLoggedToday = false; 
+        const currentTodayDate = new Date().getDate();
+
+        // 1. Core Initializing Transitions Setup
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('screen-loading').classList.add('hidden');
+                document.getElementById('screen-onboarding').classList.remove('hidden');
+            }, 2500); // Loads configuration views following spinner animation delay
+            renderCalendar();
+            setTodayHighlight();
+        });
+
+        // 2. Onboarding Choice Selection Switcher
+        let selectedLocation = '';
+        function selectLocation(type) {
+            selectedLocation = type;
+            document.getElementById('btn-gym').classList.remove('active');
+            document.getElementById('btn-home').classList.remove('active');
+            document.getElementById(`btn-${type}`).classList.add('active');
+            
+            const equipBox = document.getElementById('home-equipment-box');
+            if (type === 'home') equipBox.classList.remove('hidden');
+            else equipBox.classList.add('hidden');
+        }
+
+        // 3. Complete Profile Onboarding Entry Logic
+        function goToThirdInterface() {
+            const email = document.getElementById('email').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            
+            if (!email || !weight || !height || !selectedLocation) {
+                alert("Please complete the setup options before continuing!");
+                return;
+            }
+
+            // Slice out prefix name from input value for user element greeting
+            document.getElementById('display-user').innerText = `Hello, ${email.split('@')[0]}`;
+            
+            document.getElementById('screen-onboarding').classList.add('hidden');
+            document.getElementById('screen-main-app').classList.remove('hidden');
+        }
+
+        // 4. Set Active Neon Level Highlights Engine
+        function setLevel(lvl) {
+            document.getElementById('lvl-beginner').classList.remove('active');
+            document.getElementById('lvl-mid').classList.remove('active');
+            document.getElementById('lvl-advance').classList.remove('active');
+            
+            if(lvl === 'Beginner') {
+                document.getElementById('lvl-beginner').classList.add('active');
+            } else if(lvl === 'Mid Level') {
+                document.getElementById('lvl-mid').classList.add('active');
+            } else if(lvl === 'Advanced') {
+                document.getElementById('lvl-advance').classList.add('active');
+            }
+        }
+
+        // 5. Toggle Navigation Settings Drawer visibility state
+        function toggleSettings(open) {
+            if(open) {
+                document.getElementById('settings-menu').classList.add('open');
+                document.getElementById('overlay-bg').classList.add('open');
+            } else {
+                document.getElementById('settings-menu').classList.remove('open');
+                document.getElementById('overlay-bg').classList.remove('open');
+            }
+        }
+
+        // 6. Routine and Date Tracking Mechanics Maps
+        const schedule = {
+            "Monday": "Chest & Triceps",
+            "Tuesday": "Shoulder & Biceps",
+            "Wednesday": "Leg Day",
+            "Thursday": "Rest Day 😴",
+            "Friday": "Abs Workout",
+            "Saturday": "Full Body Workout",
+            "Sunday": "Rest Day 😴"
+        };
+
+        function setTodayHighlight() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const todayName = days[new Date().getDay()];
+            
+            document.getElementById('today-date-str').innerText = `Today is ${todayName}`;
+            document.getElementById('todays-focus-box').innerText = schedule[todayName];
+            
+            const routineRow = document.getElementById(`day-${todayName}`);
+            if(routineRow) routineRow.classList.add('today-highlight');
+        }
+
+        // 7. Dynamic Calendar Renderer
+        function renderCalendar() {
+            const container = document.getElementById('calendar-days-container');
+            container.innerHTML = '';
+            
+            for(let i = 1; i <= 31; i++) {
+                let dayEl = document.createElement('div');
+                dayEl.classList.add('cal-day');
+                dayEl.id = `cal-day-${i}`;
+                dayEl.innerText = i;
+                
+                // Active dim breathing pulse assigned specifically to current date cell
+                if (i === currentTodayDate) {
+                    dayEl.classList.add('today-active');
+                }
+                
+                // Presentation historic baseline data filler logic for previous dates
+                if (i < currentTodayDate) {
+                    if (i % 4 !== 0) {
+                        dayEl.className = "cal-day done";
+                    } else {
+                        dayEl.className = "cal-day missed";
+                        dayEl.innerText = '❌';
+                    }
+                }
+                container.appendChild(dayEl);
+            }
+            
+            // Activate continuous automated interval tracker loop check rules
+            checkMidnightRule();
+        }
+
+        // 8. Manual Outcome Status Loggers
+        function logTodayWorkout(success) {
+            workoutLoggedToday = true; 
+            const targetCell = document.getElementById(`cal-day-${currentTodayDate}`);
+            if(targetCell) {
+                if(success) {
+                    targetCell.className = "cal-day done";
+                    targetCell.innerText = currentTodayDate;
+                } else {
+                    targetCell.className = "cal-day missed";
+                    targetCell.innerText = "❌";
+                }
+            }
+        }
+
+        // 9. Automated Check Loop For Locking Unmarked Deadlines (12:00 AM Midnight rule)
+        function checkMidnightRule() {
+            setInterval(() => {
+                const now = new Date();
+                // When runtime clock resets parameters to midnight values precisely without logs
+                if (now.getHours() === 0 && now.getMinutes() === 0 && !workoutLoggedToday) {
+                    const targetCell = document.getElementById(`cal-day-${currentTodayDate}`);
+                    if (targetCell && !targetCell.classList.contains('done')) {
+                        targetCell.className = "cal-day missed";
+                        targetCell.innerText = "❌";
+                    }
+                }
+            }, 30000); // Validates background variables checking every 30 seconds smoothly
+        }
+    </script>
+</body>
+</html>
