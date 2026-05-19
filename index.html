@@ -21,7 +21,7 @@
             align-items: flex-start;
             min-height: 100vh;
             box-sizing: border-box;
-            overflow-y: auto; /* Enables smooth scrolling down the dashboard */
+            overflow-y: auto;
         }
 
         .hidden { display: none !important; }
@@ -72,7 +72,7 @@
         }
         .input-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-size: 14px; color: #bbb; }
-        input[type="number"], textarea, input[type="email"] {
+        input[type="number"], textarea {
             width: 100%; padding: 14px; background-color: #111; border: 1px solid #333;
             border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 16px;
         }
@@ -100,7 +100,6 @@
             position: relative;
         }
         
-        /* Header Profile Area */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -113,7 +112,6 @@
         .user-greet p { font-size: 13px; margin: 3px 0 0 0; color: #888; }
         .settings-icon { font-size: 24px; color: #FF5500; cursor: pointer; }
 
-        /* Large Neon Level Selection Badges */
         .level-selector {
             display: flex;
             gap: 10px;
@@ -126,7 +124,6 @@
             transition: all 0.3s ease;
         }
         
-        /* Neon Highlights for Selected Levels */
         .lvl-badge#lvl-beginner.active {
             background-color: #000; color: #00E5FF; border-color: #00E5FF;
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
@@ -135,7 +132,6 @@
             background-color: #000; color: #FFCC00; border-color: #FFCC00;
             box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
         }
-        /* Advanced Thunder Badge Glow Styling */
         .lvl-badge#lvl-advance.active {
             background-color: #000; color: #FF5500; border-color: #FF5500;
             animation: thunderGlow 1.5s infinite alternate;
@@ -145,7 +141,6 @@
             to { box-shadow: 0 0 25px rgba(255, 85, 0, 0.8); }
         }
 
-        /* Container Content Layout Blocks */
         .section-card {
             background-color: #111;
             border: 1px solid #222;
@@ -155,65 +150,20 @@
         }
         .section-card h3 { margin-top: 0; color: #FF5500; font-size: 16px; text-transform: uppercase; }
 
-        /* Today Target Modifier */
-        .btn-missed {
-            background-color: #1a0d0d; color: #FF3333; border: 1px solid #331111;
-        }
-
-        /* Weekly Split List Layout */
         .routine-list { display: flex; flex-direction: column; gap: 10px; }
         .routine-day {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 14px; background-color: #161616; border-left: 4px solid #333; border-radius: 4px;
+            padding: 16px 14px; background-color: #161616; border-left: 4px solid #333; border-radius: 4px;
+            cursor: pointer; transition: 0.2s;
         }
         .routine-day.today-highlight { border-left-color: #FF5500; background-color: #1e110b; }
+        .routine-day.today-highlight:hover { background-color: #2b180f; }
         .day-name { font-weight: bold; font-size: 14px; }
         .day-workout { font-size: 13px; color: #bbb; }
 
-        /* Neon Calendar Elements */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            text-align: center;
-            margin-top: 15px;
-        }
-        .cal-header { font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase; }
-        .cal-day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background-color: #141414; border: 1px solid #222; border-radius: 6px; font-size: 13px; font-weight: bold;
-            position: relative; color: #666; transition: all 0.3s;
-        }
-        
-        /* Pulse Animation for Current Calendar Day Prior to Midnight */
-        .cal-day.today-active {
-            border-color: #ff5500;
-            color: #fff;
-            animation: breathe 2s infinite ease-in-out;
-        }
-        @keyframes breathe {
-            0% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); background-color: #141414; }
-            50% { box-shadow: 0 0 12px rgba(255, 85, 0, 0.5); background-color: #241108; }
-            100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); background-color: #141414; }
-        }
-
-        /* Neon Completion Glow (Green) */
-        .cal-day.done {
-            background-color: #000;
-            border: 2px solid #00FF66;
-            color: #00FF66;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
-            animation: none;
-        }
-        /* Lock Missed Cross Out styling */
-        .cal-day.missed {
-            background-color: #140808;
-            border: 1px solid #FF3333;
-            color: #FF3333;
-            animation: none;
-        }
-
-        /* Settings Slide Drawer Modal */
+        /* ==========================================
+           SETTINGS DIALOG DRAWER MODAL
+           ========================================== */
         .settings-modal {
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
             background-color: #111; border-left: 1px solid #222; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
@@ -231,6 +181,61 @@
             z-index: 99; display: none;
         }
         .overlay.open { display: block; }
+
+        /* ==========================================
+           INSIDE SETTINGS: NEW PROGRESS CHART POPUP
+           ========================================== */
+        .progress-view-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 200; padding: 20px; box-sizing: border-box;
+            overflow-y: auto; display: none;
+        }
+        .progress-view-modal.open { display: block; }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .cal-header { font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase; }
+        
+        /* NEW USER DESIGN: Active / Past Days White Box Layout Setup */
+        .cal-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background-color: #111; border: 1px solid #ffffff; border-radius: 6px; 
+            font-size: 13px; font-weight: bold; color: #ffffff; transition: all 0.3s;
+        }
+        
+        /* Today Breathing Glow Pulse Design Element */
+        .cal-day.today-active {
+            border-color: #ff5500;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        @keyframes breathe {
+            0% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
+            50% { box-shadow: 0 0 12px rgba(255, 85, 0, 0.6); }
+            100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
+        }
+
+        /* Neon Round Glow Completion State (Round) */
+        .cal-day.done {
+            background-color: #000;
+            border: 2px solid #00FF66;
+            color: #00FF66;
+            border-radius: 50%; /* Circle design element requested */
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+            animation: none;
+        }
+        /* Missed Cross-out State */
+        .cal-day.missed {
+            background-color: #140808;
+            border: 1px solid #FF3333;
+            color: #FF3333;
+            border-radius: 6px;
+            animation: none;
+        }
     </style>
 </head>
 <body>
@@ -242,12 +247,7 @@
 
 
     <div id="screen-onboarding" class="onboarding-container hidden">
-        <h2>Account Setup</h2>
-        
-        <div class="input-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="name@example.com">
-        </div>
+        <h2>Tell us about yourself</h2>
 
         <div class="input-group">
             <label for="weight">Weight (kg)</label>
@@ -280,7 +280,7 @@
         
         <div class="app-header">
             <div class="user-greet">
-                <h1 id="display-user">Welcome, Athlete</h1>
+                <h1>Welcome, Athlete</h1>
                 <p id="today-date-str">IronTime Dashboard</p>
             </div>
             <div class="settings-icon" onclick="toggleSettings(true)">
@@ -295,34 +295,17 @@
         </div>
 
         <div class="section-card">
-            <h3>Today's Target</h3>
-            <div id="todays-focus-box" style="font-size: 20px; font-weight: bold; margin-bottom: 15px;">
-                Checking Schedule...
-            </div>
-            <button class="primary-btn" style="padding: 14px;" onclick="logTodayWorkout(true)">Mark Completed ✓</button>
-            <button class="primary-btn btn-missed" style="padding: 14px;" onclick="logTodayWorkout(false)">Mark Missed ❌</button>
-        </div>
-
-        <div class="section-card">
             <h3>Weekly Routine split</h3>
+            <p style="font-size: 11px; color:#777; margin-top:-5px; margin-bottom:15px;">Tap your routine workout block to sign-off status.</p>
             <div class="routine-list">
-                <div class="routine-day" id="day-Monday"><span class="day-name">Monday</span><span class="day-workout">Chest & Triceps</span></div>
-                <div class="routine-day" id="day-Tuesday"><span class="day-name">Tuesday</span><span class="day-workout">Shoulder & Biceps</span></div>
-                <div class="routine-day" id="day-Wednesday"><span class="day-name">Wednesday</span><span class="day-workout">Leg Day</span></div>
-                <div class="routine-day" id="day-Thursday"><span class="day-name">Thursday</span><span class="day-workout">Rest Day 😴</span></div>
-                <div class="routine-day" id="day-Friday"><span class="day-name">Friday</span><span class="day-workout">Abs Workout</span></div>
-                <div class="routine-day" id="day-Saturday"><span class="day-name">Saturday</span><span class="day-workout">Full Body Workout</span></div>
-                <div class="routine-day" id="day-Sunday"><span class="day-name">Sunday</span><span class="day-workout">Rest Day 😴</span></div>
+                <div class="routine-day" id="day-Monday" onclick="triggerCompletionPrompt('Monday')"><span class="day-name">Monday</span><span class="day-workout">Chest & Triceps</span></div>
+                <div class="routine-day" id="day-Tuesday" onclick="triggerCompletionPrompt('Tuesday')"><span class="day-name">Tuesday</span><span class="day-workout">Shoulder & Biceps</span></div>
+                <div class="routine-day" id="day-Wednesday" onclick="triggerCompletionPrompt('Wednesday')"><span class="day-name">Wednesday</span><span class="day-workout">Leg Day</span></div>
+                <div class="routine-day" id="day-Thursday" onclick="triggerCompletionPrompt('Thursday')"><span class="day-name">Thursday</span><span class="day-workout">Rest Day 😴</span></div>
+                <div class="routine-day" id="day-Friday" onclick="triggerCompletionPrompt('Friday')"><span class="day-name">Friday</span><span class="day-workout">Abs Workout</span></div>
+                <div class="routine-day" id="day-Saturday" onclick="triggerCompletionPrompt('Saturday')"><span class="day-name">Saturday</span><span class="day-workout">Full Body Workout</span></div>
+                <div class="routine-day" id="day-Sunday" onclick="triggerCompletionPrompt('Sunday')"><span class="day-name">Sunday</span><span class="day-workout">Rest Day 😴</span></div>
             </div>
-        </div>
-
-        <div class="section-card">
-            <h3>Progress Calendar (May)</h3>
-            <div class="calendar-grid">
-                <div class="cal-header">Mon</div><div class="cal-header">Tue</div><div class="cal-header">Wed</div>
-                <div class="cal-header">Thu</div><div class="cal-header">Fri</div><div class="cal-header">Sat</div><div class="cal-header">Sun</div>
-            </div>
-            <div id="calendar-days-container" class="calendar-grid" style="margin-top: 0;"></div>
         </div>
 
     </div>
@@ -330,13 +313,24 @@
     <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
     <div id="settings-menu" class="settings-modal">
         <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
-        <div class="setting-item" onclick="alert('Progress history logs will clear when browser cache drops. Permanent cloud accounts coming next!')"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
+        <div class="setting-item" onclick="toggleProgressView(true)"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
         <div class="setting-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+    </div>
+
+    <div id="screen-progress-chart" class="progress-view-modal">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="color:#FF5500; text-transform:uppercase; margin:0;">Workout Progress Log</h3>
+            <span style="font-size:24px; cursor:pointer;" onclick="toggleProgressView(false)"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div class="calendar-grid">
+            <div class="cal-header">Mon</div><div class="cal-header">Tue</div><div class="cal-header">Wed</div>
+            <div class="cal-header">Thu</div><div class="cal-header">Fri</div><div class="cal-header">Sat</div><div class="cal-header">Sun</div>
+        </div>
+        <div id="calendar-days-container" class="calendar-grid" style="margin-top: 0;"></div>
     </div>
 
 
     <script>
-        // Data Status Tracking variables
         let workoutLoggedToday = false; 
         const currentTodayDate = new Date().getDate();
 
@@ -345,7 +339,7 @@
             setTimeout(() => {
                 document.getElementById('screen-loading').classList.add('hidden');
                 document.getElementById('screen-onboarding').classList.remove('hidden');
-            }, 2500); // Loads configuration views following spinner animation delay
+            }, 2500); 
             renderCalendar();
             setTodayHighlight();
         });
@@ -365,17 +359,13 @@
 
         // 3. Complete Profile Onboarding Entry Logic
         function goToThirdInterface() {
-            const email = document.getElementById('email').value;
             const weight = document.getElementById('weight').value;
             const height = document.getElementById('height').value;
             
-            if (!email || !weight || !height || !selectedLocation) {
-                alert("Please complete the setup options before continuing!");
+            if (!weight || !height || !selectedLocation) {
+                alert("Please complete the setup choices before continuing!");
                 return;
             }
-
-            // Slice out prefix name from input value for user element greeting
-            document.getElementById('display-user').innerText = `Hello, ${email.split('@')[0]}`;
             
             document.getElementById('screen-onboarding').classList.add('hidden');
             document.getElementById('screen-main-app').classList.remove('hidden');
@@ -403,33 +393,43 @@
                 document.getElementById('overlay-bg').classList.add('open');
             } else {
                 document.getElementById('settings-menu').classList.remove('open');
-                document.getElementById('overlay-bg').classList.remove('open');
+                document.getElementById('overlay-bg').classList.open ? document.getElementById('overlay-bg').classList.remove('open') : null;
             }
         }
 
-        // 6. Routine and Date Tracking Mechanics Maps
-        const schedule = {
-            "Monday": "Chest & Triceps",
-            "Tuesday": "Shoulder & Biceps",
-            "Wednesday": "Leg Day",
-            "Thursday": "Rest Day 😴",
-            "Friday": "Abs Workout",
-            "Saturday": "Full Body Workout",
-            "Sunday": "Rest Day 😴"
-        };
+        // Toggle Full Screen Progress View Modal Window
+        function toggleProgressView(open) {
+            if(open) {
+                toggleSettings(false); // Close background menu
+                document.getElementById('screen-progress-chart').classList.add('open');
+            } else {
+                document.getElementById('screen-progress-chart').classList.remove('open');
+            }
+        }
+
+        // 6. Routine Day Selection Handler Prompt Trigger
+        const schedule = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const todayName = schedule[new Date().getDay()];
 
         function setTodayHighlight() {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const todayName = days[new Date().getDay()];
-            
             document.getElementById('today-date-str').innerText = `Today is ${todayName}`;
-            document.getElementById('todays-focus-box').innerText = schedule[todayName];
-            
             const routineRow = document.getElementById(`day-${todayName}`);
             if(routineRow) routineRow.classList.add('today-highlight');
         }
 
-        // 7. Dynamic Calendar Renderer
+        function triggerCompletionPrompt(clickedDay) {
+            if(clickedDay !== todayName) {
+                alert("You can only change logs for today's workout split target!");
+                return;
+            }
+            
+            let userAction = confirm("Did you complete today's target exercise session successfully?\n\nClick OK for (✓ Complete)\nClick Cancel to keep working.");
+            if(userAction) {
+                logTodayWorkout(true);
+            }
+        }
+
+        // 7. Dynamic Progress Tracking Calendar Renderer 
         function renderCalendar() {
             const container = document.getElementById('calendar-days-container');
             container.innerHTML = '';
@@ -440,24 +440,13 @@
                 dayEl.id = `cal-day-${i}`;
                 dayEl.innerText = i;
                 
-                // Active dim breathing pulse assigned specifically to current date cell
+                // Assign pulsing dim light ring setup onto current calendar node elements
                 if (i === currentTodayDate) {
                     dayEl.classList.add('today-active');
-                }
-                
-                // Presentation historic baseline data filler logic for previous dates
-                if (i < currentTodayDate) {
-                    if (i % 4 !== 0) {
-                        dayEl.className = "cal-day done";
-                    } else {
-                        dayEl.className = "cal-day missed";
-                        dayEl.innerText = '❌';
-                    }
                 }
                 container.appendChild(dayEl);
             }
             
-            // Activate continuous automated interval tracker loop check rules
             checkMidnightRule();
         }
 
@@ -469,6 +458,7 @@
                 if(success) {
                     targetCell.className = "cal-day done";
                     targetCell.innerText = currentTodayDate;
+                    alert("Awesome job! Today has been checked off in green neon on your chart.");
                 } else {
                     targetCell.className = "cal-day missed";
                     targetCell.innerText = "❌";
@@ -476,19 +466,19 @@
             }
         }
 
-        // 9. Automated Check Loop For Locking Unmarked Deadlines (12:00 AM Midnight rule)
+        // 9. AUTOMATED DEADLINE LOCK ENGINE: Runs check parameters targeting exactly 12:01 AM
         function checkMidnightRule() {
             setInterval(() => {
                 const now = new Date();
-                // When runtime clock resets parameters to midnight values precisely without logs
-                if (now.getHours() === 0 && now.getMinutes() === 0 && !workoutLoggedToday) {
+                // Strike confirmation protocols checking at precisely 12:01 AM
+                if (now.getHours() === 0 && now.getMinutes() === 1 && !workoutLoggedToday) {
                     const targetCell = document.getElementById(`cal-day-${currentTodayDate}`);
                     if (targetCell && !targetCell.classList.contains('done')) {
                         targetCell.className = "cal-day missed";
                         targetCell.innerText = "❌";
                     }
                 }
-            }, 30000); // Validates background variables checking every 30 seconds smoothly
+            }, 30000); 
         }
     </script>
 </body>
