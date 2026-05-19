@@ -2,156 +2,225 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime OS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRONTIME</title>
     <style>
-        * { box-sizing: border-box; }
+        /* --- GENERAL STYLES --- */
         body {
-            background: #000;
-            color: #fff;
-            font-family: -apple-system, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            height: 100vh;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
-        /* INTRO LAYER */
-        #intro-layer {
-            position: absolute;
-            width: 100%;
-            text-align: center;
+        /* Utility class to hide screens */
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- INTERFACE 1: LOADING SCREEN --- */
+        .loading-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        .logo {
+        .brand-title {
+            color: #FF5500; /* Your IronTime Orange */
             font-size: 3rem;
-            font-weight: 900;
-            color: #ff6b00;
-            letter-spacing: 5px;
-            margin-bottom: 30px;
+            font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
         }
 
-        /* Circular Spinner Loader */
+        /* Simple CSS Spinner matching your screenshot */
         .spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(255, 107, 0, 0.1);
+            border: 4px solid rgba(255, 85, 0, 0.1);
+            border-top-color: #FF5500;
             border-radius: 50%;
-            border-top-color: #ff6b00;
-            box-shadow: 0 0 10px rgba(255, 107, 0, 0.2);
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* CONTENT LAYERS */
-        #setup-layer, #main-layer { 
-            display: none; 
-            width: 85%; 
-            max-width: 400px; 
+        /* --- INTERFACE 2: ONBOARDING SCREEN --- */
+        .onboarding-container {
+            width: 100%;
+            max-width: 360px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: #FF5500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
-        .input-box { margin: 15px 0; text-align: left; }
-        label { color: #888; font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        
-        input, select {
-            width: 100%; padding: 18px; background: #111; border: 1px solid #333;
-            color: #fff; border-radius: 12px; font-size: 1rem; outline: none;
+        .input-group {
+            margin-bottom: 20px;
         }
 
-        .btn-orange {
-            width: 100%; padding: 22px; background: #ff6b00; color: #000;
-            border: none; border-radius: 15px; font-weight: bold; font-size: 1.1rem;
-            text-transform: uppercase; margin-top: 20px;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        input[type="number"], textarea {
+            width: 100%;
+            padding: 14px;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #FF5500;
+            outline: none;
+        }
+
+        .radio-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .loc-btn {
+            flex: 1;
+            padding: 15px;
+            background-color: #111;
+            border: 2px solid #333;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .loc-btn.active {
+            border-color: #FF5500;
+            color: #FF5500;
+            background-color: rgba(255, 85, 0, 0.1);
+        }
+
+        .primary-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #FF5500;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <div id="intro-layer">
-        <div class="logo">IRONTIME</div>
+    <div id="screen-loading" class="loading-screen">
+        <div class="brand-title">IRONTIME</div>
         <div class="spinner"></div>
     </div>
 
-    <div id="setup-layer">
-        <h2 style="color:#ff6b00; margin-bottom: 30px;">PROFILE SETUP</h2>
-        <div class="input-box">
-            <label>Height (cm)</label>
-            <input type="number" id="h-input" placeholder="e.g. 175">
+
+    <div id="screen-onboarding" class="onboarding-container hidden">
+        <h2>Tell us about yourself</h2>
+        
+        <div class="input-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 70">
         </div>
-        <div class="input-box">
-            <label>Weight (kg)</label>
-            <input type="number" id="w-input" placeholder="e.g. 70">
+        
+        <div class="input-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 175">
         </div>
-        <div class="input-box">
-            <label>Your Equipment</label>
-            <select id="e-input">
-                <option value="Bodyweight">No Equipment</option>
-                <option value="Dumbbells">Dumbbells</option>
-                <option value="Gym">Full Gym</option>
-            </select>
+
+        <div class="input-group">
+            <label>Where do you train?</label>
+            <div class="radio-buttons">
+                <button type="button" class="loc-btn" id="btn-gym" onclick="selectLocation('gym')">Gym</button>
+                <button type="button" class="loc-btn" id="btn-home" onclick="selectLocation('home')">Home</button>
+            </div>
         </div>
-        <button class="btn-orange" onclick="saveProfile()">ACTIVATE SYSTEM</button>
+
+        <div id="home-equipment-box" class="input-group hidden">
+            <label for="equipment">List your equipment:</label>
+            <textarea id="equipment" rows="3" placeholder="e.g. Dumbbells, Resistance bands, Pull-up bar..."></textarea>
+        </div>
+
+        <button id="next-btn" class="primary-btn" onclick="goToThirdInterface()">Continue</button>
     </div>
 
-    <div id="main-layer">
-        <div class="logo" style="font-size: 2rem;">IRONTIME</div>
-        <div id="user-display" style="color:#ff6b00; font-weight:bold; margin-bottom: 20px;"></div>
-        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #444;" onclick="start('Beginner')">Beginner</button>
-        <button class="btn-orange" style="background:#111; color:#fff; border:1px solid #444;" onclick="start('Mid')">Mid-Tier</button>
-        <button class="btn-orange" onclick="start('Pro')">PRO MODE</button>
-        <p style="color:#222; margin-top: 50px;" onclick="localStorage.clear(); location.reload();">RESET SYSTEM</p>
-    </div>
 
     <script>
-        // BOOT TIMER (Turns off loader spinner, switches views)
-        setTimeout(function() {
-            document.getElementById('intro-layer').style.display = 'none';
+        // 1. SIMULATE LOADING SCREEN TRANSITION
+        // This automatically hides the loading screen and shows the onboarding after 3 seconds
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('screen-loading').classList.add('hidden');
+                document.getElementById('screen-onboarding').classList.remove('hidden');
+            }, 3000); // 3000 milliseconds = 3 seconds
+        });
+
+        // 2. LOCATION HANDLING
+        let selectedLocation = '';
+
+        function selectLocation(type) {
+            selectedLocation = type;
             
-            if (localStorage.getItem('iron_setup_done') === 'true') {
-                showMain();
+            // Toggle active classes on buttons
+            document.getElementById('btn-gym').classList.remove('active');
+            document.getElementById('btn-home').classList.remove('active');
+            document.getElementById(`btn-${type}`).classList.add('active');
+            
+            // Show/Hide equipment box based on selection
+            const equipmentBox = document.getElementById('home-equipment-box');
+            if (type === 'home') {
+                equipmentBox.classList.remove('hidden');
             } else {
-                document.getElementById('setup-layer').style.display = 'block';
+                equipmentBox.classList.add('hidden');
             }
-        }, 2200);
-
-        function saveProfile() {
-            const h = document.getElementById('h-input').value;
-            const w = document.getElementById('w-input').value;
-            const e = document.getElementById('e-input').value;
-
-            if(!h || !w) return alert("Fill out the specs, athlete.");
-
-            localStorage.setItem('iron_h', h);
-            localStorage.setItem('iron_w', w);
-            localStorage.setItem('iron_e', e);
-            localStorage.setItem('iron_setup_done', 'true');
-            showMain();
         }
 
-        function showMain() {
-            document.getElementById('setup-layer').style.display = 'none';
-            document.getElementById('main-layer').style.display = 'block';
+        // 3. TRANSITION TO INTERFACE 3
+        function goToThirdInterface() {
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
             
-            const w = localStorage.getItem('iron_w');
-            const e = localStorage.getItem('iron_e');
-            document.getElementById('user-display').innerText = `${w}KG | ${e.toUpperCase()}`;
-        }
-
-        function start(level) {
-            localStorage.setItem('workoutLevel', level);
-            window.location.href = 'workout.html';
+            if (!weight || !height || !selectedLocation) {
+                alert("Please fill out your height, weight, and select a training location!");
+                return;
+            }
+            
+            if (selectedLocation === 'home') {
+                const equipment = document.getElementById('equipment').value;
+                alert(`Data Saved!\nWeight: ${weight}kg\nHeight: ${height}cm\nType: Home\nEquipment: ${equipment}\n\nReady for Interface 3!`);
+            } else {
+                alert(`Data Saved!\nWeight: ${weight}kg\nHeight: ${height}cm\nType: Gym\n\nReady for Interface 3!`);
+            }
         }
     </script>
 </body>
