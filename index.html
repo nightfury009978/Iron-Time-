@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* ==========================================
+           GLOBAL & TYPOGRAPHY CORE STYLES
+           ========================================== */
         body {
             background-color: #000000;
             color: #ffffff;
@@ -22,62 +25,266 @@
             align-items: flex-start;
             min-height: 100vh;
             box-sizing: border-box;
+            overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
         }
+
         .hidden { display: none !important; }
-        h1, h2, h3, .brand-title, .lvl-btn, .primary-btn, .cal-header {
+
+        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header {
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
         }
-        .app-container { width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; }
-        
-        /* Loading Screen */
-        .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; }
-        .brand-title { color: #FF5500; font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255, 85, 0, 0.4); }
-        .spinner { width: 40px; height: 40px; border: 4px solid rgba(255, 85, 0, 0.1); border-top-color: #FF5500; border-radius: 50%; animation: spin 1s linear infinite; }
+
+        /* ==========================================
+           INTERFACE 1: LOADING SCREEN STYLES
+           ========================================== */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+        }
+        .brand-title {
+            color: #FF5500;
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 85, 0, 0.4);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 85, 0, 0.1);
+            border-top-color: #FF5500;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Header & Dashboard */
-        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; }
+        /* ==========================================
+           INTERFACE 2: SETUP ONBOARDING STYLES
+           ========================================== */
+        .onboarding-container {
+            width: 100%;
+            max-width: 360px;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: #FF5500;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #bbb; text-transform: uppercase; font-weight: 700; }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%; padding: 14px; background-color: #0c0c0c; border: 1px solid #222;
+            border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 16px;
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus { border-color: #FF5500; outline: none; background-color: #111; }
+        .radio-buttons { display: flex; gap: 15px; margin-bottom: 25px; }
+        .loc-btn {
+            flex: 1; padding: 15px; background-color: #0c0c0c; border: 2px solid #222;
+            color: #888; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;
+            font-family: 'Orbitron', sans-serif; transition: all 0.3s;
+        }
+        .loc-btn.active { border-color: #FF5500; color: #FF5500; background-color: rgba(255, 85, 0, 0.1); box-shadow: 0 0 15px rgba(255,85,0,0.2); }
+        .primary-btn {
+            width: 100%; padding: 16px; background-color: #FF5500; color: black;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 900;
+            cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: transform 0.1s;
+        }
+        .primary-btn:active { transform: scale(0.98); }
+
+        /* ==========================================
+           INTERFACE 3: MAIN APP DASHBOARD STYLES
+           ========================================== */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
+        }
         .user-greet h1 { font-size: 22px; margin: 0; color: #fff; font-weight: 800; text-transform: uppercase; }
         .user-greet p { font-size: 14px; margin: 4px 0 0 0; color: #666; font-weight: 700; text-transform: uppercase; }
-        .settings-icon { font-size: 22px; color: #FF5500; cursor: pointer; }
-        
-        /* Level Selector Row from your screenshot */
-        .level-selector-row { display: flex; gap: 10px; margin-bottom: 25px; }
-        .lvl-btn { flex: 1; padding: 12px; background-color: #0c0c0c; border: 1px solid #222; color: #888; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 700; text-align: center; text-transform: uppercase; }
-        .lvl-btn.active-btn { background-color: #FF5500; color: #000; border-color: #FF5500; font-weight: 900; box-shadow: 0 0 15px rgba(255,85,0,0.4); }
+        .settings-icon { font-size: 22px; color: #FF5500; cursor: pointer; transition: transform 0.2s; }
+        .settings-icon:hover { transform: rotate(45deg); }
 
-        /* Focus Card */
-        .routine-focus-card { background: linear-gradient(135deg, #111111 0%, #070707 100%); border: 1px solid #222; border-radius: 14px; padding: 22px; margin-bottom: 25px; border-left: 5px solid #FF5500; }
-        .routine-focus-card h3 { margin: 0 0 8px 0; color: #FF5500; font-size: 12px; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; }
-        .routine-focus-card .workout-title { font-size: 24px; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; }
-        
-        /* Weekly Split Section from your screenshot */
-        .weekly-split-box { background-color: #0c0c0c; border: 1px solid #111; border-radius: 14px; padding: 20px; }
-        .weekly-split-box h3 { margin: 0 0 15px 0; color: #FF5500; font-size: 14px; text-transform: uppercase; font-weight: 800; }
-        .split-row { display: flex; justify-content: space-between; padding: 14px 10px; border-bottom: 1px solid #1a1a1a; font-size: 16px; font-weight: 700; color: #aaa; text-transform: uppercase; }
-        .split-row.day-highlight { border-left: 3px solid #FF5500; background: linear-gradient(90deg, rgba(255,85,0,0.05) 0%, transparent 100%); color: #fff; }
-        .split-row:last-child { border-bottom: none; }
-        .split-day { font-weight: 800; }
-        .split-name { color: #666; }
-        .day-highlight .split-name { color: #aaa; }
+        /* Dynamic Routine Block Style (Click interactions disabled on master layout level) */
+        .routine-focus-card {
+            background: linear-gradient(135deg, #111111 0%, #070707 100%);
+            border: 1px solid #222;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-left: 5px solid #FF5500;
+        }
+        .routine-focus-card h3 { margin: 0 0 8px 0; color: #FF5500; font-size: 14px; text-transform: uppercase; font-weight: 800; }
+        .routine-focus-card .day-title { font-size: 26px; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; }
+        .routine-focus-card .workout-title { font-size: 18px; color: #aaa; font-weight: 700; }
 
-        /* Settings Overlays */
-        .settings-modal { position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%; background-color: #0c0c0c; border-left: 1px solid #222; transition: 0.3s ease-in-out; z-index: 100; padding: 30px 20px; box-sizing: border-box; }
+        /* Stacked Level Layout Configurations */
+        .level-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .lvl-wrapper {
+            position: relative;
+            height: 70px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Endless Rotating Border Base */
+        .lvl-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 160%;
+            height: 350%;
+            animation: rotateLaser 3s linear infinite;
+        }
+
+        .lvl-badge {
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            background-color: #080808;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px; 
+            font-weight: 900;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        @keyframes rotateLaser {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* CONSTANT SHINING EFFECTS FOR ALL BADGES */
+        #wrap-beginner::before { background: conic-gradient(transparent, #00E5FF, transparent 25%); }
+        #wrap-beginner .lvl-badge { color: #00E5FF; text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); background-color: #020d0f; }
+        
+        #wrap-mid::before { background: conic-gradient(transparent, #FFCC00, transparent 25%); }
+        #wrap-mid .lvl-badge { color: #FFCC00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.6); background-color: #0f0c02; }
+
+        #wrap-advance::before { background: conic-gradient(transparent, #FF5500, transparent 25%); }
+        #wrap-advance .lvl-badge { 
+            color: #FF5500; 
+            text-shadow: 0 0 12px #FF5500; 
+            background-color: #120600;
+            animation: thunderShake 0.4s infinite alternate;
+        }
+        @keyframes thunderShake {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+
+        /* ==========================================
+           SETTINGS DRAWER DIALOG POPUP MODAL
+           ========================================== */
+        .settings-modal {
+            position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
+            background-color: #0c0c0c; border-left: 1px solid #222; box-shadow: -5px 0 25px rgba(0,0,0,0.8);
+            transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); z-index: 100; padding: 30px 20px; box-sizing: border-box;
+        }
         .settings-modal.open { right: 0; }
         .close-settings { text-align: right; font-size: 22px; cursor: pointer; color: #666; margin-bottom: 20px; }
-        .setting-item { padding: 18px 0; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; gap: 14px; font-size: 16px; cursor: pointer; color: #ddd; font-weight: 700; text-transform: uppercase; }
-        .setting-item i { color: #FF5500; }
-        .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 99; display: none; }
+        .setting-item {
+            padding: 18px 0; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center;
+            gap: 14px; font-size: 16px; cursor: pointer; color: #ddd; font-weight: 700; text-transform: uppercase;
+        }
+        .setting-item i { color: #FF5500; width: 20px; }
+        
+        .overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px); z-index: 99; display: none;
+        }
         .overlay.open { display: block; }
-        .progress-view-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 200; padding: 25px 20px; box-sizing: border-box; overflow-y: auto; display: none; }
+
+        /* ==========================================
+           PROGRESS TRACKER VIEW MODAL WINDOW
+           ========================================== */
+        .progress-view-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 200; padding: 25px 20px; box-sizing: border-box;
+            overflow-y: auto; display: none;
+        }
         .progress-view-modal.open { display: block; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin-top: 15px;
+        }
         .cal-header { font-size: 12px; color: #555; font-weight: 800; text-transform: uppercase; }
-        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background-color: #080808; border: 1px solid #222; border-radius: 6px; font-size: 14px; font-weight: 700; color: #ffffff; }
-        .cal-day.today-active { border-color: #ff5500; }
-        .cal-day.done { background-color: #000; border: 2px solid #00FF66; color: #00FF66; border-radius: 50%; box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); }
+        
+        /* White Box Default View Configuration */
+        .cal-day {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            background-color: #080808; border: 1px solid #ffffff; border-radius: 6px; 
+            font-size: 14px; font-weight: 700; color: #ffffff; transition: all 0.3s;
+        }
+        
+        /* Pulse Animation Active State on Current Date Entry Element */
+        .cal-day.today-active {
+            border-color: #ff5500;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        @keyframes breathe {
+            0% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(255, 85, 0, 0.6); background-color: #120600; }
+            100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
+        }
+
+        /* Neon Round Glow Completion Element Design */
+        .cal-day.done {
+            background-color: #000;
+            border: 2px solid #00FF66;
+            color: #00FF66;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+            animation: none;
+        }
+        /* Missed Status Cross Setup Modifiers */
+        .cal-day.missed {
+            background-color: #120404;
+            border: 1px solid #FF3333;
+            color: #FF3333;
+            border-radius: 6px;
+            animation: none;
+        }
     </style>
 </head>
 <body>
@@ -87,42 +294,77 @@
         <div class="spinner"></div>
     </div>
 
-    <div id="screen-main-app" class="app-container hidden">
-        <div class="app-header">
-            <div class="user-greet">
-                <h1 id="display-user">Hello, Athlete</h1>
-                <p id="today-date-str">Today is Tuesday</p>
-            </div>
-            <div class="settings-icon" onclick="toggleSettings(true)"><i class="fa-solid fa-gear"></i></div>
+    <div id="screen-onboarding" class="onboarding-container hidden">
+        <h2>Account Setup</h2>
+
+        <div class="input-group">
+            <label for="username">Your Name</label>
+            <input type="text" id="username" placeholder="Enter your name">
         </div>
 
-        <div class="level-selector-row">
-            <button class="lvl-btn" onclick="selectTier('Beginner')">Beginner</button>
-            <button class="lvl-btn" onclick="selectTier('Mid Level')">Mid Level</button>
-            <button class="lvl-btn active-btn" onclick="selectTier('Advanced')">Advanced</button>
+        <div class="input-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" placeholder="e.g. 70">
+        </div>
+        
+        <div class="input-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" placeholder="e.g. 175">
+        </div>
+
+        <div class="input-group">
+            <label>Where do you train?</label>
+            <div class="radio-buttons">
+                <button type="button" class="loc-btn" id="btn-gym" onclick="selectLocation('gym')">Gym</button>
+                <button type="button" class="loc-btn" id="btn-home" onclick="selectLocation('home')">Home</button>
+            </div>
+        </div>
+
+        <div id="home-equipment-box" class="input-group hidden">
+            <label for="equipment">List your equipment:</label>
+            <textarea id="equipment" rows="2" placeholder="e.g. Dumbbells, Bands..."></textarea>
+        </div>
+
+        <button class="primary-btn" onclick="goToThirdInterface()">Enter Dashboard</button>
+    </div>
+
+    <div id="screen-main-app" class="app-container hidden">
+        
+        <div class="app-header">
+            <div class="user-greet">
+                <h1 id="display-user">WELCOME, ATHLETE</h1>
+                <p id="today-date-str">TODAY</p>
+            </div>
+            <div class="settings-icon" onclick="toggleSettings(true)">
+                <i class="fa-solid fa-gear"></i>
+            </div>
         </div>
 
         <div class="routine-focus-card">
-            <h3>TODAY'S TARGET</h3>
-            <div class="workout-title" id="focus-card-workout">Shoulder & Biceps</div>
+            <h3>Today's Target Workout</h3>
+            <div class="day-title" id="focus-card-day">Loading Day...</div>
+            <div class="workout-title" id="focus-card-workout">Loading Routine Plan...</div>
         </div>
 
-        <div class="weekly-split-box">
-            <h3>WEEKLY ROUTINE SPLIT</h3>
-            <div class="split-row" id="split-Monday"><span class="split-day">Monday</span><span class="split-name">Chest & Triceps</span></div>
-            <div class="split-row" id="split-Tuesday"><span class="split-day">Tuesday</span><span class="split-name">Shoulder & Biceps</span></div>
-            <div class="split-row" id="split-Wednesday"><span class="split-day">Wednesday</span><span class="split-name">Leg Day</span></div>
-            <div class="split-row" id="split-Thursday"><span class="split-day">Thursday</span><span class="split-name">Rest Day 😴</span></div>
-            <div class="split-row" id="split-Friday"><span class="split-day">Friday</span><span class="split-name">Abs & Core</span></div>
-            <div class="split-row" id="split-Saturday"><span class="split-day">Saturday</span><span class="split-name">Full Body</span></div>
-            <div class="split-row" id="split-Sunday"><span class="split-day">Sunday</span><span class="split-name">Rest Day 😴</span></div>
+        <div class="level-selector">
+            <div class="lvl-wrapper" id="wrap-beginner" onclick="navigateToWorkoutInterface('Beginner')">
+                <div class="lvl-badge">Beginner</div>
+            </div>
+            <div class="lvl-wrapper" id="wrap-mid" onclick="navigateToWorkoutInterface('Mid Level')">
+                <div class="lvl-badge">Mid Level</div>
+            </div>
+            <div class="lvl-wrapper" id="wrap-advance" onclick="navigateToWorkoutInterface('Advanced')">
+                <div class="lvl-badge"><i class="fa-solid fa-bolt"></i> Advanced</div>
+            </div>
         </div>
+
     </div>
 
     <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
     <div id="settings-menu" class="settings-modal">
         <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
         <div class="setting-item" onclick="toggleProgressView(true)"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
+        <div class="setting-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
     </div>
 
     <div id="screen-progress-chart" class="progress-view-modal">
@@ -138,55 +380,106 @@
     </div>
 
     <script>
-        const scheduleMap = {
-            "Monday": "Chest & Triceps",
-            "Tuesday": "Shoulder & Biceps",
-            "Wednesday": "Leg Day",
-            "Thursday": "Rest Day 😴",
-            "Friday": "Abs & Core",
-            "Saturday": "Full Body",
-            "Sunday": "Rest Day 😴"
-        };
-        const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const currentDayName = daysArray[new Date().getDay()];
+        let workoutLoggedToday = false; 
         const currentTodayDate = new Date().getDate();
 
+        // Weekly Split Database Map Routine Reference Engine
+        const scheduleMap = {
+            "Monday": "Chest & Triceps Focus",
+            "Tuesday": "Shoulder & Biceps Core",
+            "Wednesday": "Leg Day Hypertrophy",
+            "Thursday": "Rest Day Recuperation 😴",
+            "Friday": "Abs & Core Conditioning",
+            "Saturday": "Full Body Power Split",
+            "Sunday": "Rest Day Recuperation 😴"
+        };
+
+        const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const currentDayName = daysArray[new Date().getDay()];
+
+        // 1. Core Initializing Transitions Setup
         window.addEventListener('DOMContentLoaded', () => {
-            // Loading Screen Animation timer
             setTimeout(() => {
                 document.getElementById('screen-loading').classList.add('hidden');
-                document.getElementById('screen-main-app').classList.remove('hidden');
-            }, 2000);
-
-            document.getElementById('today-date-str').innerText = `Today is ${currentDayName}`;
-            document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
-            
-            // Highlight current day in the list
-            const activeRow = document.getElementById(`split-${currentDayName}`);
-            if(activeRow) activeRow.classList.add('day-highlight');
-            
+                document.getElementById('screen-onboarding').classList.remove('hidden');
+            }, 2500); 
             renderCalendar();
+            setDynamicDailyRoutine();
         });
 
-        function selectTier(tier) {
-            localStorage.setItem('selectedTier', tier);
+        // 2. Onboarding Choice Selection Switcher
+        let selectedLocation = '';
+        function selectLocation(type) {
+            selectedLocation = type;
+            document.getElementById('btn-gym').classList.remove('active');
+            document.getElementById('btn-home').classList.remove('active');
+            document.getElementById(`btn-${type}`).classList.add('active');
+            
+            const equipBox = document.getElementById('home-equipment-box');
+            if (type === 'home') equipBox.classList.remove('hidden');
+            else equipBox.classList.add('hidden');
+        }
+
+        // 3. Complete Profile Onboarding Entry Logic
+        function goToThirdInterface() {
+            const nameInput = document.getElementById('username').value.trim();
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            
+            if (!nameInput || !weight || !height || !selectedLocation) {
+                alert("Please fill in all layout configuration parameters fields!");
+                return;
+            }
+            
+            document.getElementById('display-user').innerText = `WELCOME, ${nameInput.toUpperCase()}`;
+            document.getElementById('screen-onboarding').classList.add('hidden');
+            document.getElementById('screen-main-app').classList.remove('hidden');
+        }
+
+        // Dynamic Text Setup
+        function setDynamicDailyRoutine() {
+            document.getElementById('today-date-str').innerText = `TODAY IS ${currentDayName.toUpperCase()}`;
+            document.getElementById('focus-card-day').innerText = currentDayName;
+            document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
+        }
+
+        // 4. Handle Level Redirect Interactivity Mechanics Routing
+        function navigateToWorkoutInterface(levelSelected) {
+            localStorage.setItem('selectedTier', levelSelected);
             window.location.href = 'workout.html';
         }
 
+        // 5. Drawer Controller Interfaces
         function toggleSettings(open) {
-            document.getElementById('settings-menu').classList.toggle('open', open);
-            document.getElementById('overlay-bg').classList.toggle('open', open);
+            const menu = document.getElementById('settings-menu');
+            const overlay = document.getElementById('overlay-bg');
+            if(open) {
+                menu.classList.add('open');
+                overlay.classList.add('open');
+            } else {
+                menu.classList.remove('open');
+                overlay.classList.remove('open');
+            }
         }
 
         function toggleProgressView(open) {
-            toggleSettings(false);
-            document.getElementById('screen-progress-chart').style.display = open ? 'block' : 'none';
+            const progressModal = document.getElementById('screen-progress-chart');
+            const overlay = document.getElementById('overlay-bg');
+            
+            if(open) {
+                toggleSettings(false); 
+                progressModal.classList.add('open');
+            } else {
+                progressModal.classList.remove('open');
+                overlay.classList.remove('open');
+            }
         }
 
         function renderCalendar() {
             const container = document.getElementById('calendar-days-container');
             container.innerHTML = '';
             const statusKey = `workout_status_${new Date().getMonth()}_`;
+            
             for(let i = 1; i <= 31; i++) {
                 let dayEl = document.createElement('div');
                 dayEl.classList.add('cal-day');
