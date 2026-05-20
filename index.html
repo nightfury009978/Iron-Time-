@@ -31,7 +31,7 @@
 
         .hidden { display: none !important; }
 
-        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header {
+        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header, .routine-header h2 {
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
         }
@@ -129,7 +129,6 @@
         .settings-icon { font-size: 22px; color: #FF5500; cursor: pointer; transition: transform 0.2s; }
         .settings-icon:hover { transform: rotate(45deg); }
 
-        /* Dynamic Routine Block Style (Click interactions disabled on master layout level) */
         .routine-focus-card {
             background: linear-gradient(135deg, #111111 0%, #070707 100%);
             border: 1px solid #222;
@@ -144,7 +143,6 @@
         .routine-focus-card .day-title { font-size: 26px; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; }
         .routine-focus-card .workout-title { font-size: 18px; color: #aaa; font-weight: 700; }
 
-        /* Stacked Level Layout Configurations */
         .level-selector {
             display: flex;
             flex-direction: column;
@@ -163,7 +161,6 @@
             justify-content: center;
         }
 
-        /* Endless Rotating Border Base */
         .lvl-wrapper::before {
             content: '';
             position: absolute;
@@ -190,7 +187,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* CONSTANT SHINING EFFECTS FOR ALL BADGES */
         #wrap-beginner::before { background: conic-gradient(transparent, #00E5FF, transparent 25%); }
         #wrap-beginner .lvl-badge { color: #00E5FF; text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); background-color: #020d0f; }
         
@@ -210,7 +206,67 @@
         }
 
         /* ==========================================
-           SETTINGS DRAWER DIALOG POPUP MODAL
+           INTERFACE 4: NEW WORKOUT ROUTINE SCREEN STYLES
+           ========================================== */
+        .routine-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
+        }
+        .back-btn {
+            font-size: 20px;
+            color: #FF5500;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px 10px;
+        }
+        .routine-header h2 { margin: 0; font-size: 20px; text-transform: uppercase; color: #fff; }
+        .meta-strip {
+            display: flex;
+            justify-content: space-between;
+            background-color: #0c0c0c;
+            border: 1px solid #222;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        .meta-strip span i { color: #FF5500; margin-right: 5px; }
+        
+        .exercise-list { display: flex; flex-direction: column; gap: 15px; }
+        .exercise-card {
+            background-color: #080808;
+            border: 1px solid #1c1c1c;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.2s;
+        }
+        .exercise-card:hover { border-color: #333; }
+        .ex-info h4 { margin: 0 0 6px 0; font-size: 18px; color: #fff; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
+        .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
+        .ex-info p span { color: #FF5500; }
+        .ex-equipment {
+            font-size: 11px;
+            background-color: rgba(255, 85, 0, 0.1);
+            color: #FF5500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 85, 0, 0.2);
+        }
+
+        /* ==========================================
+           SETTINGS DRAWER & CALENDAR MODALS
            ========================================== */
         .settings-modal {
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
@@ -231,9 +287,6 @@
         }
         .overlay.open { display: block; }
 
-        /* ==========================================
-           PROGRESS TRACKER VIEW MODAL WINDOW
-           ========================================== */
         .progress-view-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000; z-index: 200; padding: 25px 20px; box-sizing: border-box;
@@ -250,14 +303,12 @@
         }
         .cal-header { font-size: 12px; color: #555; font-weight: 800; text-transform: uppercase; }
         
-        /* White Box Default View Configuration */
         .cal-day {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
             background-color: #080808; border: 1px solid #ffffff; border-radius: 6px; 
             font-size: 14px; font-weight: 700; color: #ffffff; transition: all 0.3s;
         }
         
-        /* Pulse Animation Active State on Current Date Entry Element */
         .cal-day.today-active {
             border-color: #ff5500;
             animation: breathe 2s infinite ease-in-out;
@@ -268,22 +319,12 @@
             100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
         }
 
-        /* Neon Round Glow Completion Element Design */
         .cal-day.done {
-            background-color: #000;
-            border: 2px solid #00FF66;
-            color: #00FF66;
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
-            animation: none;
+            background-color: #000; border: 2px solid #00FF66; color: #00FF66; border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); animation: none;
         }
-        /* Missed Status Cross Setup Modifiers */
         .cal-day.missed {
-            background-color: #120404;
-            border: 1px solid #FF3333;
-            color: #FF3333;
-            border-radius: 6px;
-            animation: none;
+            background-color: #120404; border: 1px solid #FF3333; color: #FF3333; border-radius: 6px; animation: none;
         }
     </style>
 </head>
@@ -360,6 +401,24 @@
 
     </div>
 
+    <div id="screen-workout-routine" class="app-container hidden">
+        <div class="routine-header">
+            <button class="back-btn" onclick="exitWorkoutRoutine()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2 id="routine-panel-title">LEG DAY PLAN</h2>
+        </div>
+
+        <div class="meta-strip">
+            <span><i class="fa-solid fa-clock"></i> <span id="meta-duration">1h 15m</span></span>
+            <span><i class="fa-solid fa-stopwatch"></i> Rest: 40s</span>
+            <span><i class="fa-solid fa-layer-group"></i> Level: <span id="meta-level">Beg</span></span>
+        </div>
+
+        <div id="dynamic-exercise-list-box" class="exercise-list">
+            </div>
+        
+        <button class="primary-btn" style="margin-top: 30px;" onclick="exitWorkoutRoutine()">Finish Routine</button>
+    </div>
+
     <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
     <div id="settings-menu" class="settings-modal">
         <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
@@ -380,7 +439,6 @@
     </div>
 
     <script>
-        let workoutLoggedToday = false; 
         const currentTodayDate = new Date().getDate();
 
         // Weekly Split Database Map Routine Reference Engine
@@ -397,6 +455,29 @@
         const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const currentDayName = daysArray[new Date().getDay()];
 
+        // Comprehensive Workout Pools Engine For Leg Day Dynamic Target Injections
+        const masterLegExercises = [
+            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
+            { name: "Leg Press Matrix", location: "gym", equipment: "machine", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
+            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Lying Leg Curls", location: "gym", equipment: "machine", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Standing Calf Raises", location: "gym", equipment: "machine", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
+            
+            // Flexible Home Workout Pools mapped to keyword filters
+            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
+            { name: "Resistance Band Squats", location: "home", equipment: "bands", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
+            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
+            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
+        ];
+
+        // Global state storage trackers
+        let userTrainingLocation = '';
+        let userEquipmentInputText = '';
+
         // 1. Core Initializing Transitions Setup
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
@@ -408,9 +489,8 @@
         });
 
         // 2. Onboarding Choice Selection Switcher
-        let selectedLocation = '';
         function selectLocation(type) {
-            selectedLocation = type;
+            userTrainingLocation = type;
             document.getElementById('btn-gym').classList.remove('active');
             document.getElementById('btn-home').classList.remove('active');
             document.getElementById(`btn-${type}`).classList.add('active');
@@ -426,10 +506,12 @@
             const weight = document.getElementById('weight').value;
             const height = document.getElementById('height').value;
             
-            if (!nameInput || !weight || !height || !selectedLocation) {
+            if (!nameInput || !weight || !height || !userTrainingLocation) {
                 alert("Please fill in all layout configuration parameters fields!");
                 return;
             }
+            
+            userEquipmentInputText = document.getElementById('equipment').value.toLowerCase();
             
             document.getElementById('display-user').innerText = `WELCOME, ${nameInput.toUpperCase()}`;
             document.getElementById('screen-onboarding').classList.add('hidden');
@@ -443,10 +525,71 @@
             document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
         }
 
-        // 4. Handle Level Redirect Interactivity Mechanics Routing
+        // 4. Handle Level Redirect Interactivity Mechanics Routing & Algorithmic Workout Generation
         function navigateToWorkoutInterface(levelSelected) {
-            localStorage.setItem('selectedTier', levelSelected);
-            window.location.href = 'workout.html';
+            // Update metadata badges on Interface 4
+            document.getElementById('meta-level').innerText = levelSelected;
+            document.getElementById('routine-panel-title').innerText = `${currentDayName.toUpperCase()}: ${scheduleMap[currentDayName].toUpperCase()}`;
+            
+            // Dynamic Time Management Target Injector Engine (1h to 1h 15m adjustments based on parameters)
+            if(levelSelected === 'Beginner') {
+                document.getElementById('meta-duration').innerText = "1h 00m";
+            } else {
+                document.getElementById('meta-duration').innerText = "1h 15m";
+            }
+
+            const container = document.getElementById('dynamic-exercise-list-box');
+            container.innerHTML = ''; // Clean view slate
+
+            let targetExercises = [];
+
+            // Algorithmic filtering matching targeted environments
+            if (userTrainingLocation === 'gym') {
+                // Gym includes full system stack access parameters automatically
+                targetExercises = masterLegExercises.filter(ex => ex.location === 'gym');
+            } else {
+                // Home equipment parsing filters engine
+                targetExercises = masterLegExercises.filter(ex => {
+                    if (ex.location !== 'home') return false;
+                    if (ex.equipment === 'bodyweight') return true; // Bodyweight is always available
+                    if (ex.equipment === 'dumbbells' && (userEquipmentInputText.includes('dumbbell') || userEquipmentInputText.includes('db'))) return true;
+                    if (ex.equipment === 'bands' && (userEquipmentInputText.includes('band') || userEquipmentInputText.includes('resis'))) return true;
+                    if (ex.equipment === 'barbell' && userEquipmentInputText.includes('barbell')) return true;
+                    return false;
+                });
+
+                // Fallback guarantee checklist to keep user safety parameters running
+                if(targetExercises.length === 0) {
+                    targetExercises = masterLegExercises.filter(ex => ex.equipment === 'bodyweight');
+                }
+            }
+
+            // UI Card Builder Generator Engine
+            targetExercises.forEach(ex => {
+                let repScheme = ex.beginner;
+                if(levelSelected === 'Mid Level') repScheme = ex.mid;
+                if(levelSelected === 'Advanced') repScheme = ex.advanced;
+
+                const cardHtml = `
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>${ex.name}</h4>
+                            <p>Target Volume: <span>${repScheme}</span></p>
+                        </div>
+                        <div class="ex-equipment">${ex.equipment}</div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Transition from Interface 3 straight into Interface 4 beautifully
+            document.getElementById('screen-main-app').classList.add('hidden');
+            document.getElementById('screen-workout-routine').classList.remove('hidden');
+        }
+
+        function exitWorkoutRoutine() {
+            document.getElementById('screen-workout-routine').classList.add('hidden');
+            document.getElementById('screen-main-app').classList.remove('hidden');
         }
 
         // 5. Drawer Controller Interfaces
