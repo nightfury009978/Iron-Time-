@@ -206,7 +206,7 @@
         }
 
         /* ==========================================
-           INTERFACE 4: NEW WORKOUT ROUTINE SCREEN STYLES
+           INTERFACE 4: WORKOUT ROUTINE SCREEN STYLES
            ========================================== */
         .routine-header {
             display: flex;
@@ -239,18 +239,24 @@
         }
         .meta-strip span i { color: #FF5500; margin-right: 5px; }
         
-        .exercise-list { display: flex; flex-direction: column; gap: 15px; }
+        .exercise-list { display: flex; flex-direction: column; gap: 20px; }
         .exercise-card {
             background-color: #080808;
             border: 1px solid #1c1c1c;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 16px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 15px;
             transition: border-color 0.2s;
         }
-        .exercise-card:hover { border-color: #333; }
+        .exercise-card:hover { border-color: #2a2a2a; }
+        
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
         .ex-info h4 { margin: 0 0 6px 0; font-size: 18px; color: #fff; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
         .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
         .ex-info p span { color: #FF5500; }
@@ -263,6 +269,53 @@
             font-weight: 700;
             text-transform: uppercase;
             border: 1px solid rgba(255, 85, 0, 0.2);
+        }
+
+        /* 3D Cyber Blueprint Projection Simulation Box */
+        .anatomy-preview-container {
+            width: 100%;
+            height: 150px;
+            background-color: #040404;
+            border: 1px dashed rgba(255, 85, 0, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Hologram Grid Scanline Effect overlay */
+        .anatomy-preview-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(255, 85, 0, 0) 95%, rgba(255, 85, 0, 0.15) 95%),
+                        linear-gradient(90deg, rgba(255, 85, 0, 0) 95%, rgba(255, 85, 0, 0.15) 95%);
+            background-size: 10px 10px;
+            pointer-events: none;
+        }
+        
+        /* Styled icon representing our target anatomical model matrix asset mapping */
+        .hologram-model-vector {
+            font-size: 65px;
+            color: #FF2200;
+            filter: drop-shadow(0 0 10px rgba(255, 34, 0, 0.7));
+            animation: musclePulse 2s infinite ease-in-out alternate;
+        }
+        @keyframes musclePulse {
+            0% { transform: scale(0.96); filter: drop-shadow(0 0 8px rgba(255, 34, 0, 0.5)); }
+            100% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(255, 34, 0, 0.9)); }
+        }
+        .laser-scan-line {
+            position: absolute; width: 100%; height: 2px; background-color: #FF5500;
+            box-shadow: 0 0 8px #FF5500; top: 0; left: 0;
+            animation: scanMove 3s infinite linear;
+            opacity: 0.7;
+        }
+        @keyframes scanMove {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
         }
 
         /* ==========================================
@@ -456,25 +509,25 @@
         const currentDayName = daysArray[new Date().getDay()];
 
         // Comprehensive Workout Pools Engine For Leg Day Dynamic Target Injections
+        // Added standard vector asset names matching font-awesome muscular frameworks (child/person icon frameworks filtered with glowing target layers)
         const masterLegExercises = [
-            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
-            { name: "Leg Press Matrix", location: "gym", equipment: "machine", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
-            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Lying Leg Curls", location: "gym", equipment: "machine", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Standing Calf Raises", location: "gym", equipment: "machine", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
+            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
+            { name: "Leg Press Matrix", location: "gym", equipment: "machine", targetGroup: "Quadriceps Focus", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
+            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", targetGroup: "Isolated Quads", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Lying Leg Curls", location: "gym", equipment: "machine", targetGroup: "Hamstrings Matrix", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Standing Calf Raises", location: "gym", equipment: "machine", targetGroup: "Gastrocnemius (Calves)", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
             
-            // Flexible Home Workout Pools mapped to keyword filters
-            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
-            { name: "Resistance Band Squats", location: "home", equipment: "bands", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
-            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
-            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
+            // Home Workout Pools
+            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", targetGroup: "Quads & Core", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstring Tier", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", targetGroup: "Unilateral Glutes/Quads", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
+            { name: "Resistance Band Squats", location: "home", equipment: "bands", targetGroup: "Anterior Chain Load", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", targetGroup: "Posterior Hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", targetGroup: "Deep Quad Hypertrophy", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
+            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", targetGroup: "Gluteus Maximizers", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
+            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calf Conditioning", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
         ];
 
-        // Global state storage trackers
         let userTrainingLocation = '';
         let userEquipmentInputText = '';
 
@@ -527,11 +580,9 @@
 
         // 4. Handle Level Redirect Interactivity Mechanics Routing & Algorithmic Workout Generation
         function navigateToWorkoutInterface(levelSelected) {
-            // Update metadata badges on Interface 4
             document.getElementById('meta-level').innerText = levelSelected;
             document.getElementById('routine-panel-title').innerText = `${currentDayName.toUpperCase()}: ${scheduleMap[currentDayName].toUpperCase()}`;
             
-            // Dynamic Time Management Target Injector Engine (1h to 1h 15m adjustments based on parameters)
             if(levelSelected === 'Beginner') {
                 document.getElementById('meta-duration').innerText = "1h 00m";
             } else {
@@ -539,32 +590,28 @@
             }
 
             const container = document.getElementById('dynamic-exercise-list-box');
-            container.innerHTML = ''; // Clean view slate
+            container.innerHTML = ''; 
 
             let targetExercises = [];
 
-            // Algorithmic filtering matching targeted environments
             if (userTrainingLocation === 'gym') {
-                // Gym includes full system stack access parameters automatically
                 targetExercises = masterLegExercises.filter(ex => ex.location === 'gym');
             } else {
-                // Home equipment parsing filters engine
                 targetExercises = masterLegExercises.filter(ex => {
                     if (ex.location !== 'home') return false;
-                    if (ex.equipment === 'bodyweight') return true; // Bodyweight is always available
+                    if (ex.equipment === 'bodyweight') return true; 
                     if (ex.equipment === 'dumbbells' && (userEquipmentInputText.includes('dumbbell') || userEquipmentInputText.includes('db'))) return true;
                     if (ex.equipment === 'bands' && (userEquipmentInputText.includes('band') || userEquipmentInputText.includes('resis'))) return true;
                     if (ex.equipment === 'barbell' && userEquipmentInputText.includes('barbell')) return true;
                     return false;
                 });
 
-                // Fallback guarantee checklist to keep user safety parameters running
                 if(targetExercises.length === 0) {
                     targetExercises = masterLegExercises.filter(ex => ex.equipment === 'bodyweight');
                 }
             }
 
-            // UI Card Builder Generator Engine
+            // UI Card Builder Generator Engine incorporating Neon Anatomy Hologram Projections
             targetExercises.forEach(ex => {
                 let repScheme = ex.beginner;
                 if(levelSelected === 'Mid Level') repScheme = ex.mid;
@@ -572,17 +619,24 @@
 
                 const cardHtml = `
                     <div class="exercise-card">
-                        <div class="ex-info">
-                            <h4>${ex.name}</h4>
-                            <p>Target Volume: <span>${repScheme}</span></p>
+                        <div class="card-top-row">
+                            <div class="ex-info">
+                                <h4>${ex.name}</h4>
+                                <p>Volume: <span>${repScheme}</span></p>
+                                <p style="font-size: 12px; color: #555; margin-top: 2px;">Target: ${ex.targetGroup}</p>
+                            </div>
+                            <div class="ex-equipment">${ex.equipment}</div>
                         </div>
-                        <div class="ex-equipment">${ex.equipment}</div>
+                        
+                        <div class="anatomy-preview-container">
+                            <div class="laser-scan-line"></div>
+                            <i class="fa-solid fa-person-running hologram-model-vector"></i>
+                        </div>
                     </div>
                 `;
                 container.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Transition from Interface 3 straight into Interface 4 beautifully
             document.getElementById('screen-main-app').classList.add('hidden');
             document.getElementById('screen-workout-routine').classList.remove('hidden');
         }
