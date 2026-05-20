@@ -271,10 +271,10 @@
             border: 1px solid rgba(255, 85, 0, 0.2);
         }
 
-        /* 3D Cyber Blueprint Projection Simulation Box */
+        /* 3D-Style Muscular Blueprint Projection Box */
         .anatomy-preview-container {
             width: 100%;
-            height: 150px;
+            height: 180px;
             background-color: #040404;
             border: 1px dashed rgba(255, 85, 0, 0.3);
             border-radius: 8px;
@@ -284,33 +284,45 @@
             position: relative;
             overflow: hidden;
         }
-        /* Hologram Grid Scanline Effect overlay */
+        
+        /* Grid Scanline Overlay Effect */
         .anatomy-preview-container::after {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255, 85, 0, 0) 95%, rgba(255, 85, 0, 0.15) 95%),
-                        linear-gradient(90deg, rgba(255, 85, 0, 0) 95%, rgba(255, 85, 0, 0.15) 95%);
-            background-size: 10px 10px;
+            background: linear-gradient(rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.12) 96%),
+                        linear-gradient(90deg, rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.12) 96%);
+            background-size: 12px 12px;
             pointer-events: none;
         }
         
-        /* Styled icon representing our target anatomical model matrix asset mapping */
-        .hologram-model-vector {
-            font-size: 65px;
-            color: #FF2200;
-            filter: drop-shadow(0 0 10px rgba(255, 34, 0, 0.7));
-            animation: musclePulse 2s infinite ease-in-out alternate;
+        /* High-Definition SVG Muscular Blueprint Styling */
+        .anatomy-svg {
+            height: 90%;
+            width: auto;
+            filter: drop-shadow(0 0 4px rgba(255,255,255,0.1));
         }
-        @keyframes musclePulse {
-            0% { transform: scale(0.96); filter: drop-shadow(0 0 8px rgba(255, 34, 0, 0.5)); }
-            100% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(255, 34, 0, 0.9)); }
+        
+        /* Muscle Group Classes for Dynamic Glow Toggling */
+        .muscle-base { fill: #222222; stroke: #333333; stroke-width: 1.5; transition: fill 0.5s ease; }
+        .muscle-glow { 
+            fill: #FF1E00 !important; 
+            stroke: #FF5500 !important;
+            filter: drop-shadow(0 0 8px #FF1E00);
+            animation: muscularPulse 1.5s infinite ease-in-out alternate;
         }
+
+        @keyframes muscularPulse {
+            0% { fill: #FF1E00; filter: drop-shadow(0 0 4px #FF1E00); }
+            100% { fill: #FF5500; filter: drop-shadow(0 0 14px #FF2200); }
+        }
+
         .laser-scan-line {
             position: absolute; width: 100%; height: 2px; background-color: #FF5500;
             box-shadow: 0 0 8px #FF5500; top: 0; left: 0;
-            animation: scanMove 3s infinite linear;
-            opacity: 0.7;
+            animation: scanMove 3.5s infinite linear;
+            opacity: 0.6;
+            pointer-events: none;
         }
         @keyframes scanMove {
             0% { top: 0%; }
@@ -509,23 +521,23 @@
         const currentDayName = daysArray[new Date().getDay()];
 
         // Comprehensive Workout Pools Engine For Leg Day Dynamic Target Injections
-        // Added standard vector asset names matching font-awesome muscular frameworks (child/person icon frameworks filtered with glowing target layers)
+        // Added standard vector target ID flags matching anatomy maps (quads, hamstrings, calves)
         const masterLegExercises = [
-            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
-            { name: "Leg Press Matrix", location: "gym", equipment: "machine", targetGroup: "Quadriceps Focus", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
-            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", targetGroup: "Isolated Quads", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Lying Leg Curls", location: "gym", equipment: "machine", targetGroup: "Hamstrings Matrix", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Standing Calf Raises", location: "gym", equipment: "machine", targetGroup: "Gastrocnemius (Calves)", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
+            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", activeId: "quads", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
+            { name: "Leg Press Matrix", location: "gym", equipment: "machine", targetGroup: "Quadriceps Focus", activeId: "quads", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
+            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", targetGroup: "Isolated Quads", activeId: "quads", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Lying Leg Curls", location: "gym", equipment: "machine", targetGroup: "Hamstrings Matrix", activeId: "hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Standing Calf Raises", location: "gym", equipment: "machine", targetGroup: "Gastrocnemius (Calves)", activeId: "calves", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
             
             // Home Workout Pools
-            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", targetGroup: "Quads & Core", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstring Tier", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", targetGroup: "Unilateral Glutes/Quads", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
-            { name: "Resistance Band Squats", location: "home", equipment: "bands", targetGroup: "Anterior Chain Load", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", targetGroup: "Posterior Hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", targetGroup: "Deep Quad Hypertrophy", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
-            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", targetGroup: "Gluteus Maximizers", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
-            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calf Conditioning", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
+            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", targetGroup: "Quads & Core", activeId: "quads", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
+            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstring Tier", activeId: "hamstrings", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", targetGroup: "Unilateral Glutes/Quads", activeId: "quads", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
+            { name: "Resistance Band Squats", location: "home", equipment: "bands", targetGroup: "Anterior Chain Load", activeId: "quads", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", targetGroup: "Posterior Hamstrings", activeId: "hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
+            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", targetGroup: "Deep Quad Hypertrophy", activeId: "quads", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
+            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", targetGroup: "Gluteus Maximizers", activeId: "hamstrings", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
+            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calf Conditioning", activeId: "calves", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
         ];
 
         let userTrainingLocation = '';
@@ -611,11 +623,16 @@
                 }
             }
 
-            // UI Card Builder Generator Engine incorporating Neon Anatomy Hologram Projections
+            // UI Card Builder Generator Engine incorporating precise vector muscular blueprints
             targetExercises.forEach(ex => {
                 let repScheme = ex.beginner;
                 if(levelSelected === 'Mid Level') repScheme = ex.mid;
                 if(levelSelected === 'Advanced') repScheme = ex.advanced;
+
+                // Create individual component classes based on selection target ID flags
+                const isQuads = ex.activeId === 'quads' ? 'muscle-glow' : '';
+                const isHams = ex.activeId === 'hamstrings' ? 'muscle-glow' : '';
+                const isCalves = ex.activeId === 'calves' ? 'muscle-glow' : '';
 
                 const cardHtml = `
                     <div class="exercise-card">
@@ -630,7 +647,25 @@
                         
                         <div class="anatomy-preview-container">
                             <div class="laser-scan-line"></div>
-                            <i class="fa-solid fa-person-running hologram-model-vector"></i>
+                            
+                            <svg class="anatomy-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="60" cy="25" r="12" class="muscle-base"/>
+                                <path d="M42 42h36v50h-36z" class="muscle-base"/>
+                                <path d="M42 42l-10 30h8l6-30zM78 42l10 30h-8l-6-30z" class="muscle-base"/>
+                                
+                                <path d="M45 92h30l5 20h-40z" class="muscle-base"/>
+                                
+                                <path d="M45 112h14v55h-14z" class="muscle-base ${isQuads}"/>
+                                <path d="M61 112h14v55h-14z" class="muscle-base ${isQuads}"/>
+                                
+                                <path d="M47 115h10v45h-10z" class="muscle-base ${isHams}" opacity="0.8"/>
+                                <path d="M63 115h10v45h-10z" class="muscle-base ${isHams}" opacity="0.8"/>
+                                
+                                <path d="M47 172h11v45h-11z" class="muscle-base ${isCalves}"/>
+                                <path d="M62 172h11v45h-11z" class="muscle-base ${isCalves}"/>
+                                
+                                <path d="M44 217h14l4 6h-18zM62 217h14l4 6h-18z" class="muscle-base"/>
+                            </svg>
                         </div>
                     </div>
                 `;
