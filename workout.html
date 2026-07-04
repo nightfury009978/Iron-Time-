@@ -2,175 +2,271 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IronTime | Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRONTIME - Routine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         body {
-            background-color: #050505;
-            color: white;
-            font-family: -apple-system, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
             margin: 0;
+            padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        .header {
-            padding: 20px;
-            text-align: center;
+        h2, h4, .primary-btn, .meta-strip {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .app-container {
             width: 100%;
-            border-bottom: 1px solid #222;
-            background: #0a0a0a;
+            max-width: 420px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        #level-display {
-            color: #666;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        #exercise-name {
-            color: #ff6b00;
-            font-size: 1.8rem;
-            margin: 5px 0;
-            text-transform: uppercase;
-            font-weight: 900;
-        }
-
-        /* 3D Humanoid Display Area */
-        .model-container {
-            width: 95%;
-            height: 45vh;
-            background: #111;
-            margin: 15px 0;
-            border-radius: 20px;
+        .routine-header {
             display: flex;
-            justify-content: center;
             align-items: center;
-            border: 1px solid #333;
-            box-shadow: inset 0 0 20px #000;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 15px;
         }
-
-        .model-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        .back-btn {
+            font-size: 20px;
+            color: #FF5500;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px 10px;
         }
+        .routine-header h2 { margin: 0; font-size: 18px; text-transform: uppercase; color: #fff; }
 
-        .timer-section {
-            text-align: center;
-            flex-grow: 1;
+        .meta-strip {
+            display: flex;
+            justify-content: space-between;
+            background-color: #0c0c0c;
+            border: 1px solid #222;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .meta-strip span i { color: #FF5500; margin-right: 5px; }
+
+        .exercise-list { display: flex; flex-direction: column; gap: 20px; }
+        .exercise-card {
+            background-color: #080808;
+            border: 1px solid #1c1c1c;
+            border-radius: 12px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-        }
-
-        .timer-box {
-            font-size: 5rem;
-            font-weight: 900;
-            font-variant-numeric: tabular-nums;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.2);
-        }
-
-        .controls {
-            display: flex;
             gap: 15px;
-            width: 90%;
-            padding-bottom: 30px;
         }
 
-        .btn {
-            flex: 1;
-            padding: 22px;
-            background: #1a1a1a;
-            color: white;
-            border: 1px solid #333;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-transform: uppercase;
+        .card-top-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .ex-info h4 { margin: 0 0 6px 0; font-size: 16px; color: #fff; text-transform: uppercase; }
+        .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
+        .ex-info p span { color: #FF5500; }
+        .ex-equipment {
+            font-size: 11px; background-color: rgba(255, 85, 0, 0.1); color: #FF5500;
+            padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(255, 85, 0, 0.2);
         }
 
-        .btn-start {
-            background: #ff6b00;
-            border: none;
-            color: black;
+        /* Vector Anatomy Box Container Styles */
+        .anatomy-preview-container {
+            width: 100%; height: 180px; background-color: #040404;
+            border: 1px dashed rgba(255, 85, 0, 0.3); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
+        }
+        .anatomy-preview-container::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.08) 96%), linear-gradient(90deg, rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.08) 96%);
+            background-size: 12px 12px; pointer-events: none;
+        }
+        .anatomy-svg { height: 90%; width: auto; }
+        .muscle-base { fill: #222222; stroke: #333333; stroke-width: 1.5; }
+        
+        /* Neon Anatomy Red Glow Targeting Classes */
+        .muscle-glow { 
+            fill: #FF1E00 !important; stroke: #FF5500 !important;
+            filter: drop-shadow(0 0 8px #FF1E00);
+            animation: muscularPulse 1.5s infinite ease-in-out alternate;
+        }
+        @keyframes muscularPulse {
+            0% { fill: #FF1E00; filter: drop-shadow(0 0 4px #FF1E00); }
+            100% { fill: #FF5500; filter: drop-shadow(0 0 12px #FF2200); }
         }
 
-        .btn:active {
-            transform: scale(0.95);
+        .laser-scan-line {
+            position: absolute; width: 100%; height: 2px; background-color: #FF5500;
+            box-shadow: 0 0 8px #FF5500; top: 0; left: 0; animation: scanMove 3.5s infinite linear; opacity: 0.4;
+        }
+        @keyframes scanMove { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+
+        .primary-btn {
+            width: 100%; padding: 16px; background-color: #FF5500; color: black;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 900;
+            cursor: pointer; text-transform: uppercase; margin-top: 30px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div id="level-display">LOADING...</div>
-        <h2 id="exercise-name">Diamond Pushups</h2>
-    </div>
+    <div class="app-container">
+        <div class="routine-header">
+            <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2 id="routine-panel-title">WORKOUT PLAN</h2>
+        </div>
 
-    <div class="model-container">
-    <img id="humanoid-img" src="https://www.fitnessprogramer.com/wp-content/uploads/2021/02/Bicycle-Crunch.gif" alt="3D Model">
-</div>
+        <div class="meta-strip">
+            <span><i class="fa-solid fa-clock"></i> <span id="meta-duration">1h 00m</span></span>
+            <span><i class="fa-solid fa-stopwatch"></i> Rest: 40s</span>
+            <span><i class="fa-solid fa-layer-group"></i> Level: <span id="meta-level">-</span></span>
+        </div>
 
+        <div id="dynamic-exercise-list-box" class="exercise-list">
+            <!-- Workouts populate here dynamically based on day and settings -->
+        </div>
 
-    <div class="timer-section">
-        <div class="timer-box" id="timer">00:30</div>
-    </div>
-
-    <div class="controls">
-        <button class="btn" onclick="window.location.href='index.html'">Quit</button>
-        <button class="btn btn-start" id="startBtn" onclick="toggleTimer()">Start Set</button>
+        <button class="primary-btn" onclick="goBack()">Finish Workout</button>
     </div>
 
     <script>
-        // Set Level Display
-        const currentLevel = localStorage.getItem('workoutLevel') || 'PRO';
-        document.getElementById('level-display').innerText = currentLevel + " MODE";
+        // Multi-Day Workout Pool Database Engine
+        const masterExercisesDatabase = {
+            "Monday": [ // Chest & Triceps Focus
+                { name: "Decline Bench Press", location: "gym", equipment: "barbell", targetGroup: "Lower Chest", activeId: "chest", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "4 Sets x 6 Reps" },
+                { name: "Dumbbell Flys", location: "home", equipment: "dumbbells", targetGroup: "Pectoral Isolation", activeId: "chest", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+                { name: "Diamond Pushups", location: "home", equipment: "bodyweight", targetGroup: "Inner Chest & Triceps", activeId: "arms", beginner: "3 Sets x Max Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" }
+            ],
+            "Tuesday": [ // Shoulder & Biceps Core
+                { name: "Overhead Barbell Press", location: "gym", equipment: "barbell", targetGroup: "Deltoids", activeId: "shoulders", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 5 Reps" },
+                { name: "Dumbbell Lateral Raises", location: "home", equipment: "dumbbells", targetGroup: "Lateral Delts", activeId: "shoulders", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
+                { name: "Bicep Isolation Curls", location: "home", equipment: "dumbbells", targetGroup: "Biceps Brachii", activeId: "arms", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" }
+            ],
+            "Wednesday": [ // Leg Day Hypertrophy
+                { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", activeId: "quads", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps" },
+                { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstrings", activeId: "hamstrings", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
+                { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calves", activeId: "calves", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
+            ],
+            "Friday": [ // Abs & Core Conditioning
+                { name: "Hanging Leg Raises", location: "gym", equipment: "bodyweight", targetGroup: "Lower Rectus Abdominis", activeId: "abs", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
+                { name: "Plank Hold Star", location: "home", equipment: "bodyweight", targetGroup: "Core Stabilization", activeId: "abs", beginner: "3 Sets x 45s", mid: "4 Sets x 60s", advanced: "4 Sets x 90s" }
+            ],
+            "Saturday": [ // Full Body Power Split
+                { name: "Deadlift Tier Max", location: "gym", equipment: "barbell", targetGroup: "Posterior Chain", activeId: "hamstrings", beginner: "3 Sets x 8 Reps", mid: "4 Sets x 5 Reps", advanced: "5 Sets x 3 Reps" },
+                { name: "Floor Dumbbell Press", location: "home", equipment: "dumbbells", targetGroup: "Chest / Arms", activeId: "chest", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" }
+            ],
+            "Thursday": [], "Sunday": [] // Rest Days
+        };
 
-        let timeLeft = 30;
-        let timerRunning = false;
-        let countdown;
+        window.addEventListener('DOMContentLoaded', () => {
+            // Read incoming configuration data inside URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const level = urlParams.get('level') || 'Beginner';
+            const day = urlParams.get('day') || 'Monday';
 
-        function toggleTimer() {
-            const btn = document.getElementById('startBtn');
-            const timerDisplay = document.getElementById('timer');
+            // Fetch stored values from storage setup engine
+            const loc = localStorage.getItem('it_location') || 'gym';
+            const equipText = (localStorage.getItem('it_equipment') || '').toLowerCase();
 
-            if (!timerRunning) {
-                timerRunning = true;
-                btn.innerText = "Pause";
-                btn.style.background = "#333";
-                btn.style.color = "white";
+            document.getElementById('meta-level').innerText = level;
+            document.getElementById('meta-duration').innerText = level === 'Beginner' ? "1h 00m" : "1h 15m";
+            document.getElementById('routine-panel-title').innerText = `${day.toUpperCase()} PLAN`;
 
-                countdown = setInterval(() => {
-                    timeLeft--;
-                    timerDisplay.innerText = "00:" + (timeLeft < 10 ? "0" : "") + timeLeft;
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        timerRunning = false;
-                        alert("Set Done! Take a 30s rest.");
-                        resetTimer();
-                    }
-                }, 1000);
-            } else {
-                clearInterval(countdown);
-                timerRunning = false;
-                btn.innerText = "Resume";
-                btn.style.background = "#ff6b00";
-                btn.style.color = "black";
+            const container = document.getElementById('dynamic-exercise-list-box');
+            container.innerHTML = '';
+
+            let workoutPool = masterExercisesDatabase[day] || [];
+
+            // Filter exercises according to location and user tools
+            let filteredList = workoutPool.filter(ex => {
+                if (loc === 'gym' && ex.location === 'gym') return true;
+                if (ex.location === 'home') {
+                    if (ex.equipment === 'bodyweight') return true;
+                    if (ex.equipment === 'dumbbells' && (equipText.includes('dumb') || equipText.includes('db'))) return true;
+                    if (ex.equipment === 'barbell' && equipText.includes('barbell')) return true;
+                }
+                return false;
+            });
+
+            // Fallback plan if arrays filter empty on Rest Days
+            if (filteredList.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 40px; color:#666; text-transform:uppercase; font-weight:bold;">Rest Day Recuperation Active. Rest up and reload! 😴</div>`;
+                return;
             }
-        }
 
-        function resetTimer() {
-            timeLeft = 30;
-            document.getElementById('timer').innerText = "00:30";
-            document.getElementById('startBtn').innerText = "Start Set";
-            document.getElementById('startBtn').style.background = "#ff6b00";
+            // Build out cards injecting target structural glowing frameworks
+            filteredList.forEach(ex => {
+                let sets = ex.beginner;
+                if (level === 'Mid Level') sets = ex.mid;
+                if (level === 'Advanced') sets = ex.advanced;
+
+                // Glowing flags setups 
+                const isChest = ex.activeId === 'chest' ? 'muscle-glow' : '';
+                const isShoulders = ex.activeId === 'shoulders' ? 'muscle-glow' : '';
+                const isArms = ex.activeId === 'arms' ? 'muscle-glow' : '';
+                const isAbs = ex.activeId === 'abs' ? 'muscle-glow' : '';
+                const isQuads = ex.activeId === 'quads' ? 'muscle-glow' : '';
+                const isHams = ex.activeId === 'hamstrings' ? 'muscle-glow' : '';
+                const isCalves = ex.activeId === 'calves' ? 'muscle-glow' : '';
+
+                const cardHtml = `
+                    <div class="exercise-card">
+                        <div class="card-top-row">
+                            <div class="ex-info">
+                                <h4>${ex.name}</h4>
+                                <p>Volume: <span>${sets}</span></p>
+                                <p style="font-size: 12px; color: #555; margin-top: 2px;">Target: ${ex.targetGroup}</p>
+                            </div>
+                            <div class="ex-equipment">${ex.equipment}</div>
+                        </div>
+                        
+                        <div class="anatomy-preview-container">
+                            <div class="laser-scan-line"></div>
+                            <svg class="anatomy-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="60" cy="25" r="12" class="muscle-base"/>
+                                <!-- Chest Matrix -->
+                                <path d="M42 42h36v25h-36z" class="muscle-base ${isChest}"/>
+                                <!-- Abs Frame -->
+                                <path d="M42 67h36v25h-36z" class="muscle-base ${isAbs}"/>
+                                <!-- Shoulders Outer Blocks -->
+                                <path d="M32 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
+                                <path d="M78 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
+                                <!-- Arms Lengths -->
+                                <path d="M24 57h8v35h-8z" class="muscle-base ${isArms}"/>
+                                <path d="M88 57h8v35h-8z" class="muscle-base ${isArms}"/>
+                                <path d="M45 92h30l5 20h-40z" class="muscle-base"/>
+                                <!-- Leg Systems Split Mapping -->
+                                <path d="M45 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
+                                <path d="M61 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
+                                <path d="M47 172h11v45h-11z" class="muscle-base ${isCalves}"/>
+                                <path d="M62 172h11v45h-11z" class="muscle-base ${isCalves}"/>
+                                <path d="M44 217h14l4 6h-18zM62 217h14l4 6h-18z" class="muscle-base"/>
+                            </svg>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        });
+
+        function goBack() {
+            window.location.href = 'index.html';
         }
     </script>
 </body>
