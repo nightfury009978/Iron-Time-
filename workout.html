@@ -233,28 +233,28 @@
     </div>
 
     <script>
-        // Full Dataset mapping requested exercises and connecting custom file extensions
+        // Full Dataset mapping requested exercises with your custom Catbox GIF URLs
         const exerciseDataBank = {
             "Monday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "dumbbell_floor_press.gif" },
-                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "standard_pushups.gif" },
-                    { name: "Decline Push-ups", stats: "3 sets x 10 reps (Feet on a chair)", img: "decline_pushups.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "overhead_tricep_extension.gif" },
-                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "bench_dips.gif" },
-                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "diamond_pushups.gif" }
+                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/7xz2ym.gif" },
+                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/2hyhvx.gif" },
+                    { name: "Decline Push-ups", stats: "3 sets x 10 reps (Feet on a chair)", img: "https://files.catbox.moe/bd06pj.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/z0rlc0.gif" },
+                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "https://files.catbox.moe/0t57ju.gif" },
+                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "https://files.catbox.moe/py7er8.gif" }
                 ]
             },
             "Tuesday": {
                 focus: "Shoulder & Bicep",
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "dumbbell_shoulder_press.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "dumbbell_lateral_raises.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "dumbbell_rear_delt_flyes.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "dumbbell_bicep_curls.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "dumbbell_hammer_curls.gif" },
-                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "pike_pushups.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/vsqbhn.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/6m7vy4.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/lqnwh0.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/qt0sct.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/r94sq8.gif" },
+                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "https://files.catbox.moe/4wyey6.gif" }
                 ]
             },
             "Wednesday": {
@@ -280,23 +280,23 @@
             "Friday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "dumbbell_floor_press.gif" },
-                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "standard_pushups.gif" },
-                    { name: "Decline Push-ups", stats: "3 sets x 10 reps", img: "decline_pushups.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "overhead_tricep_extension.gif" },
-                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "bench_dips.gif" },
-                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "diamond_pushups.gif" }
+                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/7xz2ym.gif" },
+                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/2hyhvx.gif" },
+                    { name: "Decline Push-ups", stats: "3 sets x 10 reps", img: "https://files.catbox.moe/bd06pj.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/z0rlc0.gif" },
+                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "https://files.catbox.moe/0t57ju.gif" },
+                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "https://files.catbox.moe/py7er8.gif" }
                 ]
             },
             "Saturday": {
                 focus: "Shoulder & Bicep",
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "dumbbell_shoulder_press.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "dumbbell_lateral_raises.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "dumbbell_rear_delt_flyes.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "dumbbell_bicep_curls.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "dumbbell_hammer_curls.gif" },
-                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "pike_pushups.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/vsqbhn.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/6m7vy4.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/lqnwh0.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/qt0sct.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/r94sq8.gif" },
+                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "https://files.catbox.moe/4wyey6.gif" }
                 ]
             },
             "Sunday": {
