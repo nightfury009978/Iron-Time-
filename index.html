@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRONTIME</title>
+    <title>IRONTIME - Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ==========================================
-           GLOBAL & TYPOGRAPHY CORE STYLES
-           ========================================== */
         body {
             background-color: #000000;
             color: #ffffff;
@@ -31,14 +28,12 @@
 
         .hidden { display: none !important; }
 
-        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header, .routine-header h2 {
+        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header {
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
         }
 
-        /* ==========================================
-           INTERFACE 1: LOADING SCREEN STYLES
-           ========================================== */
+        /* LOADING SCREEN */
         .loading-screen {
             display: flex;
             flex-direction: column;
@@ -66,9 +61,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ==========================================
-           INTERFACE 2: SETUP ONBOARDING STYLES
-           ========================================== */
+        /* SETUP ONBOARDING */
         .onboarding-container {
             width: 100%;
             max-width: 360px;
@@ -105,9 +98,7 @@
         }
         .primary-btn:active { transform: scale(0.98); }
 
-        /* ==========================================
-           INTERFACE 3: MAIN APP DASHBOARD STYLES
-           ========================================== */
+        /* MAIN APP DASHBOARD */
         .app-container {
             width: 100%;
             max-width: 420px;
@@ -115,7 +106,6 @@
             box-sizing: border-box;
             position: relative;
         }
-        
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -149,7 +139,6 @@
             gap: 16px;
             margin-bottom: 30px;
         }
-        
         .lvl-wrapper {
             position: relative;
             height: 70px;
@@ -160,7 +149,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .lvl-wrapper::before {
             content: '';
             position: absolute;
@@ -168,7 +156,6 @@
             height: 350%;
             animation: rotateLaser 3s linear infinite;
         }
-
         .lvl-badge {
             position: absolute;
             top: 2px; left: 2px; right: 2px; bottom: 2px;
@@ -182,10 +169,7 @@
             text-transform: uppercase;
             z-index: 2;
         }
-
-        @keyframes rotateLaser {
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes rotateLaser { 100% { transform: rotate(360deg); } }
 
         #wrap-beginner::before { background: conic-gradient(transparent, #00E5FF, transparent 25%); }
         #wrap-beginner .lvl-badge { color: #00E5FF; text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); background-color: #020d0f; }
@@ -200,139 +184,9 @@
             background-color: #120600;
             animation: thunderShake 0.4s infinite alternate;
         }
-        @keyframes thunderShake {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
-        }
+        @keyframes thunderShake { 0% { transform: scale(1); } 100% { transform: scale(1.02); } }
 
-        /* ==========================================
-           INTERFACE 4: WORKOUT ROUTINE SCREEN STYLES
-           ========================================== */
-        .routine-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #1a1a1a;
-            padding-bottom: 15px;
-        }
-        .back-btn {
-            font-size: 20px;
-            color: #FF5500;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 5px 10px;
-        }
-        .routine-header h2 { margin: 0; font-size: 20px; text-transform: uppercase; color: #fff; }
-        .meta-strip {
-            display: flex;
-            justify-content: space-between;
-            background-color: #0c0c0c;
-            border: 1px solid #222;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 13px;
-        }
-        .meta-strip span i { color: #FF5500; margin-right: 5px; }
-        
-        .exercise-list { display: flex; flex-direction: column; gap: 20px; }
-        .exercise-card {
-            background-color: #080808;
-            border: 1px solid #1c1c1c;
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            transition: border-color 0.2s;
-        }
-        .exercise-card:hover { border-color: #2a2a2a; }
-        
-        .card-top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        .ex-info h4 { margin: 0 0 6px 0; font-size: 18px; color: #fff; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
-        .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
-        .ex-info p span { color: #FF5500; }
-        .ex-equipment {
-            font-size: 11px;
-            background-color: rgba(255, 85, 0, 0.1);
-            color: #FF5500;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 1px solid rgba(255, 85, 0, 0.2);
-        }
-
-        /* 3D-Style Muscular Blueprint Projection Box */
-        .anatomy-preview-container {
-            width: 100%;
-            height: 180px;
-            background-color: #040404;
-            border: 1px dashed rgba(255, 85, 0, 0.3);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Grid Scanline Overlay Effect */
-        .anatomy-preview-container::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.12) 96%),
-                        linear-gradient(90deg, rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.12) 96%);
-            background-size: 12px 12px;
-            pointer-events: none;
-        }
-        
-        /* High-Definition SVG Muscular Blueprint Styling */
-        .anatomy-svg {
-            height: 90%;
-            width: auto;
-            filter: drop-shadow(0 0 4px rgba(255,255,255,0.1));
-        }
-        
-        /* Muscle Group Classes for Dynamic Glow Toggling */
-        .muscle-base { fill: #222222; stroke: #333333; stroke-width: 1.5; transition: fill 0.5s ease; }
-        .muscle-glow { 
-            fill: #FF1E00 !important; 
-            stroke: #FF5500 !important;
-            filter: drop-shadow(0 0 8px #FF1E00);
-            animation: muscularPulse 1.5s infinite ease-in-out alternate;
-        }
-
-        @keyframes muscularPulse {
-            0% { fill: #FF1E00; filter: drop-shadow(0 0 4px #FF1E00); }
-            100% { fill: #FF5500; filter: drop-shadow(0 0 14px #FF2200); }
-        }
-
-        .laser-scan-line {
-            position: absolute; width: 100%; height: 2px; background-color: #FF5500;
-            box-shadow: 0 0 8px #FF5500; top: 0; left: 0;
-            animation: scanMove 3.5s infinite linear;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        @keyframes scanMove {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
-        }
-
-        /* ==========================================
-           SETTINGS DRAWER & CALENDAR MODALS
-           ========================================== */
+        /* SETTINGS AND CALENDAR MODALS */
         .settings-modal {
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
             background-color: #0c0c0c; border-left: 1px solid #222; box-shadow: -5px 0 25px rgba(0,0,0,0.8);
@@ -358,66 +212,39 @@
             overflow-y: auto; display: none;
         }
         .progress-view-modal.open { display: block; }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-            text-align: center;
-            margin-top: 15px;
-        }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
         .cal-header { font-size: 12px; color: #555; font-weight: 800; text-transform: uppercase; }
-        
         .cal-day {
             aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background-color: #080808; border: 1px solid #ffffff; border-radius: 6px; 
+            background-color: #080808; border: 1px solid #333; border-radius: 6px; 
             font-size: 14px; font-weight: 700; color: #ffffff; transition: all 0.3s;
         }
-        
-        .cal-day.today-active {
-            border-color: #ff5500;
-            animation: breathe 2s infinite ease-in-out;
-        }
-        @keyframes breathe {
-            0% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
-            50% { box-shadow: 0 0 15px rgba(255, 85, 0, 0.6); background-color: #120600; }
-            100% { box-shadow: 0 0 4px rgba(255, 85, 0, 0.2); }
-        }
-
-        .cal-day.done {
-            background-color: #000; border: 2px solid #00FF66; color: #00FF66; border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5); animation: none;
-        }
-        .cal-day.missed {
-            background-color: #120404; border: 1px solid #FF3333; color: #FF3333; border-radius: 6px; animation: none;
-        }
+        .cal-day.today-active { border-color: #ff5500; background-color: #120600; }
     </style>
 </head>
 <body>
 
+    <!-- INTERFACE 1: LOADING SCREEN -->
     <div id="screen-loading" class="loading-screen">
         <div class="brand-title">IRONTIME</div>
         <div class="spinner"></div>
     </div>
 
+    <!-- INTERFACE 2: SETUP ONBOARDING -->
     <div id="screen-onboarding" class="onboarding-container hidden">
         <h2>Account Setup</h2>
-
         <div class="input-group">
             <label for="username">Your Name</label>
             <input type="text" id="username" placeholder="Enter your name">
         </div>
-
         <div class="input-group">
             <label for="weight">Weight (kg)</label>
             <input type="number" id="weight" placeholder="e.g. 70">
         </div>
-        
         <div class="input-group">
             <label for="height">Height (cm)</label>
             <input type="number" id="height" placeholder="e.g. 175">
         </div>
-
         <div class="input-group">
             <label>Where do you train?</label>
             <div class="radio-buttons">
@@ -425,17 +252,15 @@
                 <button type="button" class="loc-btn" id="btn-home" onclick="selectLocation('home')">Home</button>
             </div>
         </div>
-
         <div id="home-equipment-box" class="input-group hidden">
             <label for="equipment">List your equipment:</label>
             <textarea id="equipment" rows="2" placeholder="e.g. Dumbbells, Bands..."></textarea>
         </div>
-
-        <button class="primary-btn" onclick="goToThirdInterface()">Enter Dashboard</button>
+        <button class="primary-btn" onclick="saveAndEnterDashboard()">Enter Dashboard</button>
     </div>
 
+    <!-- INTERFACE 3: MAIN APP DASHBOARD -->
     <div id="screen-main-app" class="app-container hidden">
-        
         <div class="app-header">
             <div class="user-greet">
                 <h1 id="display-user">WELCOME, ATHLETE</h1>
@@ -453,42 +278,24 @@
         </div>
 
         <div class="level-selector">
-            <div class="lvl-wrapper" id="wrap-beginner" onclick="navigateToWorkoutInterface('Beginner')">
+            <div class="lvl-wrapper" id="wrap-beginner" onclick="redirectToWorkout('Beginner')">
                 <div class="lvl-badge">Beginner</div>
             </div>
-            <div class="lvl-wrapper" id="wrap-mid" onclick="navigateToWorkoutInterface('Mid Level')">
+            <div class="lvl-wrapper" id="wrap-mid" onclick="redirectToWorkout('Mid Level')">
                 <div class="lvl-badge">Mid Level</div>
             </div>
-            <div class="lvl-wrapper" id="wrap-advance" onclick="navigateToWorkoutInterface('Advanced')">
+            <div class="lvl-wrapper" id="wrap-advance" onclick="redirectToWorkout('Advanced')">
                 <div class="lvl-badge"><i class="fa-solid fa-bolt"></i> Advanced</div>
             </div>
         </div>
-
     </div>
 
-    <div id="screen-workout-routine" class="app-container hidden">
-        <div class="routine-header">
-            <button class="back-btn" onclick="exitWorkoutRoutine()"><i class="fa-solid fa-arrow-left"></i></button>
-            <h2 id="routine-panel-title">LEG DAY PLAN</h2>
-        </div>
-
-        <div class="meta-strip">
-            <span><i class="fa-solid fa-clock"></i> <span id="meta-duration">1h 15m</span></span>
-            <span><i class="fa-solid fa-stopwatch"></i> Rest: 40s</span>
-            <span><i class="fa-solid fa-layer-group"></i> Level: <span id="meta-level">Beg</span></span>
-        </div>
-
-        <div id="dynamic-exercise-list-box" class="exercise-list">
-            </div>
-        
-        <button class="primary-btn" style="margin-top: 30px;" onclick="exitWorkoutRoutine()">Finish Routine</button>
-    </div>
-
+    <!-- OVERLAYS AND DRAWER -->
     <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
     <div id="settings-menu" class="settings-modal">
         <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
         <div class="setting-item" onclick="toggleProgressView(true)"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
-        <div class="setting-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+        <div class="setting-item" onclick="clearSession()"><i class="fa-solid fa-right-from-bracket"></i> Clear Data</div>
     </div>
 
     <div id="screen-progress-chart" class="progress-view-modal">
@@ -504,9 +311,6 @@
     </div>
 
     <script>
-        const currentTodayDate = new Date().getDate();
-
-        // Weekly Split Database Map Routine Reference Engine
         const scheduleMap = {
             "Monday": "Chest & Triceps Focus",
             "Tuesday": "Shoulder & Biceps Core",
@@ -519,43 +323,23 @@
 
         const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const currentDayName = daysArray[new Date().getDay()];
+        let selectedLocation = '';
 
-        // Comprehensive Workout Pools Engine For Leg Day Dynamic Target Injections
-        // Added standard vector target ID flags matching anatomy maps (quads, hamstrings, calves)
-        const masterLegExercises = [
-            { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", activeId: "quads", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps (Heavy)" },
-            { name: "Leg Press Matrix", location: "gym", equipment: "machine", targetGroup: "Quadriceps Focus", activeId: "quads", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps (Drop Sets)" },
-            { name: "Seated Leg Extensions", location: "gym", equipment: "machine", targetGroup: "Isolated Quads", activeId: "quads", beginner: "3 Sets x 15 Reps", mid: "3 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Lying Leg Curls", location: "gym", equipment: "machine", targetGroup: "Hamstrings Matrix", activeId: "hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Standing Calf Raises", location: "gym", equipment: "machine", targetGroup: "Gastrocnemius (Calves)", activeId: "calves", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "5 Sets x 20 Reps" },
-            
-            // Home Workout Pools
-            { name: "Dumbbell Goblet Squats", location: "home", equipment: "dumbbells", targetGroup: "Quads & Core", activeId: "quads", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 15 Reps" },
-            { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstring Tier", activeId: "hamstrings", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-            { name: "Dumbbell Walking Lunges", location: "home", equipment: "dumbbells", targetGroup: "Unilateral Glutes/Quads", activeId: "quads", beginner: "3 Sets x 10 Steps/leg", mid: "3 Sets x 12 Steps/leg", advanced: "4 Sets x 16 Steps/leg" },
-            { name: "Resistance Band Squats", location: "home", equipment: "bands", targetGroup: "Anterior Chain Load", activeId: "quads", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Resistance Band Leg Curls", location: "home", equipment: "bands", targetGroup: "Posterior Hamstrings", activeId: "hamstrings", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 20 Reps" },
-            { name: "Bodyweight Bulgarian Split Squats", location: "home", equipment: "bodyweight", targetGroup: "Deep Quad Hypertrophy", activeId: "quads", beginner: "3 Sets x 8 Reps/leg", mid: "3 Sets x 12 Reps/leg", advanced: "4 Sets x 15 Reps/leg" },
-            { name: "Bodyweight Glute Bridges", location: "home", equipment: "bodyweight", targetGroup: "Gluteus Maximizers", activeId: "hamstrings", beginner: "3 Sets x 15 Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" },
-            { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calf Conditioning", activeId: "calves", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
-        ];
-
-        let userTrainingLocation = '';
-        let userEquipmentInputText = '';
-
-        // 1. Core Initializing Transitions Setup
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('screen-loading').classList.add('hidden');
-                document.getElementById('screen-onboarding').classList.remove('hidden');
-            }, 2500); 
+                // Check if user data exists
+                if(localStorage.getItem('it_username')) {
+                    loadDashboard();
+                } else {
+                    document.getElementById('screen-onboarding').classList.remove('hidden');
+                }
+            }, 1500); 
             renderCalendar();
-            setDynamicDailyRoutine();
         });
 
-        // 2. Onboarding Choice Selection Switcher
         function selectLocation(type) {
-            userTrainingLocation = type;
+            selectedLocation = type;
             document.getElementById('btn-gym').classList.remove('active');
             document.getElementById('btn-home').classList.remove('active');
             document.getElementById(`btn-${type}`).classList.add('active');
@@ -565,161 +349,61 @@
             else equipBox.classList.add('hidden');
         }
 
-        // 3. Complete Profile Onboarding Entry Logic
-        function goToThirdInterface() {
+        function saveAndEnterDashboard() {
             const nameInput = document.getElementById('username').value.trim();
-            const weight = document.getElementById('weight').value;
-            const height = document.getElementById('height').value;
-            
-            if (!nameInput || !weight || !height || !userTrainingLocation) {
-                alert("Please fill in all layout configuration parameters fields!");
+            if (!nameInput || !selectedLocation) {
+                alert("Please complete the config options!");
                 return;
             }
+            localStorage.setItem('it_username', nameInput);
+            localStorage.setItem('it_location', selectedLocation);
+            localStorage.setItem('it_equipment', document.getElementById('equipment').value);
             
-            userEquipmentInputText = document.getElementById('equipment').value.toLowerCase();
-            
-            document.getElementById('display-user').innerText = `WELCOME, ${nameInput.toUpperCase()}`;
-            document.getElementById('screen-onboarding').classList.add('hidden');
-            document.getElementById('screen-main-app').classList.remove('hidden');
+            loadDashboard();
         }
 
-        // Dynamic Text Setup
-        function setDynamicDailyRoutine() {
+        function loadDashboard() {
+            document.getElementById('screen-onboarding').classList.add('hidden');
+            document.getElementById('screen-main-app').classList.remove('hidden');
+            
+            document.getElementById('display-user').innerText = `WELCOME, ${localStorage.getItem('it_username').toUpperCase()}`;
             document.getElementById('today-date-str').innerText = `TODAY IS ${currentDayName.toUpperCase()}`;
             document.getElementById('focus-card-day').innerText = currentDayName;
             document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
         }
 
-        // 4. Handle Level Redirect Interactivity Mechanics Routing & Algorithmic Workout Generation
-        function navigateToWorkoutInterface(levelSelected) {
-            document.getElementById('meta-level').innerText = levelSelected;
-            document.getElementById('routine-panel-title').innerText = `${currentDayName.toUpperCase()}: ${scheduleMap[currentDayName].toUpperCase()}`;
-            
-            if(levelSelected === 'Beginner') {
-                document.getElementById('meta-duration').innerText = "1h 00m";
-            } else {
-                document.getElementById('meta-duration').innerText = "1h 15m";
-            }
-
-            const container = document.getElementById('dynamic-exercise-list-box');
-            container.innerHTML = ''; 
-
-            let targetExercises = [];
-
-            if (userTrainingLocation === 'gym') {
-                targetExercises = masterLegExercises.filter(ex => ex.location === 'gym');
-            } else {
-                targetExercises = masterLegExercises.filter(ex => {
-                    if (ex.location !== 'home') return false;
-                    if (ex.equipment === 'bodyweight') return true; 
-                    if (ex.equipment === 'dumbbells' && (userEquipmentInputText.includes('dumbbell') || userEquipmentInputText.includes('db'))) return true;
-                    if (ex.equipment === 'bands' && (userEquipmentInputText.includes('band') || userEquipmentInputText.includes('resis'))) return true;
-                    if (ex.equipment === 'barbell' && userEquipmentInputText.includes('barbell')) return true;
-                    return false;
-                });
-
-                if(targetExercises.length === 0) {
-                    targetExercises = masterLegExercises.filter(ex => ex.equipment === 'bodyweight');
-                }
-            }
-
-            // UI Card Builder Generator Engine incorporating precise vector muscular blueprints
-            targetExercises.forEach(ex => {
-                let repScheme = ex.beginner;
-                if(levelSelected === 'Mid Level') repScheme = ex.mid;
-                if(levelSelected === 'Advanced') repScheme = ex.advanced;
-
-                // Create individual component classes based on selection target ID flags
-                const isQuads = ex.activeId === 'quads' ? 'muscle-glow' : '';
-                const isHams = ex.activeId === 'hamstrings' ? 'muscle-glow' : '';
-                const isCalves = ex.activeId === 'calves' ? 'muscle-glow' : '';
-
-                const cardHtml = `
-                    <div class="exercise-card">
-                        <div class="card-top-row">
-                            <div class="ex-info">
-                                <h4>${ex.name}</h4>
-                                <p>Volume: <span>${repScheme}</span></p>
-                                <p style="font-size: 12px; color: #555; margin-top: 2px;">Target: ${ex.targetGroup}</p>
-                            </div>
-                            <div class="ex-equipment">${ex.equipment}</div>
-                        </div>
-                        
-                        <div class="anatomy-preview-container">
-                            <div class="laser-scan-line"></div>
-                            
-                            <svg class="anatomy-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="25" r="12" class="muscle-base"/>
-                                <path d="M42 42h36v50h-36z" class="muscle-base"/>
-                                <path d="M42 42l-10 30h8l6-30zM78 42l10 30h-8l-6-30z" class="muscle-base"/>
-                                
-                                <path d="M45 92h30l5 20h-40z" class="muscle-base"/>
-                                
-                                <path d="M45 112h14v55h-14z" class="muscle-base ${isQuads}"/>
-                                <path d="M61 112h14v55h-14z" class="muscle-base ${isQuads}"/>
-                                
-                                <path d="M47 115h10v45h-10z" class="muscle-base ${isHams}" opacity="0.8"/>
-                                <path d="M63 115h10v45h-10z" class="muscle-base ${isHams}" opacity="0.8"/>
-                                
-                                <path d="M47 172h11v45h-11z" class="muscle-base ${isCalves}"/>
-                                <path d="M62 172h11v45h-11z" class="muscle-base ${isCalves}"/>
-                                
-                                <path d="M44 217h14l4 6h-18zM62 217h14l4 6h-18z" class="muscle-base"/>
-                            </svg>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', cardHtml);
-            });
-
-            document.getElementById('screen-main-app').classList.add('hidden');
-            document.getElementById('screen-workout-routine').classList.remove('hidden');
+        function redirectToWorkout(level) {
+            // Forward selections safely inside URL parameters
+            window.location.href = `workout.html?level=${encodeURIComponent(level)}&day=${encodeURIComponent(currentDayName)}`;
         }
 
-        function exitWorkoutRoutine() {
-            document.getElementById('screen-workout-routine').classList.add('hidden');
-            document.getElementById('screen-main-app').classList.remove('hidden');
-        }
-
-        // 5. Drawer Controller Interfaces
         function toggleSettings(open) {
             const menu = document.getElementById('settings-menu');
             const overlay = document.getElementById('overlay-bg');
-            if(open) {
-                menu.classList.add('open');
-                overlay.classList.add('open');
-            } else {
-                menu.classList.remove('open');
-                overlay.classList.remove('open');
-            }
+            if(open) { menu.classList.add('open'); overlay.classList.add('open'); } 
+            else { menu.classList.remove('open'); overlay.classList.remove('open'); }
         }
 
         function toggleProgressView(open) {
-            const progressModal = document.getElementById('screen-progress-chart');
-            const overlay = document.getElementById('overlay-bg');
-            
-            if(open) {
-                toggleSettings(false); 
-                progressModal.classList.add('open');
-            } else {
-                progressModal.classList.remove('open');
-                overlay.classList.remove('open');
-            }
+            if(open) { toggleSettings(false); document.getElementById('screen-progress-chart').classList.add('open'); } 
+            else { document.getElementById('screen-progress-chart').classList.remove('open'); document.getElementById('overlay-bg').classList.remove('open'); }
         }
 
         function renderCalendar() {
             const container = document.getElementById('calendar-days-container');
             container.innerHTML = '';
-            const statusKey = `workout_status_${new Date().getMonth()}_`;
-            
             for(let i = 1; i <= 31; i++) {
                 let dayEl = document.createElement('div');
                 dayEl.classList.add('cal-day');
                 dayEl.innerText = i;
-                if (i === currentTodayDate) dayEl.classList.add('today-active');
-                if (localStorage.getItem(statusKey + i) === 'done') dayEl.classList.add('done');
+                if(i === new Date().getDate()) dayEl.classList.add('today-active');
                 container.appendChild(dayEl);
             }
+        }
+
+        function clearSession() {
+            localStorage.clear();
+            location.reload();
         }
     </script>
 </body>
