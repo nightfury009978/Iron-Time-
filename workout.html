@@ -1,1 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRON TIME - Routine</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        /* Routine Header Layout */
+        .routine-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            font-size: 18px;
+            color: #FF5500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.9);
+        }
+
+        .routine-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        /* Tactical Meta Box (Duration, Rest, Target Focus) */
+        .meta-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background-color: #050505;
+            border: 1px solid #161616;
+            padding: 14px 10px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            gap: 5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .meta-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-label { 
+            color: #666666; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
+
+        .meta-label i { 
+            color: #FF5500; 
+            font-size: 11px; 
+        }
+
+        .meta-value { 
+            color: #ffffff; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            font-size: 12px; 
+        }
+
+        #target-focus-value {
+            color: #FF5500;
+        }
+
+        /* Exercise List Container */
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        /* Edge Lit Cards for Workout */
+        .exercise-card {
+            background-color: #050505;
+            border: 1px solid #161616;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ex-info h4 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ex-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #aaaaaa;
+            font-weight: 700;
+        }
+
+        .ex-info p span {
+            color: #FF5500;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+        }
+
+        /* Real-time Tracking Box (GIF/Image Display styled cleanly matching 1000060022_2.jpg posture displays) */
+        .workout-gif-window {
+            width: 100%;
+            height: 220px;
+            background-color: #111111;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #222222;
+        }
+
+        .workout-gif-window img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Action Buttons */
+        .primary-btn {
+            font-family: 'Orbitron', sans-serif;
+            width: 100%;
+            padding: 16px;
+            background-color: #FF5500;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 85, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+            background-color: #e04b00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER ROUTINE PANEL -->
+        <div class="routine-header">
+            <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2 id="day-title-header">Workout Plan</h2>
+        </div>
+
+        <!-- TACTICAL DATA BAR -->
+        <div class="meta-container">
+            <div class="meta-box">
+                <span class="meta-label"><i class="fa-solid fa-clock"></i> TIME:</span>
+                <span class="meta-value">~45 MIN</span>
+            </div>
+            <div class="meta-box">
+                <span class="meta-label"><i class="fa-solid fa-stopwatch"></i> REST:</span>
+                <span class="meta-value">60 SEC</span>
+            </div>
+            <div class="meta-box">
+                <span class="meta-label"><i class="fa-solid fa-dumbbell"></i> SPLIT:</span>
+                <span id="target-focus-value" class="meta-value">LOADING</span>
+            </div>
+        </div>
+
+        <!-- EXERCISE CONTAINER -->
+        <div id="workout-vault" class="exercise-list"></div>
+
+        <!-- FINISH BUTTON -->
+        <button class="primary-btn" onclick="goBack()">Complete Workout</button>
+
+    </div>
+
+    <script>
+        // Full Dataset mapping requested exercises and connecting custom file extensions
+        const exerciseDataBank = {
+            "Monday": {
+                focus: "Chest & Triceps",
+                moves: [
+                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "dumbbell_floor_press.gif" },
+                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "standard_pushups.gif" },
+                    { name: "Decline Push-ups", stats: "3 sets x 10 reps (Feet on a chair)", img: "decline_pushups.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "overhead_tricep_extension.gif" },
+                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "bench_dips.gif" },
+                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "diamond_pushups.gif" }
+                ]
+            },
+            "Tuesday": {
+                focus: "Shoulder & Bicep",
+                moves: [
+                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "dumbbell_shoulder_press.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "dumbbell_lateral_raises.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "dumbbell_rear_delt_flyes.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "dumbbell_bicep_curls.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "dumbbell_hammer_curls.gif" },
+                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "pike_pushups.gif" }
+                ]
+            },
+            "Wednesday": {
+                focus: "Legs Focus",
+                moves: [
+                    { name: "Dumbbell Goblet Squats", stats: "4 sets x 15 reps", img: "dumbbell_goblet_squats.gif" },
+                    { name: "Dumbbell Bulgarian Split Squats", stats: "3 sets x 12 reps (per leg)", img: "bulgarian_split_squats.gif" },
+                    { name: "Dumbbell Romanian Deadlifts", stats: "4 sets x 15 reps", img: "dumbbell_romanian_deadlifts.gif" },
+                    { name: "Walking Lunges", stats: "3 sets x 20 total steps", img: "walking_lunges.gif" },
+                    { name: "Calf Raises", stats: "4 sets x 20 reps", img: "calf_raises.gif" }
+                ]
+            },
+            "Thursday": {
+                focus: "Abs (Core)",
+                moves: [
+                    { name: "Plank Shoulder Taps", stats: "4 sets x 45 seconds", img: "plank_shoulder_taps.gif" },
+                    { name: "Bicycle Crunches", stats: "3 sets x 20 reps", img: "bicycle_crunches.gif" },
+                    { name: "Lying Leg Raises", stats: "3 sets x 15 reps", img: "lying_leg_raises.gif" },
+                    { name: "Russian Twists", stats: "3 sets x 20 total reps (Hold 5kg)", img: "russian_twists.gif" },
+                    { name: "Flutter Kicks", stats: "3 sets x 45 seconds", img: "flutter_kicks.gif" }
+                ]
+            },
+            "Friday": {
+                focus: "Chest & Triceps",
+                moves: [
+                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "dumbbell_floor_press.gif" },
+                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "standard_pushups.gif" },
+                    { name: "Decline Push-ups", stats: "3 sets x 10 reps", img: "decline_pushups.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "overhead_tricep_extension.gif" },
+                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "bench_dips.gif" },
+                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "diamond_pushups.gif" }
+                ]
+            },
+            "Saturday": {
+                focus: "Shoulder & Bicep",
+                moves: [
+                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "dumbbell_shoulder_press.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "dumbbell_lateral_raises.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "dumbbell_rear_delt_flyes.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "dumbbell_bicep_curls.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "dumbbell_hammer_curls.gif" },
+                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "pike_pushups.gif" }
+                ]
+            },
+            "Sunday": {
+                focus: "Rest Day",
+                moves: [
+                    { name: "Full Recovery Rest", stats: "Prepare for Monday", img: "rest_recovery.gif" }
+                ]
+            }
+        };
+
+        // Extract passed URL Parameters smoothly on Mobile
+        function getUrlDay() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('day') || 'Monday';
+        }
+
+        // Generate Interface 3 Content Setup 
+        function loadWorkoutInterface() {
+            const chosenDay = getUrlDay();
+            const targetData = exerciseDataBank[chosenDay];
+
+            // Render text definitions inside layout headers
+            document.getElementById('day-title-header').innerText = `${chosenDay} Workout`;
+            document.getElementById('target-focus-value').innerText = targetData.focus;
+
+            const targetVault = document.getElementById('workout-vault');
+            targetVault.innerHTML = ''; // Clear layout frame
+
+            // Inject Custom Workout Blocks
+            targetData.moves.forEach(move => {
+                const itemHTML = `
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>${move.name}</h4>
+                            <p>Target Sets: <span>${move.stats}</span></p>
+                        </div>
+                        <div class="workout-gif-window">
+                            <img src="${move.img}" alt="${move.name}" onerror="this.src='https://via.placeholder.com/400x220/111111/ffffff?text=${encodeURIComponent(move.name)}'">
+                        </div>
+                    </div>
+                `;
+                targetVault.insertAdjacentHTML('beforeend', itemHTML);
+            });
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize display execution
+        window.onload = loadWorkoutInterface;
+    </script>
+</body>
+</html>
