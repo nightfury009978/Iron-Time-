@@ -6,7 +6,7 @@
     <title>IRONTIME - Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=500;800;900&family=Rajdhani:wght=500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -218,7 +218,7 @@
         <div class="spinner"></div>
     </div>
 
-    <!-- INTERFACE 2: SETUP ONBOARDING -->
+    <!-- INTERFACE 2: SETUP ONBOARDING (Only asked once) -->
     <div id="screen-onboarding" class="onboarding-container hidden">
         <h2>Account Setup</h2>
         <div class="input-group">
@@ -265,7 +265,7 @@
             <div class="workout-title" id="focus-card-workout">Loading Routine Plan...</div>
         </div>
 
-        <!-- NEW ACTION BUTTON LINKED TO WORKOUT PANEL -->
+        <!-- ACTION START BUTTON -->
         <div class="start-btn-wrapper" onclick="startCurrentDayWorkout()">
             <div class="start-btn-badge"><i class="fa-solid fa-play" style="margin-right: 10px;"></i> Let's Start</div>
         </div>
@@ -292,13 +292,14 @@
     </div>
 
     <script>
+        // Updated 7-Day Split Mapping
         const scheduleMap = {
             "Monday": "Chest & Triceps Focus",
             "Tuesday": "Shoulder & Bicep Core",
-            "Wednesday": "Legs & Abs Split",
-            "Thursday": "Chest & Triceps Focus",
-            "Friday": "Shoulder & Bicep Core",
-            "Saturday": "Legs & Abs Split",
+            "Wednesday": "Legs Hypertrophy",
+            "Thursday": "Abs Conditioning Focus",
+            "Friday": "Chest & Triceps Focus",
+            "Saturday": "Shoulder & Bicep Core",
             "Sunday": "Active Recovery Rest 😴"
         };
 
@@ -309,6 +310,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('screen-loading').classList.add('hidden');
+                // Check local storage. If user data exists, dashboard fires up directly.
                 if(localStorage.getItem('it_username')) {
                     loadDashboard();
                 } else {
@@ -353,7 +355,6 @@
         }
 
         function startCurrentDayWorkout() {
-            // Passes the tracked system day dynamically down the pipeline directly
             window.location.href = `workout.html?day=${encodeURIComponent(currentDayName)}`;
         }
 
