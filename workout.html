@@ -372,7 +372,7 @@
                     { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.mp4" },
                     { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.mp4" },
                     { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.mp4" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.mp4/py7er8.mp4" }
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.mp4" }
                 ]
             },
             "Saturday": {
@@ -389,7 +389,7 @@
             "Sunday": {
                 focus: "Rest Day",
                 moves: [
-                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://images.unsplash.com/photo-1605296867304-46d5465a25f1?auto=format&fit=crop&w=400&q=80" } // Fallback image style placeholder for recovery
+                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://images.unsplash.com/photo-1605296867304-46d5465a25f1?auto=format&fit=crop&w=400&q=80" }
                 ]
             }
         };
@@ -451,8 +451,22 @@
             document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
             
             const videoDisplay = document.getElementById('hud-video-display');
+            
+            // Forces the video to reload clean and play immediately on mobile
             videoDisplay.src = currentMove.img;
-            videoDisplay.play().catch(e => console.log("Autoplay caught initialization state setup"));
+            videoDisplay.load();
+            
+            // Safe play execution with automatic error fallback
+            let playPromise = videoDisplay.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Mobile playback restriction handled, forcing interaction loop:", error);
+                    // Fallback to let it play on the first screen tap if restricted
+                    document.body.addEventListener('click', () => {
+                        videoDisplay.play();
+                    }, { once: true });
+                });
+            }
 
             clearInterval(countdownRunning);
             countdownRunning = null;
