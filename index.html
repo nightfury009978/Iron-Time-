@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRONTIME - Dashboard</title>
+    <title>IRONTIME - Fitness Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=500;800;900&family=Rajdhani:wght=500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -22,370 +22,336 @@
             align-items: flex-start;
             min-height: 100vh;
             box-sizing: border-box;
-            overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
         }
 
-        .hidden { display: none !important; }
-
-        h1, h2, h3, .brand-title, .lvl-badge, .primary-btn, .cal-header {
+        h1, h2, h3, h4, .primary-btn, .meta-strip, .day-btn {
             font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
         }
 
-        /* LOADING SCREEN */
-        .loading-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            width: 100%;
-        }
-        .brand-title {
-            color: #FF5500;
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 85, 0, 0.4);
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 85, 0, 0.1);
-            border-top-color: #FF5500;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* SETUP ONBOARDING */
-        .onboarding-container {
-            width: 100%;
-            max-width: 360px;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-        h2 {
-            color: #FF5500;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-        .input-group { margin-bottom: 25px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: #bbb; text-transform: uppercase; font-weight: 700; }
-        input[type="text"], input[type="number"], textarea {
-            width: 100%; padding: 14px; background-color: #0c0c0c; border: 1px solid #222;
-            border-radius: 8px; color: #fff; box-sizing: border-box; font-size: 16px;
-            font-family: 'Rajdhani', sans-serif; font-weight: 700; transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus { border-color: #FF5500; outline: none; background-color: #111; }
-        .radio-buttons { display: flex; gap: 15px; margin-bottom: 25px; }
-        .loc-btn {
-            flex: 1; padding: 15px; background-color: #0c0c0c; border: 2px solid #222;
-            color: #888; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;
-            font-family: 'Orbitron', sans-serif; transition: all 0.3s;
-        }
-        .loc-btn.active { border-color: #FF5500; color: #FF5500; background-color: rgba(255, 85, 0, 0.1); box-shadow: 0 0 15px rgba(255,85,0,0.2); }
-        .primary-btn {
-            width: 100%; padding: 16px; background-color: #FF5500; color: black;
-            border: none; border-radius: 8px; font-size: 16px; font-weight: 900;
-            cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: transform 0.1s;
-        }
-        .primary-btn:active { transform: scale(0.98); }
-
-        /* MAIN APP DASHBOARD */
         .app-container {
             width: 100%;
             max-width: 420px;
             padding: 20px;
             box-sizing: border-box;
-            position: relative;
         }
-        .app-header {
+
+        /* Views management */
+        .view-panel { display: none; }
+        .view-panel.active { display: block; }
+
+        /* Dashboard Styles */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 20px;
+        }
+        .brand-header h1 { margin: 0; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 2px; }
+        .brand-header h1 span { color: #FF5500; }
+        .brand-header p { margin: 5px 0 0 0; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .section-title { font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        
+        .days-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .day-btn {
+            background: #080808;
+            border: 1px solid #1c1c1c;
+            border-radius: 10px;
+            padding: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .day-btn:active { background: #111; border-color: #FF5500; }
+        .day-name { font-size: 16px; font-weight: 700; color: #fff; }
+        .day-split { font-size: 13px; color: #FF5500; font-weight: 700; text-transform: uppercase; }
+
+        /* Workout Routine Styles */
+        .routine-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #1a1a1a;
             padding-bottom: 15px;
         }
-        .user-greet h1 { font-size: 22px; margin: 0; color: #fff; font-weight: 800; text-transform: uppercase; }
-        .user-greet p { font-size: 14px; margin: 4px 0 0 0; color: #666; font-weight: 700; text-transform: uppercase; }
-        .settings-icon { font-size: 22px; color: #FF5500; cursor: pointer; transition: transform 0.2s; }
-        .settings-icon:hover { transform: rotate(45deg); }
-
-        .routine-focus-card {
-            background: linear-gradient(135deg, #111111 0%, #070707 100%);
-            border: 1px solid #222;
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 35px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-left: 5px solid #FF5500;
-        }
-        .routine-focus-card h3 { margin: 0 0 8px 0; color: #FF5500; font-size: 14px; text-transform: uppercase; font-weight: 800; }
-        .routine-focus-card .day-title { font-size: 26px; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; }
-        .routine-focus-card .workout-title { font-size: 18px; color: #aaa; font-weight: 700; }
-
-        /* "LET'S START" DYNAMIC LASER BUTTON STYLE */
-        .start-btn-wrapper {
-            position: relative;
-            height: 75px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px rgba(255, 85, 0, 0.2);
-            transition: transform 0.2s;
-        }
-        .start-btn-wrapper:active { transform: scale(0.97); }
-        .start-btn-wrapper::before {
-            content: '';
-            position: absolute;
-            width: 160%;
-            height: 350%;
-            background: conic-gradient(transparent, #FF5500, transparent 25%);
-            animation: rotateLaser 2.5s linear infinite;
-        }
-        .start-btn-badge {
-            position: absolute;
-            top: 2px; left: 2px; right: 2px; bottom: 2px;
-            background-color: #120600;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px; 
-            font-weight: 900;
+        .back-btn {
+            font-size: 18px;
             color: #FF5500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .routine-header h2 { margin: 0; font-size: 18px; text-transform: uppercase; color: #fff; }
+
+        .meta-strip {
+            display: flex;
+            justify-content: space-between;
+            background-color: #0c0c0c;
+            border: 1px solid #222;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 12px;
             text-transform: uppercase;
-            text-shadow: 0 0 12px #FF5500;
-            z-index: 2;
-            animation: pulseText 1.5s infinite alternate ease-in-out;
         }
-        @keyframes rotateLaser { 100% { transform: rotate(360deg); } }
-        @keyframes pulseText { 0% { opacity: 0.8; } 100% { opacity: 1; transform: scale(1.02); } }
+        .meta-strip span i { color: #FF5500; margin-right: 5px; }
 
-        /* SETTINGS MODAL */
-        .settings-modal {
-            position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
-            background-color: #0c0c0c; border-left: 1px solid #222; box-shadow: -5px 0 25px rgba(0,0,0,0.8);
-            transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); z-index: 100; padding: 30px 20px; box-sizing: border-box;
+        .exercise-list { display: flex; flex-direction: column; gap: 20px; }
+        .exercise-card {
+            background-color: #080808;
+            border: 1px solid #1c1c1c;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        .settings-modal.open { right: 0; }
-        .close-settings { text-align: right; font-size: 22px; cursor: pointer; color: #666; margin-bottom: 20px; }
-        .setting-item {
-            padding: 18px 0; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center;
-            gap: 14px; font-size: 16px; cursor: pointer; color: #ddd; font-weight: 700; text-transform: uppercase;
+
+        .ex-info h4 { margin: 0 0 6px 0; font-size: 16px; color: #fff; text-transform: uppercase; }
+        .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
+        .ex-info p span { color: #FF5500; }
+        .ex-note { font-size: 13px; color: #666; margin-top: 4px; font-style: italic; }
+
+        /* Motion Track Studio Box - Pure White/Studio background matching 1000060022.jpg */
+        .motion-track-container {
+            width: 100%; 
+            height: 220px; 
+            background: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
+            border-radius: 10px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
-        .setting-item i { color: #FF5500; width: 20px; }
+
+        .motion-svg { height: 85%; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
         
-        .overlay {
-            position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(4px); z-index: 99; display: none;
-        }
-        .overlay.open { display: block; }
+        /* Figure Vectors & Skeletal Tracking Layout lines from 1000060022.jpg */
+        .hologram-body { fill: #1e293b; opacity: 0.85; }
+        .hologram-bench, .hologram-weight { fill: #475569; stroke: #334155; stroke-width: 1.5; }
+        
+        /* tracking overlays */
+        .track-bone { stroke: #ffffff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.95; }
+        .track-joint { fill: #ffffff; stroke: #ff5500; stroke-width: 1.5; }
+        .track-pulse { fill: none; stroke: #ffffff; stroke-width: 1; animation: nodePulse 2s infinite; opacity: 0.6; }
 
-        .progress-view-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; z-index: 200; padding: 25px 20px; box-sizing: border-box;
-            overflow-y: auto; display: none;
+        @keyframes nodePulse {
+            0% { r: 3; opacity: 0.8; }
+            100% { r: 10; opacity: 0; }
         }
-        .progress-view-modal.open { display: block; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; margin-top: 15px; }
-        .cal-header { font-size: 12px; color: #555; font-weight: 800; text-transform: uppercase; }
-        .cal-day {
-            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-            background-color: #080808; border: 1px solid #333; border-radius: 6px; 
-            font-size: 14px; font-weight: 700; color: #ffffff; transition: all 0.3s;
+
+        .hud-overlay {
+            position: absolute; top: 10px; left: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 10px; color: #ff5500;
+            background: rgba(0, 0, 0, 0.05); padding: 4px 6px; border-radius: 4px;
+            border-left: 2px solid #ff5500; font-weight: 800; letter-spacing: 1px;
         }
-        .cal-day.today-active { border-color: #ff5500; background-color: #120600; }
+
+        .primary-btn {
+            width: 100%; padding: 16px; background-color: #FF5500; color: black;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 900;
+            cursor: pointer; text-transform: uppercase; margin-top: 25px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- INTERFACE 1: LOADING SCREEN -->
-    <div id="screen-loading" class="loading-screen">
-        <div class="brand-title">IRONTIME</div>
-        <div class="spinner"></div>
-    </div>
-
-    <!-- INTERFACE 2: SETUP ONBOARDING (Only asked once) -->
-    <div id="screen-onboarding" class="onboarding-container hidden">
-        <h2>Account Setup</h2>
-        <div class="input-group">
-            <label for="username">Your Name</label>
-            <input type="text" id="username" placeholder="Enter your name">
-        </div>
-        <div class="input-group">
-            <label for="weight">Weight (kg)</label>
-            <input type="number" id="weight" placeholder="e.g. 70">
-        </div>
-        <div class="input-group">
-            <label for="height">Height (cm)</label>
-            <input type="number" id="height" placeholder="e.g. 175">
-        </div>
-        <div class="input-group">
-            <label>Where do you train?</label>
-            <div class="radio-buttons">
-                <button type="button" class="loc-btn" id="btn-gym" onclick="selectLocation('gym')">Gym</button>
-                <button type="button" class="loc-btn" id="btn-home" onclick="selectLocation('home')">Home</button>
+    <div class="app-container">
+        
+        <!-- DASHBOARD PANEL VIEW -->
+        <div id="dashboard-view" class="view-panel active">
+            <div class="brand-header">
+                <h1>IRON<span>TIME</span></h1>
+                <p>Tactical Training Assistant</p>
             </div>
-        </div>
-        <div id="home-equipment-box" class="input-group hidden">
-            <label for="equipment">List your equipment:</label>
-            <textarea id="equipment" rows="2" placeholder="e.g. Dumbbells, Bands..."></textarea>
-        </div>
-        <button class="primary-btn" onclick="saveAndEnterDashboard()">Enter Dashboard</button>
-    </div>
-
-    <!-- INTERFACE 3: MAIN APP DASHBOARD -->
-    <div id="screen-main-app" class="app-container hidden">
-        <div class="app-header">
-            <div class="user-greet">
-                <h1 id="display-user">WELCOME, ATHLETE</h1>
-                <p id="today-date-str">TODAY</p>
-            </div>
-            <div class="settings-icon" onclick="toggleSettings(true)">
-                <i class="fa-solid fa-gear"></i>
+            
+            <div class="section-title">Select Training Day</div>
+            <div class="days-grid">
+                <div class="day-btn" onclick="startWorkout('Monday')">
+                    <span class="day-name">Monday</span>
+                    <span class="day-split">Chest & Triceps</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Tuesday')">
+                    <span class="day-name">Tuesday</span>
+                    <span class="day-split">Shoulder & Bicep</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Wednesday')">
+                    <span class="day-name">Wednesday</span>
+                    <span class="day-split">Legs</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Thursday')">
+                    <span class="day-name">Thursday</span>
+                    <span class="day-split">Abs (Core)</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Friday')">
+                    <span class="day-name">Friday</span>
+                    <span class="day-split">Chest & Triceps</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Saturday')">
+                    <span class="day-name">Saturday</span>
+                    <span class="day-split">Shoulder & Bicep</span>
+                </div>
+                <div class="day-btn" onclick="startWorkout('Sunday')">
+                    <span class="day-name">Sunday</span>
+                    <span class="day-split">Rest & Recovery</span>
+                </div>
             </div>
         </div>
 
-        <div class="routine-focus-card">
-            <h3>Today's Target Workout</h3>
-            <div class="day-title" id="focus-card-day">Loading Day...</div>
-            <div class="workout-title" id="focus-card-workout">Loading Routine Plan...</div>
+        <!-- ACTIVE WORKOUT PANEL VIEW -->
+        <div id="workout-view" class="view-panel">
+            <div class="routine-header">
+                <button class="back-btn" onclick="showDashboard()"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2 id="routine-panel-title">WORKOUT</h2>
+            </div>
+
+            <div class="meta-strip">
+                <span><i class="fa-solid fa-clock"></i> ~45 Mins</span>
+                <span><i class="fa-solid fa-stopwatch"></i> 60s Rest</span>
+                <span id="meta-target-summary">Target</span>
+            </div>
+
+            <div id="dynamic-exercise-list-box" class="exercise-list">
+                <!-- SVG Graphics and Exercises get injected here dynamically -->
+            </div>
+
+            <button class="primary-btn" onclick="showDashboard()">Complete Workout</button>
         </div>
 
-        <!-- ACTION START BUTTON -->
-        <div class="start-btn-wrapper" onclick="startCurrentDayWorkout()">
-            <div class="start-btn-badge"><i class="fa-solid fa-play" style="margin-right: 10px;"></i> Let's Start</div>
-        </div>
-    </div>
-
-    <!-- OVERLAYS AND DRAWERS -->
-    <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
-    <div id="settings-menu" class="settings-modal">
-        <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
-        <div class="setting-item" onclick="toggleProgressView(true)"><i class="fa-solid fa-chart-line"></i> Check Progress</div>
-        <div class="setting-item" onclick="clearSession()"><i class="fa-solid fa-right-from-bracket"></i> Clear Data</div>
-    </div>
-
-    <div id="screen-progress-chart" class="progress-view-modal">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:15px;">
-            <h3 style="color:#FF5500; text-transform:uppercase; margin:0; font-size:16px;">Workout Progress Log</h3>
-            <span style="font-size:24px; cursor:pointer; color:#888;" onclick="toggleProgressView(false)"><i class="fa-solid fa-xmark"></i></span>
-        </div>
-        <div class="calendar-grid">
-            <div class="cal-header">Mon</div><div class="cal-header">Tue</div><div class="cal-header">Wed</div>
-            <div class="cal-header">Thu</div><div class="cal-header">Fri</div><div class="cal-header">Sat</div><div class="cal-header">Sun</div>
-        </div>
-        <div id="calendar-days-container" class="calendar-grid" style="margin-top: 0;"></div>
     </div>
 
     <script>
-        // Updated 7-Day Split Mapping
-        const scheduleMap = {
-            "Monday": "Chest & Triceps Focus",
-            "Tuesday": "Shoulder & Bicep Core",
-            "Wednesday": "Legs Hypertrophy",
-            "Thursday": "Abs Conditioning Focus",
-            "Friday": "Chest & Triceps Focus",
-            "Saturday": "Shoulder & Bicep Core",
-            "Sunday": "Active Recovery Rest 😴"
+        // Full workout routine database
+        const explicitRoutineDatabase = {
+            "Monday": [
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", note: "Keep shoulder blades pinned to the floor", animType: "press" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", note: "Keep body straight like a rigid plank", animType: "pushup" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", note: "Feet elevated on a stable chair", animType: "pushup" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", note: "Keep elbows locked close to your ears", animType: "overhead" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", note: "Keep hips close to the bench edge", animType: "dip" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", note: "Form a diamond shape with index fingers and thumbs", animType: "pushup" }
+            ],
+            "Tuesday": [
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", note: "Press vertically straight over your crown", animType: "overhead" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", note: "Lead upwards slightly with your elbows", animType: "overhead" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", note: "Keep your chest low, hinged parallel to floor", animType: "press" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", note: "Avoid swinging back, squeeze your biceps tightly", animType: "curl" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", note: "Maintain neutral vertical grip orientation", animType: "curl" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", note: "Look down at your toes, push upwards away from floor", animType: "pushup" }
+            ],
+            "Wednesday": [
+                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", note: "Hold weight firmly directly against upper chest", animType: "squat" },
+                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", note: "Keep your core tight, spine upright", animType: "squat" },
+                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", note: "Push hips way back until you feel a deep stretch", animType: "squat" },
+                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", note: "Take deep, controlled, explosive strides", animType: "squat" },
+                { name: "Calf Raises", volume: "4 Sets x 20 Reps", note: "Hold peak contraction securely at upper peak", animType: "squat" }
+            ],
+            "Thursday": [
+                { name: "Plank Shoulder Taps", volume: "4 Sets x 45 Seconds", note: "Keep hips locked level to prevent rotation", animType: "pushup" },
+                { name: "Bicycle Crunches", volume: "3 Sets x 20 Reps", note: "Touch elbow to opposite knee smoothly", animType: "crunch" },
+                { name: "Lying Leg Raises", volume: "3 Sets x 15 Reps", note: "Don't let your lower back arch off the floor", animType: "crunch" },
+                { name: "Russian Twists", volume: "3 Sets x 20 Total Reps", note: "Hold 5kg dumbbell steady across your midsection", animType: "crunch" },
+                { name: "Flutter Kicks", volume: "3 Sets x 45 Seconds", note: "Keep your heels hovering just off the floor", animType: "crunch" }
+            ],
+            "Friday": [
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", note: "Keep shoulder blades pinned to the floor", animType: "press" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", note: "Keep body straight like a rigid plank", animType: "pushup" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", note: "Feet elevated carefully on a stable chair", animType: "pushup" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", note: "Keep elbows locked close to your ears", animType: "overhead" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", note: "Keep hips close to the bench edge", animType: "dip" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", note: "Form a diamond shape with index fingers and thumbs", animType: "pushup" }
+            ],
+            "Saturday": [
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", note: "Press vertically straight over your crown", animType: "overhead" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", note: "Lead upwards slightly with your elbows", animType: "overhead" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", note: "Keep your chest low, hinged parallel to floor", animType: "press" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", note: "Avoid swinging back, squeeze your biceps tightly", animType: "curl" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", note: "Maintain neutral vertical grip orientation", animType: "curl" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", note: "Look down at your toes, push upwards away from floor", animType: "pushup" }
+            ],
+            "Sunday": [
+                { name: "Active Recovery Plan", volume: "Light Intensity", note: "Complete rest, walking, or mobility stretching", animType: "rest" }
+            ]
         };
 
-        const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const currentDayName = daysArray[new Date().getDay()];
-        let selectedLocation = '';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('screen-loading').classList.add('hidden');
-                // Check local storage. If user data exists, dashboard fires up directly.
-                if(localStorage.getItem('it_username')) {
-                    loadDashboard();
-                } else {
-                    document.getElementById('screen-onboarding').classList.remove('hidden');
-                }
-            }, 1500); 
-            renderCalendar();
-        });
-
-        function selectLocation(type) {
-            selectedLocation = type;
-            document.getElementById('btn-gym').classList.remove('active');
-            document.getElementById('btn-home').classList.remove('active');
-            document.getElementById(`btn-${type}`).classList.add('active');
-            
-            const equipBox = document.getElementById('home-equipment-box');
-            if (type === 'home') equipBox.classList.remove('hidden');
-            else equipBox.classList.add('hidden');
-        }
-
-        function saveAndEnterDashboard() {
-            const nameInput = document.getElementById('username').value.trim();
-            if (!nameInput || !selectedLocation) {
-                alert("Please fill out configuration options!");
-                return;
-            }
-            localStorage.setItem('it_username', nameInput);
-            localStorage.setItem('it_location', selectedLocation);
-            localStorage.setItem('it_equipment', document.getElementById('equipment').value);
-            
-            loadDashboard();
-        }
-
-        function loadDashboard() {
-            document.getElementById('screen-onboarding').classList.add('hidden');
-            document.getElementById('screen-main-app').classList.remove('hidden');
-            
-            document.getElementById('display-user').innerText = `WELCOME, ${localStorage.getItem('it_username').toUpperCase()}`;
-            document.getElementById('today-date-str').innerText = `TODAY IS ${currentDayName.toUpperCase()}`;
-            document.getElementById('focus-card-day').innerText = currentDayName;
-            document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
-        }
-
-        function startCurrentDayWorkout() {
-            window.location.href = `workout.html?day=${encodeURIComponent(currentDayName)}`;
-        }
-
-        function toggleSettings(open) {
-            const menu = document.getElementById('settings-menu');
-            const overlay = document.getElementById('overlay-bg');
-            if(open) { menu.classList.add('open'); overlay.classList.add('open'); } 
-            else { menu.classList.remove('open'); overlay.classList.remove('open'); }
-        }
-
-        function toggleProgressView(open) {
-            if(open) { toggleSettings(false); document.getElementById('screen-progress-chart').classList.add('open'); } 
-            else { document.getElementById('screen-progress-chart').classList.remove('open'); document.getElementById('overlay-bg').classList.remove('open'); }
-        }
-
-        function renderCalendar() {
-            const container = document.getElementById('calendar-days-container');
-            container.innerHTML = '';
-            for(let i = 1; i <= 31; i++) {
-                let dayEl = document.createElement('div');
-                dayEl.classList.add('cal-day');
-                dayEl.innerText = i;
-                if(i === new Date().getDate()) dayEl.classList.add('today-active');
-                container.appendChild(dayEl);
-            }
-        }
-
-        function clearSession() {
-            localStorage.clear();
-            location.reload();
-        }
-    </script>
-</body>
-</html>
+        // Vector Graphics engine designed to recreate the style layout of 1000060022.jpg
+        const svgTemplates = {
+            press: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <rect x="30" y="110" width="140" height="12" rx="3" class="hologram-bench"/>
+                    <line x1="60" y1="65" x2="140" y2="65" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="55" cy="65" r="12" class="hologram-weight"/>
+                    <circle cx="145" cy="65" r="12" class="hologram-weight"/>
+                    <circle cx="100" cy="55" r="12" class="hologram-body"/>
+                    <path d="M75 110 C 85 85, 115 85, 125 110 Z" class="hologram-body"/>
+                    <line x1="100" y1="55" x2="100" y2="80" class="track-bone"/>
+                    <line x1="75" y1="100" x2="100" y2="80" class="track-bone"/>
+                    <line x1="125" y1="100" x2="100" y2="80" class="track-bone"/>
+                    <line x1="75" y1="100" x2="60" y2="65" class="track-bone"/>
+                    <line x1="125" y1="100" x2="140" y2="65" class="track-bone"/>
+                    <circle cx="100" cy="55" r="4" class="track-joint"/><circle cx="100" cy="55" r="3" class="track-pulse"/>
+                    <circle cx="100" cy="80" r="4" class="track-joint"/>
+                    <circle cx="60" cy="65" r="5" class="track-joint"/><circle cx="60" cy="65" r="4" class="track-pulse"/>
+                    <circle cx="140" cy="65" r="5" class="track-joint"/><circle cx="140" cy="65" r="4" class="track-pulse"/>
+                </svg>`,
+            pushup: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <line x1="20" y1="120" x2="180" y2="120" stroke="#cbd5e1" stroke-width="2"/>
+                    <g transform="rotate(-12 100 90)">
+                        <circle cx="150" cy="65" r="11" class="hologram-body"/>
+                        <path d="M50 75 L150 75 L140 92 L60 92 Z" class="hologram-body"/>
+                        <line x1="60" y1="83" x2="150" y2="83" class="track-bone"/>
+                        <line x1="140" y1="83" x2="135" y2="115" class="track-bone"/>
+                        <line x1="60" y1="83" x2="55" y2="115" class="track-bone"/>
+                    </g>
+                    <circle cx="142" cy="82" r="4" class="track-joint"/><circle cx="142" cy="82" r="3" class="track-pulse"/>
+                    <circle cx="118" cy="88" r="4" class="track-joint"/>
+                    <circle cx="62" cy="103" r="4" class="track-joint"/>
+                </svg>`,
+            overhead: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <circle cx="100" cy="60" r="11" class="hologram-body"/>
+                    <path d="M80 125 L120 125 L115 80 L85 80 Z" class="hologram-body"/>
+                    <line x1="80" y1="35" x2="120" y2="35" stroke="#475569" stroke-width="5"/>
+                    <line x1="100" y1="60" x2="100" y2="105" class="track-bone"/>
+                    <line x1="85" y1="80" x2="75" y2="50" class="track-bone"/>
+                    <line x1="75" y1="50" x2="85" y2="35" class="track-bone"/>
+                    <line x1="115" y1="80" x2="125" y2="50" class="track-bone"/>
+                    <line x1="125" y1="50" x2="115" y2="35" class="track-bone"/>
+                    <circle cx="100" cy="60" r="4" class="track-joint"/>
+                    <circle cx="75" cy="50" r="4" class="track-joint"/><circle cx="75" cy="50" r="3" class="track-pulse"/>
+                    <circle cx="125" cy="50" r="4" class="track-joint"/><circle cx="125" cy="50" r="3" class="track-pulse"/>
+                </svg>`,
+            dip: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <rect x="130" y="85" width="35" height="50" class="hologram-bench"/>
+                    <circle cx="105" cy="55" r="11" class="hologram-body"/>
+                    <path d="M90 70 L115 70 L110 110 L95 110 Z" class="hologram-body"/>
+                    <line x1="105" y1="70" x2="105" y2="105" class="track-bone"/>
+                    <line x1="105" y1="70" x2="130" y2="85" class="track-bone"/>
+                    <line x1="105" y1="105" x2="95" y2="135" class="track-bone"/>
+                    <circle cx="105" cy="55" r="4" class="track-joint"/>
+                    <circle cx="130" cy="85" r="4" class="track-joint"/><circle cx="130" cy="85" r="3" class="track-pulse"/>
+                </svg>`,
+            curl: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <circle cx="100" cy="45" r="11" class="hologram-body"/>
+                    <path d="M85 115 L115 115 L112 65 L88 65 Z" class="hologram-body"/>
+                    <line x1="100" y1="65" x2="100" y2="110" class="track-bone"/>
+                    <line x1="88" y1="65" x2="78" y2="90" class="track-bone"/>
+                    <line x1="78" y1="90" x2="90" y2="60" class="track-bone"/>
+                    <circle cx="92" cy="58" r="8" class="hologram-weight"/>
+                    <circle cx
