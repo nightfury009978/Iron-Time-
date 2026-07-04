@@ -124,7 +124,7 @@
             border: 1px solid #222;
             border-radius: 14px;
             padding: 22px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border-left: 5px solid #FF5500;
@@ -133,60 +133,48 @@
         .routine-focus-card .day-title { font-size: 26px; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; }
         .routine-focus-card .workout-title { font-size: 18px; color: #aaa; font-weight: 700; }
 
-        .level-selector {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-        .lvl-wrapper {
+        /* "LET'S START" DYNAMIC LASER BUTTON STYLE */
+        .start-btn-wrapper {
             position: relative;
-            height: 70px;
+            height: 75px;
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 85, 0, 0.2);
+            transition: transform 0.2s;
         }
-        .lvl-wrapper::before {
+        .start-btn-wrapper:active { transform: scale(0.97); }
+        .start-btn-wrapper::before {
             content: '';
             position: absolute;
             width: 160%;
             height: 350%;
-            animation: rotateLaser 3s linear infinite;
+            background: conic-gradient(transparent, #FF5500, transparent 25%);
+            animation: rotateLaser 2.5s linear infinite;
         }
-        .lvl-badge {
+        .start-btn-badge {
             position: absolute;
             top: 2px; left: 2px; right: 2px; bottom: 2px;
-            background-color: #080808;
+            background-color: #120600;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px; 
+            font-size: 22px; 
             font-weight: 900;
+            color: #FF5500;
             text-transform: uppercase;
+            text-shadow: 0 0 12px #FF5500;
             z-index: 2;
+            animation: pulseText 1.5s infinite alternate ease-in-out;
         }
         @keyframes rotateLaser { 100% { transform: rotate(360deg); } }
+        @keyframes pulseText { 0% { opacity: 0.8; } 100% { opacity: 1; transform: scale(1.02); } }
 
-        #wrap-beginner::before { background: conic-gradient(transparent, #00E5FF, transparent 25%); }
-        #wrap-beginner .lvl-badge { color: #00E5FF; text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); background-color: #020d0f; }
-        
-        #wrap-mid::before { background: conic-gradient(transparent, #FFCC00, transparent 25%); }
-        #wrap-mid .lvl-badge { color: #FFCC00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.6); background-color: #0f0c02; }
-
-        #wrap-advance::before { background: conic-gradient(transparent, #FF5500, transparent 25%); }
-        #wrap-advance .lvl-badge { 
-            color: #FF5500; 
-            text-shadow: 0 0 12px #FF5500; 
-            background-color: #120600;
-            animation: thunderShake 0.4s infinite alternate;
-        }
-        @keyframes thunderShake { 0% { transform: scale(1); } 100% { transform: scale(1.02); } }
-
-        /* SETTINGS AND CALENDAR MODALS */
+        /* SETTINGS MODAL */
         .settings-modal {
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100%;
             background-color: #0c0c0c; border-left: 1px solid #222; box-shadow: -5px 0 25px rgba(0,0,0,0.8);
@@ -277,20 +265,13 @@
             <div class="workout-title" id="focus-card-workout">Loading Routine Plan...</div>
         </div>
 
-        <div class="level-selector">
-            <div class="lvl-wrapper" id="wrap-beginner" onclick="redirectToWorkout('Beginner')">
-                <div class="lvl-badge">Beginner</div>
-            </div>
-            <div class="lvl-wrapper" id="wrap-mid" onclick="redirectToWorkout('Mid Level')">
-                <div class="lvl-badge">Mid Level</div>
-            </div>
-            <div class="lvl-wrapper" id="wrap-advance" onclick="redirectToWorkout('Advanced')">
-                <div class="lvl-badge"><i class="fa-solid fa-bolt"></i> Advanced</div>
-            </div>
+        <!-- NEW ACTION BUTTON LINKED TO WORKOUT PANEL -->
+        <div class="start-btn-wrapper" onclick="startCurrentDayWorkout()">
+            <div class="start-btn-badge"><i class="fa-solid fa-play" style="margin-right: 10px;"></i> Let's Start</div>
         </div>
     </div>
 
-    <!-- OVERLAYS AND DRAWER -->
+    <!-- OVERLAYS AND DRAWERS -->
     <div id="overlay-bg" class="overlay" onclick="toggleSettings(false)"></div>
     <div id="settings-menu" class="settings-modal">
         <div class="close-settings" onclick="toggleSettings(false)"><i class="fa-solid fa-xmark"></i></div>
@@ -313,12 +294,12 @@
     <script>
         const scheduleMap = {
             "Monday": "Chest & Triceps Focus",
-            "Tuesday": "Shoulder & Biceps Core",
-            "Wednesday": "Leg Day Hypertrophy",
-            "Thursday": "Rest Day Recuperation 😴",
-            "Friday": "Abs & Core Conditioning",
-            "Saturday": "Full Body Power Split",
-            "Sunday": "Rest Day Recuperation 😴"
+            "Tuesday": "Shoulder & Bicep Core",
+            "Wednesday": "Legs & Abs Split",
+            "Thursday": "Chest & Triceps Focus",
+            "Friday": "Shoulder & Bicep Core",
+            "Saturday": "Legs & Abs Split",
+            "Sunday": "Active Recovery Rest 😴"
         };
 
         const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -328,7 +309,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('screen-loading').classList.add('hidden');
-                // Check if user data exists
                 if(localStorage.getItem('it_username')) {
                     loadDashboard();
                 } else {
@@ -352,7 +332,7 @@
         function saveAndEnterDashboard() {
             const nameInput = document.getElementById('username').value.trim();
             if (!nameInput || !selectedLocation) {
-                alert("Please complete the config options!");
+                alert("Please fill out configuration options!");
                 return;
             }
             localStorage.setItem('it_username', nameInput);
@@ -372,9 +352,9 @@
             document.getElementById('focus-card-workout').innerText = scheduleMap[currentDayName];
         }
 
-        function redirectToWorkout(level) {
-            // Forward selections safely inside URL parameters
-            window.location.href = `workout.html?level=${encodeURIComponent(level)}&day=${encodeURIComponent(currentDayName)}`;
+        function startCurrentDayWorkout() {
+            // Passes the tracked system day dynamically down the pipeline directly
+            window.location.href = `workout.html?day=${encodeURIComponent(currentDayName)}`;
         }
 
         function toggleSettings(open) {
