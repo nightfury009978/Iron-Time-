@@ -3,325 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRONTIME - Fitness Hub</title>
+    <title>IRON TIME</title>
+    <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             background-color: #000000;
             color: #ffffff;
             font-family: 'Rajdhani', sans-serif;
-            font-weight: 500;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        h1, h2, h3, h4, .primary-btn, .meta-container, .day-btn {
-            font-family: 'Orbitron', sans-serif;
+            overflow-x: hidden;
         }
 
         .app-container {
             width: 100%;
             max-width: 420px;
             padding: 20px;
-            box-sizing: border-box;
+            position: relative;
         }
 
-        /* View Switching */
-        .view-panel { display: none; }
-        .view-panel.active { display: block; }
+        /* ----------------------------------
+           INTERFACE 1: LOADING SCREEN
+        ---------------------------------- */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
 
-        /* Dashboard Styles */
+        #loading-screen h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin: 0 0 30px 0;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 85, 0, 0.3);
+        }
+
+        #loading-screen h1 span {
+            color: #FF5500;
+            text-shadow: 0 0 15px rgba(255, 85, 0, 0.6);
+        }
+
+        /* Round Loading Symbol */
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #111111;
+            border-top: 4px solid #FF5500;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 85, 0, 0.2);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ----------------------------------
+           INTERFACE 2: MAIN DASHBOARD
+        ---------------------------------- */
+        #dashboard-panel {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: none;
+            padding-top: 20px;
+        }
+
+        #dashboard-panel.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .brand-header {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #111;
+            margin-bottom: 35px;
+            border-bottom: 1px solid #151515;
             padding-bottom: 20px;
         }
-        .brand-header h1 { margin: 0; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 2px; }
-        .brand-header h1 span { color: #FF5500; }
-        .brand-header p { margin: 5px 0 0 0; color: #555; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .section-title { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        
+        .brand-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .brand-header h2 span {
+            color: #FF5500;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            padding-left: 2px;
+        }
+
         .days-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 30px;
+            gap: 14px;
+            margin-bottom: 40px;
         }
-        
+
+        /* Day Buttons with Custom Edge Lighting */
         .day-btn {
             background: #050505;
-            border: 1px solid #151515;
-            border-radius: 8px;
-            padding: 16px;
+            border: 1px solid #161616;
+            border-radius: 10px;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.2s ease;
         }
-        .day-btn:active { background: #111; border-color: #FF5500; }
-        .day-name { font-size: 15px; font-weight: 700; color: #fff; }
-        .day-split { font-size: 12px; color: #FF5500; font-weight: 700; text-transform: uppercase; }
 
-        /* Workout View Layout (Matches image 1000060023.jpg) */
-        .routine-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-            margin-bottom: 25px;
+        /* Accent edge lighting highlights for active taps */
+        .day-btn:active {
+            background: #111111;
+            border-color: #FF5500;
+            box-shadow: 0 0 12px rgba(255, 85, 0, 0.2);
         }
-        .back-btn {
-            font-size: 18px;
-            color: #FF5500;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
-        .routine-header h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
 
-        /* Meta container styled directly from 1000060023.jpg */
-        .meta-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            background-color: #000000;
-            border: 1px solid #222222;
-            padding: 14px 10px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            gap: 5px;
+        /* Specific Edge Lighting Border Highlight for Today (Saturday Highlight Template) */
+        .day-btn.today-highlight {
+            border-color: #FF5500;
+            box-shadow: inset 0 0 8px rgba(255, 85, 0, 0.15), 0 0 15px rgba(255, 85, 0, 0.25);
+            background: #0a0401;
         }
-        .meta-box {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            font-size: 11px;
+
+        .day-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
             letter-spacing: 0.5px;
         }
-        .meta-label { color: #888888; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
-        .meta-label i { color: #FF5500; font-size: 12px; }
-        .meta-value { color: #ffffff; font-weight: 800; text-transform: uppercase; font-size: 12px; }
 
-        /* Exercise Cards */
-        .exercise-list { display: flex; flex-direction: column; gap: 24px; margin-bottom: 30px; }
-        .exercise-card {
-            background-color: #050505;
-            border: 1px solid #151515;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .ex-info h4 { margin: 0 0 4px 0; font-size: 16px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
-        .ex-info p { margin: 0; font-size: 13px; color: #888; font-weight: 700; }
-        .ex-info p span { color: #FF5500; }
-        .ex-note { font-size: 12px; color: #555; margin-top: 5px; font-style: italic; }
-
-        /* Custom GIF/Image Display Window */
-        .workout-gif-container {
-            width: 100%;
-            height: 220px;
-            background-color: #111;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #222;
-        }
-        .workout-gif-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .day-split {
+            font-size: 13px;
+            color: #FF5500;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .primary-btn {
-            width: 100%; padding: 16px; background-color: #FF5500; color: #000000;
-            border: none; border-radius: 8px; font-size: 15px; font-weight: 900;
-            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
-            margin-top: 10px;
+        .day-btn.today-highlight .day-split {
+            color: #ffffff;
+            background: #FF5500;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
         }
     </style>
 </head>
 <body>
 
+    <!-- INTERFACE 1: LOADING SCREEN -->
+    <div id="loading-screen">
+        <h1>IRON <span>TIME</span></h1>
+        <div class="loader-circle"></div>
+    </div>
+
+    <!-- INTERFACE 2: MAIN DASHBOARD CONTAINER -->
     <div class="app-container">
-        
-        <!-- DASHBOARD VIEW -->
-        <div id="dashboard-panel" class="view-panel active">
+        <div id="dashboard-panel">
+            
             <div class="brand-header">
-                <h1>IRON<span>TIME</span></h1>
-                <p>Tactical Training Assistant</p>
+                <h2>IRON <span>TIME</span></h2>
             </div>
             
             <div class="section-title">Select Training Day</div>
+            
             <div class="days-grid">
-                <div class="day-btn" onclick="openRoutine('Monday')">
+                <!-- Monday -->
+                <div class="day-btn" onclick="navigateToWorkout('Monday')">
                     <span class="day-name">Monday</span>
                     <span class="day-split">Chest & Triceps</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Tuesday')">
+                
+                <!-- Tuesday -->
+                <div class="day-btn" onclick="navigateToWorkout('Tuesday')">
                     <span class="day-name">Tuesday</span>
                     <span class="day-split">Shoulder & Bicep</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Wednesday')">
+                
+                <!-- Wednesday -->
+                <div class="day-btn" onclick="navigateToWorkout('Wednesday')">
                     <span class="day-name">Wednesday</span>
                     <span class="day-split">Legs</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Thursday')">
+                
+                <!-- Thursday -->
+                <div class="day-btn" onclick="navigateToWorkout('Thursday')">
                     <span class="day-name">Thursday</span>
                     <span class="day-split">Abs (Core)</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Friday')">
+                
+                <!-- Friday -->
+                <div class="day-btn" onclick="navigateToWorkout('Friday')">
                     <span class="day-name">Friday</span>
                     <span class="day-split">Chest & Triceps</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Saturday')">
+                
+                <!-- Saturday (Highlighted with Edge Lighting as requested) -->
+                <div class="day-btn today-highlight" onclick="navigateToWorkout('Saturday')">
                     <span class="day-name">Saturday</span>
                     <span class="day-split">Shoulder & Bicep</span>
                 </div>
-                <div class="day-btn" onclick="openRoutine('Sunday')">
+                
+                <!-- Sunday -->
+                <div class="day-btn" onclick="navigateToWorkout('Sunday')">
                     <span class="day-name">Sunday</span>
                     <span class="day-split">Rest & Recovery</span>
                 </div>
             </div>
+
         </div>
-
-        <!-- WORKOUT VIEW -->
-        <div id="workout-panel" class="view-panel">
-            <div class="routine-header">
-                <button class="back-btn" onclick="closeRoutine()"><i class="fa-solid fa-arrow-left"></i></button>
-                <h2>Workout Plan</h2>
-            </div>
-
-            <!-- Matches layout in 1000060023.jpg perfectly -->
-            <div class="meta-container">
-                <div class="meta-box">
-                    <span class="meta-label"><i class="fa-solid fa-clock"></i> DURATION:</span>
-                    <span class="meta-value">~45M</span>
-                </div>
-                <div class="meta-box">
-                    <span class="meta-label"><i class="fa-solid fa-stopwatch"></i> REST:</span>
-                    <span class="meta-value">60S</span>
-                </div>
-                <div class="meta-box">
-                    <span class="meta-label"><i class="fa-solid fa-dumbbell"></i> TARGET:</span>
-                    <span id="target-output-value" class="meta-value">BODY</span>
-                </div>
-            </div>
-
-            <!-- Dynamic exercises build in here -->
-            <div id="exercise-render-vault" class="exercise-list"></div>
-
-            <button class="primary-btn" onclick="closeRoutine()">Finish Routine</button>
-        </div>
-
     </div>
 
     <script>
-        const masterRoutineSet = {
-            "Monday": [
-                { name: "Dumbbell Floor Press", qty: "4 Sets x 15 Reps", tip: "Keep shoulder blades pinned to the floor", img: "floor_press.gif" },
-                { name: "Standard Push-ups", qty: "4 Sets x 12 Reps", tip: "Keep body straight like a rigid plank", img: "pushups.gif" },
-                { name: "Decline Push-ups", qty: "3 Sets x 10 Reps", tip: "Feet elevated safely on a chair/bench", img: "decline_pushups.gif" },
-                { name: "Overhead Dumbbell Tricep Extension", qty: "4 Sets x 12 Reps", tip: "Keep elbows locked close to your ears", img: "tricep_extension.gif" },
-                { name: "Chair or Bench Dips", qty: "3 Sets x 15 Reps", tip: "Keep hips close to the bench edge", img: "dips.gif" },
-                { name: "Diamond Push-ups", qty: "3 Sets x Failure", tip: "Form a diamond shape with index fingers and thumbs", img: "diamond_pushups.gif" }
-            ],
-            "Tuesday": [
-                { name: "Dumbbell Shoulder Press", qty: "4 Sets x 12 Reps", tip: "Press vertically straight over your crown", img: "shoulder_press.gif" },
-                { name: "Dumbbell Lateral Raises", qty: "4 Sets x 15 Reps", tip: "Lead upwards slightly with your elbows", img: "lateral_raises.gif" },
-                { name: "Dumbbell Rear Delt Flyes", qty: "4 Sets x 15 Reps", tip: "Keep your chest low, hinged parallel to floor", img: "rear_delt_flyes.gif" },
-                { name: "Dumbbell Bicep Curls", qty: "4 Sets x 12 Reps", tip: "Avoid swinging back, squeeze your biceps tightly", img: "bicep_curls.gif" },
-                { name: "Dumbbell Hammer Curls", qty: "4 Sets x 12 Reps", tip: "Maintain neutral vertical grip orientation", img: "hammer_curls.gif" },
-                { name: "Pike Push-ups", qty: "3 Sets x 8-10 Reps", tip: "Look down at your toes, push upwards away from floor", img: "pike_pushups.gif" }
-            ],
-            "Wednesday": [
-                { name: "Dumbbell Goblet Squats", qty: "4 Sets x 15 Reps", tip: "Hold weight firmly directly against upper chest", img: "goblet_squats.gif" },
-                { name: "Dumbbell Bulgarian Split Squats", qty: "3 Sets x 12 Reps (per leg)", tip: "Keep your core tight, spine upright", img: "bulgarian_squats.gif" },
-                { name: "Dumbbell Romanian Deadlifts", qty: "4 Sets x 15 Reps", tip: "Push hips way back until you feel a deep stretch", img: "romanian_deadlifts.gif" },
-                { name: "Walking Lunges", qty: "3 Sets x 20 Total Steps", tip: "Take deep, controlled, explosive strides", img: "lunges.gif" },
-                { name: "Calf Raises", qty: "4 Sets x 20 Reps", tip: "Hold peak contraction securely at upper peak", img: "calf_raises.gif" }
-            ],
-            "Thursday": [
-                { name: "Plank Shoulder Taps", qty: "4 Sets x 45 Seconds", tip: "Keep hips locked level to prevent rotation", img: "plank_taps.gif" },
-                { name: "Bicycle Crunches", qty: "3 Sets x 20 Reps", tip: "Touch elbow to opposite knee smoothly", img: "bicycle_crunches.gif" },
-                { name: "Lying Leg Raises", qty: "3 Sets x 15 Reps", tip: "Don't let your lower back arch off the floor", img: "leg_raises.gif" },
-                { name: "Russian Twists", qty: "3 Sets x 20 Total Reps", tip: "Hold a dumbbell steady across your midsection", img: "russian_twists.gif" },
-                { name: "Flutter Kicks", qty: "3 Sets x 45 Seconds", tip: "Keep your heels hovering just off the floor", img: "flutter_kicks.gif" }
-            ],
-            "Friday": [
-                { name: "Dumbbell Floor Press", qty: "4 Sets x 15 Reps", tip: "Keep shoulder blades pinned to the floor", img: "floor_press.gif" },
-                { name: "Standard Push-ups", qty: "4 Sets x 12 Reps", tip: "Keep body straight like a rigid plank", img: "pushups.gif" },
-                { name: "Decline Push-ups", qty: "3 Sets x 10 Reps", tip: "Feet elevated on a stable bench/chair", img: "decline_pushups.gif" }
-            ],
-            "Saturday": [
-                { name: "Dumbbell Shoulder Press", qty: "4 Sets x 12 Reps", tip: "Press vertically straight over your crown", img: "shoulder_press.gif" },
-                { name: "Dumbbell Lateral Raises", qty: "4 Sets x 15 Reps", tip: "Lead upwards slightly with your elbows", img: "lateral_raises.gif" }
-            ],
-            "Sunday": [
-                { name: "Active Recovery Plan", qty: "Light Intensity", tip: "Complete rest, light walking, or mobility stretching", img: "rest.gif" }
-            ]
-        };
+        // Handle Interface 1 to Interface 2 transition automatically
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                const dashboard = document.getElementById('dashboard-panel');
+                
+                // Fade out loader
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                
+                // Show dashboard panel smoothly
+                dashboard.style.display = 'block';
+                setTimeout(() => {
+                    dashboard.classList.add('active');
+                }, 50);
+            }, 2000); // Loads for exactly 2 seconds
+        });
 
-        function openRoutine(day) {
-            const targets = {
-                "Monday": "CHEST & TRICEPS", "Friday": "CHEST & TRICEPS",
-                "Tuesday": "SHOULDER & BICEP", "Saturday": "SHOULDER & BICEP",
-                "Wednesday": "LEGS", "Thursday": "ABS (CORE)",
-                "Sunday": "REST & RECOVERY"
-            };
-            
-            const labelTarget = document.getElementById('target-output-value');
-            if (labelTarget) {
-                labelTarget.innerText = targets[day] || "BODY";
-            }
-
-            const vault = document.getElementById('exercise-render-vault');
-            if (vault) {
-                vault.innerHTML = '';
-                let routineList = masterRoutineSet[day] || [];
-
-                routineList.forEach((ex) => {
-                    const cardMarkup = `
-                        <div class="exercise-card">
-                            <div class="ex-info">
-                                <h4>${ex.name}</h4>
-                                <p>Target: <span>${ex.qty}</span></p>
-                                <div class="ex-note">${ex.tip}</div>
-                            </div>
-                            <div class="workout-gif-container">
-                                <img src="${ex.img}" alt="${ex.name}" onerror="this.src='https://via.placeholder.com/400x220/111/fff?text=${encodeURIComponent(ex.name)}'">
-                            </div>
-                        </div>
-                    `;
-                    vault.insertAdjacentHTML('beforeend', cardMarkup);
-                });
-            }
-
-            document.getElementById('dashboard-panel').classList.remove('active');
-            document.getElementById('workout-panel').classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        function closeRoutine() {
-            document.getElementById('workout-panel').classList.remove('active');
-            document.getElementById('dashboard-panel').classList.add('active');
-            window.scrollTo(0, 0);
+        // Redirects to your separate workout file, passing the day selected
+        function navigateToWorkout(dayName) {
+            window.location.href = `workout.html?day=${dayName}`;
         }
     </script>
 </body>
