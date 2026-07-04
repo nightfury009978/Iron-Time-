@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRONTIME - Routine</title>
+    <title>IRONTIME - Active Workout</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
@@ -81,12 +81,9 @@
         .ex-info h4 { margin: 0 0 6px 0; font-size: 16px; color: #fff; text-transform: uppercase; }
         .ex-info p { margin: 0; font-size: 14px; color: #888; font-weight: 700; }
         .ex-info p span { color: #FF5500; }
-        .ex-equipment {
-            font-size: 11px; background-color: rgba(255, 85, 0, 0.1); color: #FF5500;
-            padding: 4px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(255, 85, 0, 0.2);
-        }
+        .ex-note { font-size: 13px; color: #666; margin-top: 4px; font-style: italic; }
 
-        /* Vector Anatomy Box Container Styles */
+        /* Anatomy Box Layout Setup Matching 1000048956.jpg Blueprint Look */
         .anatomy-preview-container {
             width: 100%; height: 180px; background-color: #040404;
             border: 1px dashed rgba(255, 85, 0, 0.3); border-radius: 8px;
@@ -100,7 +97,6 @@
         .anatomy-svg { height: 90%; width: auto; }
         .muscle-base { fill: #222222; stroke: #333333; stroke-width: 1.5; }
         
-        /* Neon Anatomy Red Glow Targeting Classes */
         .muscle-glow { 
             fill: #FF1E00 !important; stroke: #FF5500 !important;
             filter: drop-shadow(0 0 8px #FF1E00);
@@ -133,90 +129,95 @@
         </div>
 
         <div class="meta-strip">
-            <span><i class="fa-solid fa-clock"></i> <span id="meta-duration">1h 00m</span></span>
-            <span><i class="fa-solid fa-stopwatch"></i> Rest: 40s</span>
-            <span><i class="fa-solid fa-layer-group"></i> Level: <span id="meta-level">-</span></span>
+            <span><i class="fa-solid fa-clock"></i> Duration: ~45m</span>
+            <span><i class="fa-solid fa-stopwatch"></i> Rest: 60s</span>
+            <span><i class="fa-solid fa-dumbbell"></i> Target: <span id="meta-target-summary">Body</span></span>
         </div>
 
         <div id="dynamic-exercise-list-box" class="exercise-list">
-            <!-- Workouts populate here dynamically based on day and settings -->
+            <!-- Programmatic injection container -->
         </div>
 
-        <button class="primary-btn" onclick="goBack()">Finish Workout</button>
+        <button class="primary-btn" onclick="goBack()">Finish Routine</button>
     </div>
 
     <script>
-        // Multi-Day Workout Pool Database Engine
-        const masterExercisesDatabase = {
-            "Monday": [ // Chest & Triceps Focus
-                { name: "Decline Bench Press", location: "gym", equipment: "barbell", targetGroup: "Lower Chest", activeId: "chest", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "4 Sets x 6 Reps" },
-                { name: "Dumbbell Flys", location: "home", equipment: "dumbbells", targetGroup: "Pectoral Isolation", activeId: "chest", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-                { name: "Diamond Pushups", location: "home", equipment: "bodyweight", targetGroup: "Inner Chest & Triceps", activeId: "arms", beginner: "3 Sets x Max Reps", mid: "4 Sets x 15 Reps", advanced: "4 Sets x 25 Reps" }
+        // Completely rewritten clean exercise database matching your exact request
+        const explicitRoutineDatabase = {
+            "Monday": [
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Targets chest without a bench", activeId: "chest" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Drop to knees if form breaks", activeId: "chest" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated on a chair or bed", activeId: "chest" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Hold one or both weights", activeId: "arms" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep feet close for easier, straight for harder", activeId: "arms" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Hands close together to torch triceps", activeId: "arms" }
             ],
-            "Tuesday": [ // Shoulder & Biceps Core
-                { name: "Overhead Barbell Press", location: "gym", equipment: "barbell", targetGroup: "Deltoids", activeId: "shoulders", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 5 Reps" },
-                { name: "Dumbbell Lateral Raises", location: "home", equipment: "dumbbells", targetGroup: "Lateral Delts", activeId: "shoulders", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
-                { name: "Bicep Isolation Curls", location: "home", equipment: "dumbbells", targetGroup: "Biceps Brachii", activeId: "arms", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" }
+            "Thursday": [
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Targets chest without a bench", activeId: "chest" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Drop to knees if form breaks", activeId: "chest" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated on a chair or bed", activeId: "chest" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Hold one or both weights", activeId: "arms" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep feet close for easier, straight for harder", activeId: "arms" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Hands close together to torch triceps", activeId: "arms" }
             ],
-            "Wednesday": [ // Leg Day Hypertrophy
-                { name: "Barbell Back Squats", location: "gym", equipment: "barbell", targetGroup: "Quadriceps & Glutes", activeId: "quads", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 8 Reps", advanced: "5 Sets x 6 Reps" },
-                { name: "Dumbbell Romanian Deadlifts", location: "home", equipment: "dumbbells", targetGroup: "Hamstrings", activeId: "hamstrings", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" },
-                { name: "Bodyweight Calf Raises", location: "home", equipment: "bodyweight", targetGroup: "Calves", activeId: "calves", beginner: "3 Sets x 20 Reps", mid: "4 Sets x 25 Reps", advanced: "4 Sets x 30 Reps" }
+            "Tuesday": [
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Seated or standing", activeId: "shoulders" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Focus on slow, controlled movement", activeId: "shoulders" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Hinged at hips to target back of shoulders", activeId: "shoulders" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Turn wrists upward at the top", activeId: "arms" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Palms facing each other", activeId: "arms" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Hips high in the air to shift weight to shoulders", activeId: "shoulders" }
             ],
-            "Friday": [ // Abs & Core Conditioning
-                { name: "Hanging Leg Raises", location: "gym", equipment: "bodyweight", targetGroup: "Lower Rectus Abdominis", activeId: "abs", beginner: "3 Sets x 10 Reps", mid: "4 Sets x 12 Reps", advanced: "4 Sets x 15 Reps" },
-                { name: "Plank Hold Star", location: "home", equipment: "bodyweight", targetGroup: "Core Stabilization", activeId: "abs", beginner: "3 Sets x 45s", mid: "4 Sets x 60s", advanced: "4 Sets x 90s" }
+            "Friday": [
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Seated or standing", activeId: "shoulders" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Focus on slow, controlled movement", activeId: "shoulders" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Hinged at hips to target back of shoulders", activeId: "shoulders" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Turn wrists upward at the top", activeId: "arms" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Palms facing each other", activeId: "arms" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Hips high in the air to shift weight to shoulders", activeId: "shoulders" }
             ],
-            "Saturday": [ // Full Body Power Split
-                { name: "Deadlift Tier Max", location: "gym", equipment: "barbell", targetGroup: "Posterior Chain", activeId: "hamstrings", beginner: "3 Sets x 8 Reps", mid: "4 Sets x 5 Reps", advanced: "5 Sets x 3 Reps" },
-                { name: "Floor Dumbbell Press", location: "home", equipment: "dumbbells", targetGroup: "Chest / Arms", activeId: "chest", beginner: "3 Sets x 12 Reps", mid: "4 Sets x 10 Reps", advanced: "4 Sets x 12 Reps" }
+            "Wednesday": [
+                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", targetGroup: "Quads/Glutes", note: "Hold one 5kg weight close to your chest", activeId: "quads" },
+                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", targetGroup: "Quadriceps Focus", note: "Back foot elevated on a chair", activeId: "quads" },
+                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", targetGroup: "Hamstrings", note: "Slight bend in knees, hinge at hips", activeId: "hamstrings" },
+                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", targetGroup: "Legs Dynamic", note: "Hold dumbbells at your sides", activeId: "quads" },
+                { name: "Calf Raises", volume: "4 Sets x 20 Reps", targetGroup: "Calves", note: "Hold weights to add resistance", activeId: "calves" },
+                { name: "Plank Shoulder Taps", volume: "3 Sets x 45 Seconds", targetGroup: "Abs / Core", note: "Core stability finisher", activeId: "abs" }
             ],
-            "Thursday": [], "Sunday": [] // Rest Days
+            "Saturday": [
+                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", targetGroup: "Quads/Glutes", note: "Hold one 5kg weight close to your chest", activeId: "quads" },
+                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", targetGroup: "Quadriceps Focus", note: "Back foot elevated on a chair", activeId: "quads" },
+                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", targetGroup: "Hamstrings", note: "Slight bend in knees, hinge at hips", activeId: "hamstrings" },
+                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", targetGroup: "Legs Dynamic", note: "Hold dumbbells at your sides", activeId: "quads" },
+                { name: "Calf Raises", volume: "4 Sets x 20 Reps", targetGroup: "Calves", note: "Hold weights to add resistance", activeId: "calves" },
+                { name: "Plank Shoulder Taps", volume: "3 Sets x 45 Seconds", targetGroup: "Abs / Core", note: "Core stability finisher", activeId: "abs" }
+            ],
+            "Sunday": [
+                { name: "Active Recovery Plan", volume: "Light Intensity", targetGroup: "Full Body Rest", note: "Complete rest, light walking, or full-body stretching.", activeId: "rest" }
+            ]
         };
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Read incoming configuration data inside URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const level = urlParams.get('level') || 'Beginner';
             const day = urlParams.get('day') || 'Monday';
 
-            // Fetch stored values from storage setup engine
-            const loc = localStorage.getItem('it_location') || 'gym';
-            const equipText = (localStorage.getItem('it_equipment') || '').toLowerCase();
-
-            document.getElementById('meta-level').innerText = level;
-            document.getElementById('meta-duration').innerText = level === 'Beginner' ? "1h 00m" : "1h 15m";
-            document.getElementById('routine-panel-title').innerText = `${day.toUpperCase()} PLAN`;
+            document.getElementById('routine-panel-title').innerText = `${day.toUpperCase()} SPLIT`;
+            
+            const targetSummary = {
+                "Monday": "Chest & Tri", "Thursday": "Chest & Tri",
+                "Tuesday": "Shoulders & Bi", "Friday": "Shoulders & Bi",
+                "Wednesday": "Legs & Abs", "Saturday": "Legs & Abs",
+                "Sunday": "Recovery"
+            };
+            document.getElementById('meta-target-summary').innerText = targetSummary[day] || "Body";
 
             const container = document.getElementById('dynamic-exercise-list-box');
             container.innerHTML = '';
 
-            let workoutPool = masterExercisesDatabase[day] || [];
+            let workoutPool = explicitRoutineDatabase[day] || [];
 
-            // Filter exercises according to location and user tools
-            let filteredList = workoutPool.filter(ex => {
-                if (loc === 'gym' && ex.location === 'gym') return true;
-                if (ex.location === 'home') {
-                    if (ex.equipment === 'bodyweight') return true;
-                    if (ex.equipment === 'dumbbells' && (equipText.includes('dumb') || equipText.includes('db'))) return true;
-                    if (ex.equipment === 'barbell' && equipText.includes('barbell')) return true;
-                }
-                return false;
-            });
-
-            // Fallback plan if arrays filter empty on Rest Days
-            if (filteredList.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 40px; color:#666; text-transform:uppercase; font-weight:bold;">Rest Day Recuperation Active. Rest up and reload! 😴</div>`;
-                return;
-            }
-
-            // Build out cards injecting target structural glowing frameworks
-            filteredList.forEach(ex => {
-                let sets = ex.beginner;
-                if (level === 'Mid Level') sets = ex.mid;
-                if (level === 'Advanced') sets = ex.advanced;
-
-                // Glowing flags setups 
+            workoutPool.forEach(ex => {
+                // Glow classes applied to SVG fragments
                 const isChest = ex.activeId === 'chest' ? 'muscle-glow' : '';
                 const isShoulders = ex.activeId === 'shoulders' ? 'muscle-glow' : '';
                 const isArms = ex.activeId === 'arms' ? 'muscle-glow' : '';
@@ -230,28 +231,27 @@
                         <div class="card-top-row">
                             <div class="ex-info">
                                 <h4>${ex.name}</h4>
-                                <p>Volume: <span>${sets}</span></p>
-                                <p style="font-size: 12px; color: #555; margin-top: 2px;">Target: ${ex.targetGroup}</p>
+                                <p>Volume: <span>${ex.volume}</span></p>
+                                <div class="ex-note">${ex.note}</div>
                             </div>
-                            <div class="ex-equipment">${ex.equipment}</div>
                         </div>
                         
                         <div class="anatomy-preview-container">
                             <div class="laser-scan-line"></div>
                             <svg class="anatomy-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="60" cy="25" r="12" class="muscle-base"/>
-                                <!-- Chest Matrix -->
+                                <!-- Chest -->
                                 <path d="M42 42h36v25h-36z" class="muscle-base ${isChest}"/>
-                                <!-- Abs Frame -->
+                                <!-- Abs -->
                                 <path d="M42 67h36v25h-36z" class="muscle-base ${isAbs}"/>
-                                <!-- Shoulders Outer Blocks -->
+                                <!-- Shoulders -->
                                 <path d="M32 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
                                 <path d="M78 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
-                                <!-- Arms Lengths -->
+                                <!-- Arms -->
                                 <path d="M24 57h8v35h-8z" class="muscle-base ${isArms}"/>
                                 <path d="M88 57h8v35h-8z" class="muscle-base ${isArms}"/>
                                 <path d="M45 92h30l5 20h-40z" class="muscle-base"/>
-                                <!-- Leg Systems Split Mapping -->
+                                <!-- Lower Legs Split Mapping System Layout -->
                                 <path d="M45 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
                                 <path d="M61 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
                                 <path d="M47 172h11v45h-11z" class="muscle-base ${isCalves}"/>
