@@ -22,6 +22,7 @@
             align-items: flex-start;
             min-height: 100vh;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         h2, h4, .primary-btn, .meta-strip {
@@ -83,35 +84,45 @@
         .ex-info p span { color: #FF5500; }
         .ex-note { font-size: 13px; color: #666; margin-top: 4px; font-style: italic; }
 
-        /* Anatomy Box Layout Setup Matching 1000048956.jpg Blueprint Look */
-        .anatomy-preview-container {
-            width: 100%; height: 180px; background-color: #040404;
-            border: 1px dashed rgba(255, 85, 0, 0.3); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
-        }
-        .anatomy-preview-container::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.08) 96%), linear-gradient(90deg, rgba(255, 85, 0, 0) 96%, rgba(255, 85, 0, 0.08) 96%);
-            background-size: 12px 12px; pointer-events: none;
-        }
-        .anatomy-svg { height: 90%; width: auto; }
-        .muscle-base { fill: #222222; stroke: #333333; stroke-width: 1.5; }
-        
-        .muscle-glow { 
-            fill: #FF1E00 !important; stroke: #FF5500 !important;
-            filter: drop-shadow(0 0 8px #FF1E00);
-            animation: muscularPulse 1.5s infinite ease-in-out alternate;
-        }
-        @keyframes muscularPulse {
-            0% { fill: #FF1E00; filter: drop-shadow(0 0 4px #FF1E00); }
-            100% { fill: #FF5500; filter: drop-shadow(0 0 12px #FF2200); }
+        /* Motion Track Studio Box - Matching 1000060022.jpg aesthetic with a clean white/studio light feel */
+        .motion-track-container {
+            width: 100%; 
+            height: 200px; 
+            background: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
+            border: 1px solid #ffffff; 
+            border-radius: 10px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
 
-        .laser-scan-line {
-            position: absolute; width: 100%; height: 2px; background-color: #FF5500;
-            box-shadow: 0 0 8px #FF5500; top: 0; left: 0; animation: scanMove 3.5s infinite linear; opacity: 0.4;
+        .motion-svg { height: 85%; width: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
+        
+        /* Figure Art Design & Nodes */
+        .hologram-body { fill: #1e293b; opacity: 0.85; }
+        .hologram-bench, .hologram-weight { fill: #475569; stroke: #334155; stroke-width: 1.5; }
+        .hologram-weight-glow { fill: #ff5500; opacity: 0.2; }
+        
+        /* Tracking Skeleton Overlay Line styling matching 1000060022.jpg */
+        .track-bone { stroke: #ffffff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.95; }
+        .track-joint { fill: #ffffff; stroke: rgba(255, 85, 0, 0.8); stroke-width: 2; }
+        .track-pulse { fill: none; stroke: #ffffff; stroke-width: 1; animation: nodePulse 2s infinite; opacity: 0.5; }
+
+        @keyframes nodePulse {
+            0% { r: 3; opacity: 0.8; }
+            100% { r: 9; opacity: 0; }
         }
-        @keyframes scanMove { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+
+        /* Scanline Overlay styling */
+        .hud-overlay {
+            position: absolute; top: 10px; left: 10px;
+            font-family: 'Orbitron', sans-serif; font-size: 10px; color: #ff5500;
+            background: rgba(0, 0, 0, 0.05); padding: 4px 6px; border-radius: 4px;
+            border-left: 2px solid #ff5500; font-weight: 800; letter-spacing: 1px;
+        }
 
         .primary-btn {
             width: 100%; padding: 16px; background-color: #FF5500; color: black;
@@ -135,139 +146,161 @@
         </div>
 
         <div id="dynamic-exercise-list-box" class="exercise-list">
-            <!-- Programmatic injection container -->
+            <!-- Dynamic Injection Layout -->
         </div>
 
         <button class="primary-btn" onclick="goBack()">Finish Routine</button>
     </div>
 
     <script>
-        // Completely rewritten clean exercise database matching your exact request
+        // Full updated, precise 7-Day interactive workout data sets
         const explicitRoutineDatabase = {
             "Monday": [
-                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Targets chest without a bench", activeId: "chest" },
-                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Drop to knees if form breaks", activeId: "chest" },
-                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated on a chair or bed", activeId: "chest" },
-                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Hold one or both weights", activeId: "arms" },
-                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep feet close for easier, straight for harder", activeId: "arms" },
-                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Hands close together to torch triceps", activeId: "arms" }
-            ],
-            "Thursday": [
-                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Targets chest without a bench", activeId: "chest" },
-                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Drop to knees if form breaks", activeId: "chest" },
-                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated on a chair or bed", activeId: "chest" },
-                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Hold one or both weights", activeId: "arms" },
-                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep feet close for easier, straight for harder", activeId: "arms" },
-                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Hands close together to torch triceps", activeId: "arms" }
-            ],
-            "Tuesday": [
-                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Seated or standing", activeId: "shoulders" },
-                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Focus on slow, controlled movement", activeId: "shoulders" },
-                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Hinged at hips to target back of shoulders", activeId: "shoulders" },
-                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Turn wrists upward at the top", activeId: "arms" },
-                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Palms facing each other", activeId: "arms" },
-                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Hips high in the air to shift weight to shoulders", activeId: "shoulders" }
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Keep shoulder blades pinned to the floor", animType: "press" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Keep body straight like a rigid plank", animType: "pushup" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated carefully on a stable chair", animType: "pushup" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Keep elbows locked close to your ears", animType: "overhead" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep hips close to the bench edge", animType: "dip" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Form a diamond shape with index fingers and thumbs", animType: "pushup" }
             ],
             "Friday": [
-                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Seated or standing", activeId: "shoulders" },
-                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Focus on slow, controlled movement", activeId: "shoulders" },
-                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Hinged at hips to target back of shoulders", activeId: "shoulders" },
-                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Turn wrists upward at the top", activeId: "arms" },
-                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Palms facing each other", activeId: "arms" },
-                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Hips high in the air to shift weight to shoulders", activeId: "shoulders" }
+                { name: "Dumbbell Floor Press", volume: "4 Sets x 15 Reps", targetGroup: "Chest", note: "Keep shoulder blades pinned to the floor", animType: "press" },
+                { name: "Standard Push-ups", volume: "4 Sets x 12 Reps", targetGroup: "Chest", note: "Keep body straight like a rigid plank", animType: "pushup" },
+                { name: "Decline Push-ups", volume: "3 Sets x 10 Reps", targetGroup: "Upper Chest", note: "Feet elevated carefully on a stable chair", animType: "pushup" },
+                { name: "Overhead Dumbbell Tricep Extension", volume: "4 Sets x 12 Reps", targetGroup: "Triceps", note: "Keep elbows locked close to your ears", animType: "overhead" },
+                { name: "Chair or Bench Dips", volume: "3 Sets x 15 Reps", targetGroup: "Triceps", note: "Keep hips close to the bench edge", animType: "dip" },
+                { name: "Diamond Push-ups", volume: "3 Sets x Failure", targetGroup: "Triceps Focus", note: "Form a diamond shape with index fingers and thumbs", animType: "pushup" }
             ],
-            "Wednesday": [
-                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", targetGroup: "Quads/Glutes", note: "Hold one 5kg weight close to your chest", activeId: "quads" },
-                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", targetGroup: "Quadriceps Focus", note: "Back foot elevated on a chair", activeId: "quads" },
-                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", targetGroup: "Hamstrings", note: "Slight bend in knees, hinge at hips", activeId: "hamstrings" },
-                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", targetGroup: "Legs Dynamic", note: "Hold dumbbells at your sides", activeId: "quads" },
-                { name: "Calf Raises", volume: "4 Sets x 20 Reps", targetGroup: "Calves", note: "Hold weights to add resistance", activeId: "calves" },
-                { name: "Plank Shoulder Taps", volume: "3 Sets x 45 Seconds", targetGroup: "Abs / Core", note: "Core stability finisher", activeId: "abs" }
+            "Tuesday": [
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Press vertically straight over your crown", animType: "overhead" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Lead upwards slightly with your elbows", animType: "overhead" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Keep your chest low, hinged parallel to floor", animType: "press" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Avoid swinging back, squeeze your biceps tightly", animType: "curl" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Maintain neutral vertical grip orientation", animType: "curl" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Look down at your toes, push upwards away from floor", animType: "pushup" }
             ],
             "Saturday": [
-                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", targetGroup: "Quads/Glutes", note: "Hold one 5kg weight close to your chest", activeId: "quads" },
-                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", targetGroup: "Quadriceps Focus", note: "Back foot elevated on a chair", activeId: "quads" },
-                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", targetGroup: "Hamstrings", note: "Slight bend in knees, hinge at hips", activeId: "hamstrings" },
-                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", targetGroup: "Legs Dynamic", note: "Hold dumbbells at your sides", activeId: "quads" },
-                { name: "Calf Raises", volume: "4 Sets x 20 Reps", targetGroup: "Calves", note: "Hold weights to add resistance", activeId: "calves" },
-                { name: "Plank Shoulder Taps", volume: "3 Sets x 45 Seconds", targetGroup: "Abs / Core", note: "Core stability finisher", activeId: "abs" }
+                { name: "Dumbbell Shoulder Press", volume: "4 Sets x 12 Reps", targetGroup: "Shoulders", note: "Press vertically straight over your crown", animType: "overhead" },
+                { name: "Dumbbell Lateral Raises", volume: "4 Sets x 15 Reps", targetGroup: "Lateral Delts", note: "Lead upwards slightly with your elbows", animType: "overhead" },
+                { name: "Dumbbell Rear Delt Flyes", volume: "4 Sets x 15 Reps", targetGroup: "Rear Delts", note: "Keep your chest low, hinged parallel to floor", animType: "press" },
+                { name: "Dumbbell Bicep Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps", note: "Avoid swinging back, squeeze your biceps tightly", animType: "curl" },
+                { name: "Dumbbell Hammer Curls", volume: "4 Sets x 12 Reps", targetGroup: "Biceps/Brachialis", note: "Maintain neutral vertical grip orientation", animType: "curl" },
+                { name: "Pike Push-ups", volume: "3 Sets x 8-10 Reps", targetGroup: "Anterior Delts", note: "Look down at your toes, push upwards away from floor", animType: "pushup" }
+            ],
+            "Wednesday": [
+                { name: "Dumbbell Goblet Squats", volume: "4 Sets x 15 Reps", targetGroup: "Quads/Glutes", note: "Hold weight firmly directly against upper chest", animType: "squat" },
+                { name: "Dumbbell Bulgarian Split Squats", volume: "3 Sets x 12 Reps (per leg)", targetGroup: "Quadriceps Focus", note: "Keep your core tight, spine upright", animType: "squat" },
+                { name: "Dumbbell Romanian Deadlifts", volume: "4 Sets x 15 Reps", targetGroup: "Hamstrings", note: "Push hips way back until you feel a deep stretch", animType: "squat" },
+                { name: "Walking Lunges", volume: "3 Sets x 20 Total Steps", targetGroup: "Legs Dynamic", note: "Take deep, controlled, explosive strides", animType: "squat" },
+                { name: "Calf Raises", volume: "4 Sets x 20 Reps", targetGroup: "Calves", note: "Hold peak contraction securely at upper peak", animType: "squat" }
+            ],
+            "Thursday": [
+                { name: "Plank Shoulder Taps", volume: "4 Sets x 45 Seconds", targetGroup: "Abs / Core", note: "Keep hips locked level to prevent rotation", animType: "pushup" },
+                { name: "Bicycle Crunches", volume: "3 Sets x 20 Reps", targetGroup: "Abs / Obliques", note: "Touch elbow to opposite knee smoothly", animType: "crunch" },
+                { name: "Lying Leg Raises", volume: "3 Sets x 15 Reps", targetGroup: "Lower Abs", note: "Don't let your lower back arch off the floor", animType: "crunch" },
+                { name: "Russian Twists", volume: "3 Sets x 20 Total Reps", targetGroup: "Obliques Core", note: "Hold 5kg dumbbell steady across your midsection", animType: "crunch" },
+                { name: "Flutter Kicks", volume: "3 Sets x 45 Seconds", targetGroup: "Lower Core", note: "Keep your heels hovering just off the floor", animType: "crunch" }
             ],
             "Sunday": [
-                { name: "Active Recovery Plan", volume: "Light Intensity", targetGroup: "Full Body Rest", note: "Complete rest, light walking, or full-body stretching.", activeId: "rest" }
+                { name: "Active Recovery Plan", volume: "Light Intensity", targetGroup: "Full Body Rest", note: "Complete rest, walking, or mobility stretching", animType: "rest" }
             ]
         };
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const day = urlParams.get('day') || 'Monday';
-
-            document.getElementById('routine-panel-title').innerText = `${day.toUpperCase()} SPLIT`;
-            
-            const targetSummary = {
-                "Monday": "Chest & Tri", "Thursday": "Chest & Tri",
-                "Tuesday": "Shoulders & Bi", "Friday": "Shoulders & Bi",
-                "Wednesday": "Legs & Abs", "Saturday": "Legs & Abs",
-                "Sunday": "Recovery"
-            };
-            document.getElementById('meta-target-summary').innerText = targetSummary[day] || "Body";
-
-            const container = document.getElementById('dynamic-exercise-list-box');
-            container.innerHTML = '';
-
-            let workoutPool = explicitRoutineDatabase[day] || [];
-
-            workoutPool.forEach(ex => {
-                // Glow classes applied to SVG fragments
-                const isChest = ex.activeId === 'chest' ? 'muscle-glow' : '';
-                const isShoulders = ex.activeId === 'shoulders' ? 'muscle-glow' : '';
-                const isArms = ex.activeId === 'arms' ? 'muscle-glow' : '';
-                const isAbs = ex.activeId === 'abs' ? 'muscle-glow' : '';
-                const isQuads = ex.activeId === 'quads' ? 'muscle-glow' : '';
-                const isHams = ex.activeId === 'hamstrings' ? 'muscle-glow' : '';
-                const isCalves = ex.activeId === 'calves' ? 'muscle-glow' : '';
-
-                const cardHtml = `
-                    <div class="exercise-card">
-                        <div class="card-top-row">
-                            <div class="ex-info">
-                                <h4>${ex.name}</h4>
-                                <p>Volume: <span>${ex.volume}</span></p>
-                                <div class="ex-note">${ex.note}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="anatomy-preview-container">
-                            <div class="laser-scan-line"></div>
-                            <svg class="anatomy-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="25" r="12" class="muscle-base"/>
-                                <!-- Chest -->
-                                <path d="M42 42h36v25h-36z" class="muscle-base ${isChest}"/>
-                                <!-- Abs -->
-                                <path d="M42 67h36v25h-36z" class="muscle-base ${isAbs}"/>
-                                <!-- Shoulders -->
-                                <path d="M32 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
-                                <path d="M78 42l10 15h-8z" class="muscle-base ${isShoulders}"/>
-                                <!-- Arms -->
-                                <path d="M24 57h8v35h-8z" class="muscle-base ${isArms}"/>
-                                <path d="M88 57h8v35h-8z" class="muscle-base ${isArms}"/>
-                                <path d="M45 92h30l5 20h-40z" class="muscle-base"/>
-                                <!-- Lower Legs Split Mapping System Layout -->
-                                <path d="M45 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
-                                <path d="M61 112h14v55h-14z" class="muscle-base ${isQuads} ${isHams}"/>
-                                <path d="M47 172h11v45h-11z" class="muscle-base ${isCalves}"/>
-                                <path d="M62 172h11v45h-11z" class="muscle-base ${isCalves}"/>
-                                <path d="M44 217h14l4 6h-18zM62 217h14l4 6h-18z" class="muscle-base"/>
-                            </svg>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', cardHtml);
-            });
-        });
-
-        function goBack() {
-            window.location.href = 'index.html';
-        }
-    </script>
-</body>
-</html>
+        // Custom Vector Asset Engine simulating 1000060022.jpg tracking skeleton mechanics
+        const svgTemplates = {
+            press: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <rect x="30" y="110" width="140" height="15" rx="4" class="hologram-bench"/>
+                    <line x1="100" y1="65" x2="100" y2="110" class="track-bone"/>
+                    <line x1="60" y1="65" x2="140" y2="65" class="track-bone" style="stroke:#475569; stroke-width:6;"/>
+                    <circle cx="55" cy="65" r="12" class="hologram-weight"/>
+                    <circle cx="145" cy="65" r="12" class="hologram-weight"/>
+                    <circle cx="100" cy="50" r="11" class="hologram-body"/>
+                    <path d="M70 100 C 85 75, 115 75, 130 100 Z" class="hologram-body"/>
+                    <line x1="100" y1="50" x2="100" y2="75" class="track-bone"/>
+                    <line x1="75" y1="100" x2="100" y2="75" class="track-bone"/>
+                    <line x1="125" y1="100" x2="100" y2="75" class="track-bone"/>
+                    <line x1="75" y1="100" x2="65" y2="65" class="track-bone"/>
+                    <line x1="125" y1="100" x2="135" y2="65" class="track-bone"/>
+                    <circle cx="100" cy="50" r="4" class="track-joint"/><circle cx="100" cy="50" r="3" class="track-pulse"/>
+                    <circle cx="100" cy="75" r="4" class="track-joint"/>
+                    <circle cx="75" y1="100" cx="75" cy="90" r="4" class="track-joint"/>
+                    <circle cx="125" cy="90" r="4" class="track-joint"/>
+                    <circle cx="65" cy="65" r="5" class="track-joint"/><circle cx="65" cy="65" r="4" class="track-pulse"/>
+                    <circle cx="135" cy="65" r="5" class="track-joint"/><circle cx="135" cy="65" r="4" class="track-pulse"/>
+                </svg>`,
+            pushup: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <line x1="20" y1="120" x2="180" y2="120" stroke="#cbd5e1" stroke-width="2"/>
+                    <g transform="rotate(-15 100 90)">
+                        <circle cx="150" cy="65" r="11" class="hologram-body"/>
+                        <path d="M50 75 L150 75 L140 92 L60 92 Z" class="hologram-body"/>
+                        <line x1="60" y1="83" x2="150" y2="83" class="track-bone"/>
+                        <line x1="140" y1="83" x2="135" y2="115" class="track-bone"/>
+                        <line x1="60" y1="83" x2="55" y2="115" class="track-bone"/>
+                    </g>
+                    <circle cx="142" cy="82" r="4" class="track-joint"/><circle cx="142" cy="82" r="3" class="track-pulse"/>
+                    <circle cx="118" cy="88" r="4" class="track-joint"/>
+                    <circle cx="62" cy="103" r="4" class="track-joint"/>
+                    <circle cx="124" cy="116" r="4" class="track-joint"/>
+                </svg>`,
+            overhead: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <circle cx="100" cy="65" r="12" class="hologram-body"/>
+                    <path d="M80 130 L120 130 L115 85 L85 85 Z" class="hologram-body"/>
+                    <line x1="85" y1="40" x2="115" y2="40" class="track-bone" style="stroke:#475569; stroke-width:5;"/>
+                    <line x1="100" y1="65" x2="100" y2="110" class="track-bone"/>
+                    <line x1="85" y1="85" x2="80" y2="55" class="track-bone"/>
+                    <line x1="80" y1="55" x2="90" y2="40" class="track-bone"/>
+                    <line x1="115" y1="85" x2="120" y2="55" class="track-bone"/>
+                    <line x1="120" y1="55" x2="110" y2="40" class="track-bone"/>
+                    <circle cx="100" cy="65" r="4" class="track-joint"/>
+                    <circle cx="85" cy="85" r="4" class="track-joint"/>
+                    <circle cx="115" cy="85" r="4" class="track-joint"/>
+                    <circle cx="80" cy="55" r="4" class="track-joint"/><circle cx="80" cy="55" r="3" class="track-pulse"/>
+                    <circle cx="120" cy="55" r="4" class="track-joint"/><circle cx="120" cy="55" r="3" class="track-pulse"/>
+                </svg>`,
+            dip: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <rect x="125" y="85" width="40" height="50" class="hologram-bench"/>
+                    <circle cx="105" cy="60" r="11" class="hologram-body"/>
+                    <path d="M90 75 L115 75 L110 115 L95 115 Z" class="hologram-body"/>
+                    <line x1="105" y1="75" x2="105" y2="110" class="track-bone"/>
+                    <line x1="105" y1="75" x2="125" y2="85" class="track-bone"/>
+                    <line x1="105" y1="110" x2="95" y2="140" class="track-bone"/>
+                    <circle cx="105" cy="60" r="4" class="track-joint"/>
+                    <circle cx="105" cy="75" r="4" class="track-joint"/>
+                    <circle cx="125" cy="85" r="4" class="track-joint"/><circle cx="125" cy="85" r="3" class="track-pulse"/>
+                    <circle cx="105" cy="110" r="4" class="track-joint"/>
+                </svg>`,
+            curl: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <circle cx="100" cy="50" r="12" class="hologram-body"/>
+                    <path d="M85 120 L115 120 L112 70 L88 70 Z" class="hologram-body"/>
+                    <line x1="100" y1="70" x2="100" y2="115" class="track-bone"/>
+                    <line x1="88" y1="72" x2="80" y2="95" class="track-bone"/>
+                    <line x1="80" y1="95" x2="92" y2="68" class="track-bone"/>
+                    <circle cx="95" cy="65" r="8" class="hologram-weight"/>
+                    <circle cx="100" cy="50" r="4" class="track-joint"/>
+                    <circle cx="88" cy="72" r="4" class="track-joint"/>
+                    <circle cx="80" cy="95" r="4" class="track-joint"/><circle cx="80" cy="95" r="3" class="track-pulse"/>
+                    <circle cx="92" cy="68" r="4" class="track-joint"/>
+                </svg>`,
+            squat: `
+                <svg class="motion-svg" viewBox="0 0 200 160">
+                    <circle cx="100" cy="42" r="11" class="hologram-body"/>
+                    <!-- Exact tracking skeleton pose mapping style matching 1000060022.jpg -->
+                    <path d="M88 58 L112 58 L110 95 L90 95 Z" class="hologram-body"/>
+                    <line x1="100" y1="58" x2="100" y2="95" class="track-bone"/>
+                    <line x1="90" y1="95" x2="75" y2="115" class="track-bone"/>
+                    <line x1="75" y1="115" x2="95" y2="140" class="track-bone"/>
+                    <line x1="110" y1="95" x2="125" y2="115" class="track-bone"/>
+                    <line x1="125" y1="115" x2="105" y2="140" class="track-bone"/>
+                    <circle cx="100" cy="42" r="4" class="track-joint"/><circle cx="100" cy="42" r="3" class="track-pulse"/>
+                    <circle cx="100" cy="58" r="4" class="track-joint"/>
+                    <circle cx="90" cy="95" r="4" class="track-joint"/>
+                    <circle cx="110" cy="95" r="4" class="track-joint"/>
+                    <circle cx="75" cy="115" r="4" class="track-joint"/><circle cx="75" cy="115" r="3" class="track-pulse"/>
+                    <circle cx="125" cy="115" r="4" class="track-joint"/><circle cx="125" cy="115" r="3" class="track-pulse"/>
+                </svg>`,
+  
