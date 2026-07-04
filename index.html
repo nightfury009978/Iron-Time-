@@ -36,7 +36,55 @@
             position: relative;
         }
 
-        /* Top Bar Layout */
+        /* INTERFACE 1: SPLASH SCREEN OVERLAY */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transition: opacity 0.5s ease, pointer-events 0.5s ease;
+        }
+
+        .splash-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #ffffff;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .splash-title span {
+            color: #FF5500;
+            text-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+        }
+
+        /* Round Tactical Loading Spinner */
+        .loading-ring {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 85, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #FF5500;
+            animation: spin 1s cubic-bezier(0.6, 0.2, 0.2, 0.8) infinite;
+            box-shadow: 0 0 10px rgba(255, 85, 0, 0.1);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* INTERFACE 2: MAIN DASHBOARD LAYOUT */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -58,7 +106,6 @@
             color: #FF5500;
         }
 
-        /* Menu Button (3-lines) */
         .menu-btn {
             background: none;
             border: none;
@@ -66,11 +113,6 @@
             font-size: 22px;
             cursor: pointer;
             padding: 5px;
-            transition: color 0.2s ease;
-        }
-
-        .menu-btn:active {
-            color: #FF5500;
         }
 
         .section-label {
@@ -83,24 +125,23 @@
             font-weight: 700;
         }
 
-        /* Day Selector Grid */
         .days-grid {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
 
-        /* Animated Edge-Light Button Wrapper */
+        /* Edge-Lit Card Wrappers */
         .day-card-wrapper {
             position: relative;
             border-radius: 10px;
-            padding: 1px; /* Creates the border width */
+            padding: 1px;
             background: #161616;
             overflow: hidden;
             cursor: pointer;
         }
 
-        /* Moving Neon Light Effect */
+        /* Moving Border Lights */
         .day-card-wrapper::before {
             content: '';
             position: absolute;
@@ -124,7 +165,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Inner Button Content */
         .day-card-inner {
             position: relative;
             background: #050505;
@@ -139,7 +179,6 @@
             color: #ffffff;
             text-align: left;
             font-family: 'Rajdhani', sans-serif;
-            cursor: pointer;
         }
 
         .day-info h3 {
@@ -161,14 +200,9 @@
         .go-icon {
             color: #FF5500;
             font-size: 14px;
-            transition: transform 0.2s ease;
         }
 
-        .day-card-wrapper:active .go-icon {
-            transform: translateX(3px);
-        }
-
-        /* Progress Drawer Panel (Slides in from the right) */
+        /* INTERFACE 4: PROGRESS PANEL (SLIDE-OUT DRAWER) */
         .drawer-overlay {
             position: fixed;
             top: 0;
@@ -230,7 +264,6 @@
             cursor: pointer;
         }
 
-        /* Calendar Styling */
         .calendar-month-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 14px;
@@ -268,15 +301,15 @@
             font-size: 12px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            color: #ffffff; /* Default: White for future or pending days */
+            color: #ffffff; /* Remaining / future days remain plain white */
             position: relative;
         }
 
-        /* Calendar Tracking States */
+        /* Success & Failure Calibration Modes */
         .cal-day.completed {
             background: #001a08;
             border-color: #00ff55;
-            color: #00ff55; /* Neon Green Success */
+            color: #00ff55;
             text-shadow: 0 0 5px rgba(0, 255, 85, 0.5);
         }
 
@@ -294,6 +327,13 @@
 </head>
 <body>
 
+    <!-- INTERFACE 1: BOOT & LOAD SEQUENCE -->
+    <div id="splash-screen">
+        <h1 class="splash-title">IRON<span>TIME</span></h1>
+        <div class="loading-ring"></div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
     <div class="app-container">
         
         <!-- TOP APP BAR -->
@@ -304,104 +344,58 @@
 
         <div class="section-label">Select Training Day</div>
 
-        <!-- EDGE-LIT TRAINING DAYS GRID -->
+        <!-- INTERFACE 2: SELECTION GRID -->
         <div class="days-grid">
-            
             <div class="day-card-wrapper" onclick="launchWorkout('Monday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Monday</h3>
-                        <p>Chest & Triceps Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Monday</h3><p>Chest & Triceps Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Tuesday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Tuesday</h3>
-                        <p>Shoulder & Bicep Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Tuesday</h3><p>Shoulder & Bicep Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Wednesday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Wednesday</h3>
-                        <p>Legs Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Wednesday</h3><p>Legs Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Thursday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Thursday</h3>
-                        <p>Abs (Core) Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Thursday</h3><p>Abs (Core) Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Friday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Friday</h3>
-                        <p>Chest & Triceps Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Friday</h3><p>Chest & Triceps Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Saturday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Saturday</h3>
-                        <p>Shoulder & Bicep Focus</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Saturday</h3><p>Shoulder & Bicep Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
             <div class="day-card-wrapper" onclick="launchWorkout('Sunday')">
-                <div class="day-card-inner">
-                    <div class="day-info">
-                        <h3>Sunday</h3>
-                        <p>Rest & Recovery</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right go-icon"></i>
-                </div>
+                <div class="day-card-inner"><div class="day-info"><h3>Sunday</h3><p>Rest & Recovery</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
             </div>
-
         </div>
     </div>
 
-    <!-- SIDE DRAWER OVERLAY -->
+    <!-- SIDE PANEL DRAWER (PROGRESS TRACKER) -->
     <div id="drawer-overlay" class="drawer-overlay" onclick="closeOverlay(event)">
         <div class="progress-drawer">
             <div class="drawer-header">
                 <h2>Progress Hub</h2>
                 <button class="close-btn" onclick="toggleDrawer(false)"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
             <div id="month-title" class="calendar-month-title">Loading Month...</div>
-            
-            <!-- CALENDAR STRUCTURE -->
             <div class="calendar-grid" id="calendar-matrix">
-                <!-- Day titles -->
                 <div class="cal-header">S</div><div class="cal-header">M</div><div class="cal-header">T</div>
                 <div class="cal-header">W</div><div class="cal-header">T</div><div class="cal-header">F</div>
                 <div class="cal-header">S</div>
-                <!-- Dynamic grid dates will inject here -->
             </div>
         </div>
     </div>
 
     <script>
+        // Automatic Splash Timeout Execution
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.pointerEvents = 'none';
+            }, 1800); // Loads for 1.8 seconds before cross-fading
+        });
+
         function launchWorkout(dayName) {
             window.location.href = `workout.html?day=${dayName}`;
         }
@@ -422,68 +416,49 @@
             }
         }
 
-        // Generate automated calendar matching tracking conditions
         function buildAutomatedCalendar() {
             const matrix = document.getElementById('calendar-matrix');
             const titleBox = document.getElementById('month-title');
             
-            // Clean up old active values keeping headers intact
             const headers = matrix.querySelectorAll('.cal-header');
             matrix.innerHTML = '';
             headers.forEach(h => matrix.appendChild(h));
 
             const now = new Date();
             const year = now.getFullYear();
-            const month = now.getMonth(); // 0-indexed
+            const month = now.getMonth();
             const todayDate = now.getDate();
-            const currentHour = now.getHours();
 
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             titleBox.innerText = `${monthNames[month]} ${year}`;
 
-            // Calculations for rendering calendar matrix frames
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Pull tracking log data parsed from storage keys: "YYYY-MM-DD"
             const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
 
-            // Inject spacer blocks for offsetting weekday beginnings
             for(let i = 0; i < firstDayIndex; i++) {
-                const blank = document.createElement('div');
-                matrix.appendChild(blank);
+                matrix.appendChild(document.createElement('div'));
             }
 
-            // Generate active dynamic dates
             for(let d = 1; d <= totalDays; d++) {
                 const dateCell = document.createElement('div');
                 dateCell.classList.add('cal-day');
                 dateCell.innerText = d;
 
-                // Format key fingerprint
                 const monthString = String(month + 1).padStart(2, '0');
                 const dayString = String(d).padStart(2, '0');
                 const dateKey = `${year}-${monthString}-${dayString}`;
 
                 if (logDatabase[dateKey] === 'completed') {
-                    // Rule: Done inside validation timeline turns Neon Green
+                    // Scenario A: Logged complete -> Neon Green
                     dateCell.classList.add('completed');
                 } else if (d < todayDate) {
-                    // Rule: Missed past day deadlines default to failure emoji status 
+                    // Scenario B: Old day where 12am midnight has completely passed -> ❌
                     dateCell.classList.add('missed');
                     dateCell.innerHTML += `<span class="status-emoji">❌</span>`;
-                } else if (d === todayDate) {
-                    // Rule: Checking today's threshold parameters relative to midnight (12am)
-                    if (currentHour >= 0) { 
-                        // If workout not done yet and it's past 12am today, show ❌
-                        dateCell.classList.add('missed');
-                        dateCell.innerHTML += `<span class="status-emoji">❌</span>`;
-                    } else {
-                        // Yet to do / within time window -> Clean white prose formatting
-                        dateCell.style.color = '#ffffff';
-                    }
                 } else {
-                    // Future validation points maintain basic white profile status
+                    // Scenario C: Today (before midnight) or Future dates -> Pristine White
                     dateCell.style.color = '#ffffff';
                 }
 
