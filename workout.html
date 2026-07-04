@@ -342,10 +342,24 @@
             });
         }
 
-        function goBack() {
+                function goBack() {
+            // Generate a local YYYY-MM-DD timestamp key string
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const dateKey = `${year}-${month}-${day}`;
+
+            // Load, stamp tracking verification, and commit to local storage
+            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
+            logDatabase[dateKey] = 'completed';
+            localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
+
+            // Bounce cleanly back to dashboard landing interface
             window.location.href = 'index.html';
         }
 
+        // KEEP THIS PART BELOW:
         // Initialize display execution
         window.onload = loadWorkoutInterface;
     </script>
