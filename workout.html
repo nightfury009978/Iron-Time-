@@ -127,6 +127,7 @@
         .ex-info p { margin: 0; font-size: 14px; color: #aaaaaa; font-weight: 700; }
         .ex-info p span { color: #FF5500; font-family: 'Orbitron', sans-serif; font-size: 13px; }
 
+        /* Hardware-accelerated High Performance Video Window */
         .workout-gif-window {
             width: 100%;
             height: 220px;
@@ -139,11 +140,15 @@
             border: 1px solid #222222;
         }
 
-        .workout-gif-window img { width: 100%; height: 100%; object-fit: cover; }
+        .workout-gif-window video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
 
         /* INTERACTIVE WORKOUT HUD */
         #active-workout-hud {
-            display: none; /* Injected by script */
+            display: none; 
             flex-direction: column;
             align-items: center;
             gap: 20px;
@@ -297,7 +302,8 @@
                 <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
                 
                 <div class="workout-gif-window">
-                    <img id="hud-gif-display" src="" alt="Active Workout Animation">
+                    <!-- High performance inline mobile loop execution -->
+                    <video id="hud-video-display" autoplay loop muted playsinline src=""></video>
                 </div>
             </div>
 
@@ -314,81 +320,80 @@
     </div>
 
     <script>
-        // Global Workout Profiles Database
+        // Data Bank Updated with .mp4 targets for high-speed performance optimization
         const exerciseDataBank = {
             "Monday": {
-                focus: "Chest & Triceps", totalSets: 4,
+                focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.gif" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.gif" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.gif" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.gif" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.gif" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.mp4" }
                 ]
             },
             "Tuesday": {
-                focus: "Shoulder & Bicep", totalSets: 4,
+                focus: "Shoulder & Bicep",
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.gif" },
-                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.mp4" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.mp4" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.mp4" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.mp4" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.mp4" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.mp4" }
                 ]
             },
             "Wednesday": {
                 focus: "Legs",
                 moves: [
-                    { name: "Dumbbell Goblet Squats", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/69pldv.gif" },
-                    { name: "Dumbbell Bulgarian Split Squats", stats: "12 Reps (Per Leg)", sets: 3, img: "https://files.catbox.moe/d91yl2.gif" },
-                    { name: "Dumbbell Romanian Deadlifts", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/3tz6za.gif" },
-                    { name: "Walking Lunges", stats: "20 Total Steps", sets: 3, img: "https://files.catbox.moe/l37h5o.gif" },
-                    { name: "Calf Raises", stats: "20 Reps", sets: 4, img: "https://files.catbox.moe/ncy755.gif" }
+                    { name: "Dumbbell Goblet Squats", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/69pldv.mp4" },
+                    { name: "Dumbbell Bulgarian Split Squats", stats: "12 Reps (Per Leg)", sets: 3, img: "https://files.catbox.moe/d91yl2.mp4" },
+                    { name: "Dumbbell Romanian Deadlifts", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/3tz6za.mp4" },
+                    { name: "Walking Lunges", stats: "20 Total Steps", sets: 3, img: "https://files.catbox.moe/l37h5o.mp4" },
+                    { name: "Calf Raises", stats: "20 Reps", sets: 4, img: "https://files.catbox.moe/ncy755.mp4" }
                 ]
             },
             "Thursday": {
                 focus: "Abs (Core)",
                 moves: [
-                    { name: "Plank Shoulder Taps", stats: "45 Seconds", sets: 4, img: "https://files.catbox.moe/ix43qg.gif" },
-                    { name: "Bicycle Crunches", stats: "20 Reps", sets: 3, img: "https://files.catbox.moe/3yb7wc.gif" },
-                    { name: "Lying Leg Raises", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/5wn8fi.gif" },
-                    { name: "Russian Twists", stats: "20 Total Reps", sets: 3, img: "https://files.catbox.moe/pc9hlr.gif" },
-                    { name: "Flutter Kicks", stats: "45 Seconds", sets: 3, img: "https://files.catbox.moe/5wn8fi.gif" }
+                    { name: "Plank Shoulder Taps", stats: "45 Seconds", sets: 4, img: "https://files.catbox.moe/ix43qg.mp4" },
+                    { name: "Bicycle Crunches", stats: "20 Reps", sets: 3, img: "https://files.catbox.moe/3yb7wc.mp4" },
+                    { name: "Lying Leg Raises", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/5wn8fi.mp4" },
+                    { name: "Russian Twists", stats: "20 Total Reps", sets: 3, img: "https://files.catbox.moe/pc9hlr.mp4" },
+                    { name: "Flutter Kicks", stats: "45 Seconds", sets: 3, img: "https://files.catbox.moe/5wn8fi.mp4" }
                 ]
             },
             "Friday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.gif" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.gif" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.gif" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.gif" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.gif" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.mp4/py7er8.mp4" }
                 ]
             },
             "Saturday": {
                 focus: "Shoulder & Bicep",
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.gif" },
-                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.mp4" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.mp4" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.mp4" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.mp4" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.mp4" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.mp4" }
                 ]
             },
             "Sunday": {
                 focus: "Rest Day",
                 moves: [
-                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://via.placeholder.com/400x220/111111/ff5500?text=REST+%26+RECOVERY" }
+                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://images.unsplash.com/photo-1605296867304-46d5465a25f1?auto=format&fit=crop&w=400&q=80" } // Fallback image style placeholder for recovery
                 ]
             }
         };
 
-        // Active State Variables Tracker
         let currentExerciseIndex = 0;
         let currentSetIndex = 1;
         let countdownRunning = null;
@@ -413,6 +418,11 @@
             targetVault.innerHTML = '';
 
             trackingMovesList.forEach(move => {
+                const isVideo = move.img.endsWith('.mp4');
+                const mediaTag = isVideo 
+                    ? `<video autoplay loop muted playsinline src="${move.img}"></video>`
+                    : `<img src="${move.img}" alt="${move.name}">`;
+
                 const itemHTML = `
                     <div class="exercise-card">
                         <div class="ex-info">
@@ -420,7 +430,7 @@
                             <p>Target Sets: <span>${move.sets} sets x ${move.stats}</span></p>
                         </div>
                         <div class="workout-gif-window">
-                            <img src="${move.img}" alt="${move.name}" onerror="this.src='https://via.placeholder.com/400x220/111111/ffffff?text=${encodeURIComponent(move.name)}'">
+                            ${mediaTag}
                         </div>
                     </div>
                 `;
@@ -428,22 +438,22 @@
             });
         }
 
-        // SWAP TO ACTIVE WORKOUT TRACKER LAYER
         function startInteractiveWorkout() {
             document.getElementById('overview-zone').style.display = 'none';
             document.getElementById('active-workout-hud').style.display = 'flex';
             renderHudExercise();
         }
 
-        // RENDER CURRENT ACTIVE CARD 
         function renderHudExercise() {
             const currentMove = trackingMovesList[currentExerciseIndex];
             
             document.getElementById('hud-exercise-name').innerText = currentMove.name;
             document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
-            document.getElementById('hud-gif-display').src = currentMove.img;
+            
+            const videoDisplay = document.getElementById('hud-video-display');
+            videoDisplay.src = currentMove.img;
+            videoDisplay.play().catch(e => console.log("Autoplay caught initialization state setup"));
 
-            // Reset Clock Screen UI Elements
             clearInterval(countdownRunning);
             countdownRunning = null;
             remainingSeconds = 60;
@@ -455,9 +465,8 @@
             document.getElementById('hud-action-btn').innerText = "Skip Timer";
         }
 
-        // TRIGGER 60 SEC REST CLOCK INTERACTION
         function triggerRestTimer() {
-            if (countdownRunning !== null) return; // Guard logic if already operating
+            if (countdownRunning !== null) return;
 
             document.getElementById('timer-status-text').innerText = "REST INTERVAL ACTIVE";
             const displayClock = document.getElementById('countdown-clock');
@@ -466,7 +475,6 @@
                 remainingSeconds--;
                 displayClock.innerText = `${remainingSeconds}s`;
 
-                // Handle Critical Last 3 Seconds Blinking Target Effects
                 if (remainingSeconds <= 3 && remainingSeconds > 0) {
                     displayClock.classList.add('critical');
                 }
@@ -479,7 +487,6 @@
             }, 1000);
         }
 
-        // CONTROL BUTTON INTERFACES (SKIP / ADVANCE)
         function skipOrAdvanceSet() {
             if (countdownRunning !== null) {
                 clearInterval(countdownRunning);
@@ -488,26 +495,21 @@
             advanceToNextSegment();
         }
 
-        // PROGRESS SECTOR FLOW MANAGER
         function advanceToNextSegment() {
             const currentMove = trackingMovesList[currentExerciseIndex];
 
             if (currentSetIndex < currentMove.sets) {
-                // Advance inside Sets frame
                 currentSetIndex++;
                 renderHudExercise();
             } else if (currentExerciseIndex < trackingMovesList.length - 1) {
-                // Move to new exercise block layout
                 currentExerciseIndex++;
                 currentSetIndex = 1;
                 renderHudExercise();
             } else {
-                // End of routine workflow reached -> Display Complete Target Terminal
                 displayWorkoutCompletionTrigger();
             }
         }
 
-        // TRANSFORM BUTTON INTO NEON GREEN LOG ENGINE
         function displayWorkoutCompletionTrigger() {
             const statusText = document.getElementById('timer-status-text');
             const clockScreen = document.getElementById('countdown-clock');
@@ -517,13 +519,11 @@
             clockScreen.innerText = "DONE";
             clockScreen.classList.remove('critical');
 
-            // Replace control button configuration with Neon Green trigger frame
             actionBtn.innerText = "COMPLETE";
             actionBtn.classList.add('complete-mode');
             actionBtn.onclick = commitVerificationLogToMemory;
         }
 
-        // SAVE LOG AND EXIT TO INDEX DASHBOARD
         function commitVerificationLogToMemory() {
             const now = new Date();
             const year = now.getFullYear();
