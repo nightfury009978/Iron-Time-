@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRON TIME - Routine</title>
+    <title>IRON TIME - Tracker</title>
     <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,7 @@
             padding: 20px;
         }
 
-        /* Routine Header Layout */
+        /* Header Layout */
         .routine-header {
             display: flex;
             align-items: center;
@@ -50,11 +50,6 @@
             border: none;
             cursor: pointer;
             padding: 5px;
-            transition: transform 0.2s ease;
-        }
-
-        .back-btn:active {
-            transform: scale(0.9);
         }
 
         .routine-header h2 {
@@ -67,7 +62,7 @@
             text-transform: uppercase;
         }
 
-        /* Tactical Meta Box (Duration, Rest, Target Focus) */
+        /* Tactical Meta Box */
         .meta-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -97,23 +92,11 @@
             gap: 4px; 
         }
 
-        .meta-label i { 
-            color: #FF5500; 
-            font-size: 11px; 
-        }
+        .meta-label i { color: #FF5500; font-size: 11px; }
+        .meta-value { color: #ffffff; font-weight: 800; text-transform: uppercase; font-size: 12px; }
+        #target-focus-value { color: #FF5500; }
 
-        .meta-value { 
-            color: #ffffff; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            font-size: 12px; 
-        }
-
-        #target-focus-value {
-            color: #FF5500;
-        }
-
-        /* Exercise List Container */
+        /* Overview List Panel */
         .exercise-list {
             display: flex;
             flex-direction: column;
@@ -121,7 +104,6 @@
             margin-bottom: 40px;
         }
 
-        /* Edge Lit Cards for Workout */
         .exercise-card {
             background-color: #050505;
             border: 1px solid #161616;
@@ -142,20 +124,9 @@
             letter-spacing: 0.5px;
         }
 
-        .ex-info p {
-            margin: 0;
-            font-size: 14px;
-            color: #aaaaaa;
-            font-weight: 700;
-        }
+        .ex-info p { margin: 0; font-size: 14px; color: #aaaaaa; font-weight: 700; }
+        .ex-info p span { color: #FF5500; font-family: 'Orbitron', sans-serif; font-size: 13px; }
 
-        .ex-info p span {
-            color: #FF5500;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
-        }
-
-        /* Real-time Tracking Box (GIF/Image Display styled cleanly matching 1000060022_2.jpg posture displays) */
         .workout-gif-window {
             width: 100%;
             height: 220px;
@@ -168,13 +139,91 @@
             border: 1px solid #222222;
         }
 
-        .workout-gif-window img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .workout-gif-window img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* INTERACTIVE WORKOUT HUD */
+        #active-workout-hud {
+            display: none; /* Injected by script */
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        /* Action Buttons */
+        .hud-card {
+            background-color: #050505;
+            border: 1px solid #FF5500;
+            box-shadow: 0 0 15px rgba(255, 85, 0, 0.05);
+            width: 100%;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hud-exercise-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+        }
+
+        .hud-set-metrics {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            color: #FF5500;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Rest Timer Terminal Interface */
+        .timer-module {
+            background-color: #111111;
+            border: 1px solid #222222;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #666666;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .timer-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        /* Countdown Critical Pulse Animation */
+        .timer-display.critical {
+            color: #FF5500;
+            font-size: 64px;
+            animation: criticalBlink 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes criticalBlink {
+            0% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+            100% { transform: scale(1.1); opacity: 0.6; text-shadow: 0 0 5px rgba(255, 85, 0, 0.1); }
+        }
+
+        /* Action Controls */
         .primary-btn {
             font-family: 'Orbitron', sans-serif;
             width: 100%;
@@ -196,6 +245,17 @@
             transform: scale(0.98);
             background-color: #e04b00;
         }
+
+        /* Complete Button (Changes to Neon Green theme) */
+        .primary-btn.complete-mode {
+            background-color: #00ff55;
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(0, 255, 85, 0.3);
+            text-shadow: none;
+        }
+        .primary-btn.complete-mode:active {
+            background-color: #00cc44;
+        }
     </style>
 </head>
 <body>
@@ -204,7 +264,7 @@
         
         <!-- HEADER ROUTINE PANEL -->
         <div class="routine-header">
-            <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="back-btn" onclick="goBackHome()"><i class="fa-solid fa-arrow-left"></i></button>
             <h2 id="day-title-header">Workout Plan</h2>
         </div>
 
@@ -224,114 +284,140 @@
             </div>
         </div>
 
-        <!-- EXERCISE CONTAINER -->
-        <div id="workout-vault" class="exercise-list"></div>
+        <!-- OVERVIEW INTERFACE LAYER (LIST MODE) -->
+        <div id="overview-zone">
+            <div id="workout-vault" class="exercise-list"></div>
+            <button class="primary-btn" onclick="startInteractiveWorkout()">Start Workout</button>
+        </div>
 
-        <!-- FINISH BUTTON -->
-        <button class="primary-btn" onclick="goBack()">Complete Workout</button>
+        <!-- INTERACTIVE LIVE TRACKER HUD LAYER -->
+        <div id="active-workout-hud">
+            <div class="hud-card">
+                <h3 id="hud-exercise-name" class="hud-exercise-title">EXERCISE NAME</h3>
+                <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
+                
+                <div class="workout-gif-window">
+                    <img id="hud-gif-display" src="" alt="Active Workout Animation">
+                </div>
+            </div>
+
+            <!-- TAP-TO-REST TIMING MODULE -->
+            <div class="timer-module" onclick="triggerRestTimer()">
+                <div id="timer-status-text" class="timer-label">Tap to start rest interval</div>
+                <div id="countdown-clock" class="timer-display">60s</div>
+            </div>
+
+            <!-- INTERACTIVE UTILITY TRIGGER CONTROL -->
+            <button id="hud-action-btn" class="primary-btn" onclick="skipOrAdvanceSet()">Skip Timer</button>
+        </div>
 
     </div>
 
     <script>
-        // Full Dataset mapping requested exercises and connecting custom file extensions
+        // Global Workout Profiles Database
         const exerciseDataBank = {
             "Monday": {
-                focus: "Chest & Triceps",
+                focus: "Chest & Triceps", totalSets: 4,
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/7xz2ym.gif" },
-                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/2hyhvx.gif" },
-                    { name: "Decline Push-ups", stats: "3 sets x 10 reps (Feet on a chair)", img: "https://files.catbox.moe/bd06pj.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/z0rlc0.gif" },
-                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "https://files.catbox.moe/0t57ju.gif" },
-                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "https://files.catbox.moe/py7er8.gif" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.gif" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.gif" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.gif" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.gif" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.gif" }
                 ]
             },
             "Tuesday": {
-                focus: "Shoulder & Bicep",
+                focus: "Shoulder & Bicep", totalSets: 4,
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/vsqbhn.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/6m7vy4.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/lqnwh0.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/qt0sct.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/r94sq8.gif" },
-                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "https://files.catbox.moe/4wyey6.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.gif" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.gif" }
                 ]
             },
             "Wednesday": {
                 focus: "Legs",
                 moves: [
-                    { name: "Dumbbell Goblet Squats", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/69pldv.gif" },
-                    { name: "Dumbbell Bulgarian Split Squats", stats: "3 sets x 12 reps (per leg)", img: "https://files.catbox.moe/d91yl2.gif" },
-                    { name: "Dumbbell Romanian Deadlifts", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/3tz6za.gif" },
-                    { name: "Walking Lunges", stats: "3 sets x 20 total steps", img: "https://files.catbox.moe/l37h5o.gif" },
-                    { name: "Calf Raises", stats: "4 sets x 20 reps", img: "https://files.catbox.moe/ncy755.gif" }
+                    { name: "Dumbbell Goblet Squats", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/69pldv.gif" },
+                    { name: "Dumbbell Bulgarian Split Squats", stats: "12 Reps (Per Leg)", sets: 3, img: "https://files.catbox.moe/d91yl2.gif" },
+                    { name: "Dumbbell Romanian Deadlifts", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/3tz6za.gif" },
+                    { name: "Walking Lunges", stats: "20 Total Steps", sets: 3, img: "https://files.catbox.moe/l37h5o.gif" },
+                    { name: "Calf Raises", stats: "20 Reps", sets: 4, img: "https://files.catbox.moe/ncy755.gif" }
                 ]
             },
             "Thursday": {
                 focus: "Abs (Core)",
                 moves: [
-                    { name: "Plank Shoulder Taps", stats: "4 sets x 45 seconds", img: "https://files.catbox.moe/ix43qg.gif" },
-                    { name: "Bicycle Crunches", stats: "3 sets x 20 reps", img: "https://files.catbox.moe/3yb7wc.gif" },
-                    { name: "Lying Leg Raises", stats: "3 sets x 15 reps", img: "https://files.catbox.moe/5wn8fi.gif" },
-                    { name: "Russian Twists", stats: "3 sets x 20 total reps (Hold 5kg)", img: "https://files.catbox.moe/pc9hlr.gif" },
-                    { name: "Flutter Kicks", stats: "3 sets x 45 seconds", img: "https://files.catbox.moe/5wn8fi.gif" }
+                    { name: "Plank Shoulder Taps", stats: "45 Seconds", sets: 4, img: "https://files.catbox.moe/ix43qg.gif" },
+                    { name: "Bicycle Crunches", stats: "20 Reps", sets: 3, img: "https://files.catbox.moe/3yb7wc.gif" },
+                    { name: "Lying Leg Raises", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/5wn8fi.gif" },
+                    { name: "Russian Twists", stats: "20 Total Reps", sets: 3, img: "https://files.catbox.moe/pc9hlr.gif" },
+                    { name: "Flutter Kicks", stats: "45 Seconds", sets: 3, img: "https://files.catbox.moe/5wn8fi.gif" }
                 ]
             },
             "Friday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/7xz2ym.gif" },
-                    { name: "Standard Push-ups", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/2hyhvx.gif" },
-                    { name: "Decline Push-ups", stats: "3 sets x 10 reps", img: "https://files.catbox.moe/bd06pj.gif" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/z0rlc0.gif" },
-                    { name: "Chair or Bench Dips", stats: "3 sets x 15 reps", img: "https://files.catbox.moe/0t57ju.gif" },
-                    { name: "Diamond Push-ups", stats: "3 sets to failure", img: "https://files.catbox.moe/py7er8.gif" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.gif" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.gif" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.gif" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.gif" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.gif" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.gif" }
                 ]
             },
             "Saturday": {
                 focus: "Shoulder & Bicep",
                 moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/vsqbhn.gif" },
-                    { name: "Dumbbell Lateral Raises", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/6m7vy4.gif" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "4 sets x 15 reps", img: "https://files.catbox.moe/lqnwh0.gif" },
-                    { name: "Dumbbell Bicep Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/qt0sct.gif" },
-                    { name: "Dumbbell Hammer Curls", stats: "4 sets x 12 reps", img: "https://files.catbox.moe/r94sq8.gif" },
-                    { name: "Pike Push-ups", stats: "3 sets x 8-10 reps", img: "https://files.catbox.moe/4wyey6.gif" }
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/vsqbhn.gif" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/6m7vy4.gif" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/lqnwh0.gif" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/qt0sct.gif" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/r94sq8.gif" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/4wyey6.gif" }
                 ]
             },
             "Sunday": {
                 focus: "Rest Day",
                 moves: [
-                    { name: "Full Recovery Rest", stats: "Prepare for Monday", img: "https://via.placeholder.com/400x220/111111/ff5500?text=REST+%26+RECOVERY" }
+                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://via.placeholder.com/400x220/111111/ff5500?text=REST+%26+RECOVERY" }
                 ]
             }
         };
 
-        // Extract passed URL Parameters smoothly on Mobile
+        // Active State Variables Tracker
+        let currentExerciseIndex = 0;
+        let currentSetIndex = 1;
+        let countdownRunning = null;
+        let remainingSeconds = 60;
+        let chosenDay = "Monday";
+        let trackingMovesList = [];
+
         function getUrlDay() {
             const params = new URLSearchParams(window.location.search);
             return params.get('day') || 'Monday';
         }
 
-        // Generate Interface 3 Content Setup 
         function loadWorkoutInterface() {
-            const chosenDay = getUrlDay();
+            chosenDay = getUrlDay();
             const targetData = exerciseDataBank[chosenDay];
+            trackingMovesList = targetData.moves;
 
-            // Render text definitions inside layout headers
-            document.getElementById('day-title-header').innerText = `${chosenDay} Workout`;
+            document.getElementById('day-title-header').innerText = `${chosenDay} Routine`;
             document.getElementById('target-focus-value').innerText = targetData.focus;
 
             const targetVault = document.getElementById('workout-vault');
-            targetVault.innerHTML = ''; // Clear layout frame
+            targetVault.innerHTML = '';
 
-            // Inject Custom Workout Blocks
-            targetData.moves.forEach(move => {
+            trackingMovesList.forEach(move => {
                 const itemHTML = `
                     <div class="exercise-card">
                         <div class="ex-info">
                             <h4>${move.name}</h4>
-                            <p>Target Sets: <span>${move.stats}</span></p>
+                            <p>Target Sets: <span>${move.sets} sets x ${move.stats}</span></p>
                         </div>
                         <div class="workout-gif-window">
                             <img src="${move.img}" alt="${move.name}" onerror="this.src='https://via.placeholder.com/400x220/111111/ffffff?text=${encodeURIComponent(move.name)}'">
@@ -342,25 +428,120 @@
             });
         }
 
-                function goBack() {
-            // Generate a local YYYY-MM-DD timestamp key string
+        // SWAP TO ACTIVE WORKOUT TRACKER LAYER
+        function startInteractiveWorkout() {
+            document.getElementById('overview-zone').style.display = 'none';
+            document.getElementById('active-workout-hud').style.display = 'flex';
+            renderHudExercise();
+        }
+
+        // RENDER CURRENT ACTIVE CARD 
+        function renderHudExercise() {
+            const currentMove = trackingMovesList[currentExerciseIndex];
+            
+            document.getElementById('hud-exercise-name').innerText = currentMove.name;
+            document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
+            document.getElementById('hud-gif-display').src = currentMove.img;
+
+            // Reset Clock Screen UI Elements
+            clearInterval(countdownRunning);
+            countdownRunning = null;
+            remainingSeconds = 60;
+            
+            const displayClock = document.getElementById('countdown-clock');
+            displayClock.innerText = "60s";
+            displayClock.classList.remove('critical');
+            document.getElementById('timer-status-text').innerText = "Tap to start rest interval";
+            document.getElementById('hud-action-btn').innerText = "Skip Timer";
+        }
+
+        // TRIGGER 60 SEC REST CLOCK INTERACTION
+        function triggerRestTimer() {
+            if (countdownRunning !== null) return; // Guard logic if already operating
+
+            document.getElementById('timer-status-text').innerText = "REST INTERVAL ACTIVE";
+            const displayClock = document.getElementById('countdown-clock');
+
+            countdownRunning = setInterval(() => {
+                remainingSeconds--;
+                displayClock.innerText = `${remainingSeconds}s`;
+
+                // Handle Critical Last 3 Seconds Blinking Target Effects
+                if (remainingSeconds <= 3 && remainingSeconds > 0) {
+                    displayClock.classList.add('critical');
+                }
+
+                if (remainingSeconds <= 0) {
+                    clearInterval(countdownRunning);
+                    countdownRunning = null;
+                    advanceToNextSegment();
+                }
+            }, 1000);
+        }
+
+        // CONTROL BUTTON INTERFACES (SKIP / ADVANCE)
+        function skipOrAdvanceSet() {
+            if (countdownRunning !== null) {
+                clearInterval(countdownRunning);
+                countdownRunning = null;
+            }
+            advanceToNextSegment();
+        }
+
+        // PROGRESS SECTOR FLOW MANAGER
+        function advanceToNextSegment() {
+            const currentMove = trackingMovesList[currentExerciseIndex];
+
+            if (currentSetIndex < currentMove.sets) {
+                // Advance inside Sets frame
+                currentSetIndex++;
+                renderHudExercise();
+            } else if (currentExerciseIndex < trackingMovesList.length - 1) {
+                // Move to new exercise block layout
+                currentExerciseIndex++;
+                currentSetIndex = 1;
+                renderHudExercise();
+            } else {
+                // End of routine workflow reached -> Display Complete Target Terminal
+                displayWorkoutCompletionTrigger();
+            }
+        }
+
+        // TRANSFORM BUTTON INTO NEON GREEN LOG ENGINE
+        function displayWorkoutCompletionTrigger() {
+            const statusText = document.getElementById('timer-status-text');
+            const clockScreen = document.getElementById('countdown-clock');
+            const actionBtn = document.getElementById('hud-action-btn');
+
+            statusText.innerText = "ROUTINE COMPLETED VECTORS ACHIEVED";
+            clockScreen.innerText = "DONE";
+            clockScreen.classList.remove('critical');
+
+            // Replace control button configuration with Neon Green trigger frame
+            actionBtn.innerText = "COMPLETE";
+            actionBtn.classList.add('complete-mode');
+            actionBtn.onclick = commitVerificationLogToMemory;
+        }
+
+        // SAVE LOG AND EXIT TO INDEX DASHBOARD
+        function commitVerificationLogToMemory() {
             const now = new Date();
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
             const dateKey = `${year}-${month}-${day}`;
 
-            // Load, stamp tracking verification, and commit to local storage
             const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
             logDatabase[dateKey] = 'completed';
             localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
 
-            // Bounce cleanly back to dashboard landing interface
+            goBackHome();
+        }
+
+        function goBackHome() {
             window.location.href = 'index.html';
         }
 
-        // KEEP THIS PART BELOW:
-        // Initialize display execution
         window.onload = loadWorkoutInterface;
     </script>
 </body>
