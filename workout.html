@@ -7,7 +7,7 @@
     <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;800;900&family=Rajdhani:wght=600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -127,7 +127,7 @@
         .ex-info p { margin: 0; font-size: 14px; color: #aaaaaa; font-weight: 700; }
         .ex-info p span { color: #FF5500; font-family: 'Orbitron', sans-serif; font-size: 13px; }
 
-        /* Hardware-accelerated High Performance Video Window */
+        /* Video Window Layout */
         .workout-gif-window {
             width: 100%;
             height: 220px;
@@ -144,6 +144,7 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
+            background-color: #000000;
         }
 
         /* INTERACTIVE WORKOUT HUD */
@@ -251,7 +252,6 @@
             background-color: #e04b00;
         }
 
-        /* Complete Button (Changes to Neon Green theme) */
         .primary-btn.complete-mode {
             background-color: #00ff55;
             color: #000000;
@@ -302,8 +302,8 @@
                 <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
                 
                 <div class="workout-gif-window">
-                    <!-- High performance inline mobile loop execution -->
-                    <video id="hud-video-display" autoplay loop muted playsinline src=""></video>
+                    <!-- Configured inline loop attributes -->
+                    <video id="hud-video-display" loop autoplay muted playsinline type="video/mp4"></video>
                 </div>
             </div>
 
@@ -320,17 +320,16 @@
     </div>
 
     <script>
-        // Data Bank Updated with .mp4 targets for high-speed performance optimization
         const exerciseDataBank = {
             "Monday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.mp4" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.mp4" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.mp4" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.mp4" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.mp4" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.mp4" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
                 ]
             },
             "Tuesday": {
@@ -367,12 +366,12 @@
             "Friday": {
                 focus: "Chest & Triceps",
                 moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/7xz2ym.mp4" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/2hyhvx.mp4" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/bd06pj.mp4" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/z0rlc0.mp4" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/0t57ju.mp4" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/py7er8.mp4" }
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
                 ]
             },
             "Saturday": {
@@ -420,7 +419,7 @@
             trackingMovesList.forEach(move => {
                 const isVideo = move.img.endsWith('.mp4');
                 const mediaTag = isVideo 
-                    ? `<video autoplay loop muted playsinline src="${move.img}"></video>`
+                    ? `<video loop autoplay muted playsinline src="${move.img}#t=0.001" type="video/mp4"></video>`
                     : `<img src="${move.img}" alt="${move.name}">`;
 
                 const itemHTML = `
@@ -452,16 +451,14 @@
             
             const videoDisplay = document.getElementById('hud-video-display');
             
-            // Forces the video to reload clean and play immediately on mobile
-            videoDisplay.src = currentMove.img;
+            videoDisplay.muted = true;
+            videoDisplay.src = currentMove.img + "#t=0.001";
             videoDisplay.load();
             
-            // Safe play execution with automatic error fallback
             let playPromise = videoDisplay.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.log("Mobile playback restriction handled, forcing interaction loop:", error);
-                    // Fallback to let it play on the first screen tap if restricted
+                    console.log("Autoplay caught restriction:", error);
                     document.body.addEventListener('click', () => {
                         videoDisplay.play();
                     }, { once: true });
