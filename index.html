@@ -463,6 +463,11 @@
             animation: criticalBlink 0.5s ease-in-out infinite alternate;
         }
 
+        @keyframes criticalBlink {
+            0% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+            100% { transform: scale(1.1); opacity: 0.6; text-shadow: 0 0 5px rgba(255, 85, 0, 0.1); }
+        }
+
         .primary-btn {
             font-family: 'Orbitron', sans-serif;
             width: 100%;
@@ -498,7 +503,7 @@
     <!-- OVERLAY SHADOW LAYER -->
     <div id="app-overlay" class="drawer-overlay" onclick="closeSideMenu()"></div>
 
-    <!-- RECONFIGURED INTERACTIVE TACTICAL DRAWER -->
+    <!-- TACTICAL SIDE DRAWER -->
     <nav id="app-drawer" class="side-drawer">
         <button class="close-drawer-btn" onclick="closeSideMenu()"><i class="fa-solid fa-xmark"></i></button>
         
@@ -943,6 +948,9 @@
             const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
             logDatabase[dateKey] = 'completed';
             localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
+
+            // FORCE REAL-TIME UPDATE OF THE PROGRESS HUB CALENDAR IMMEDIATELY
+            buildSecureCalendarMatrix();
 
             switchActiveView('view-home');
         }
