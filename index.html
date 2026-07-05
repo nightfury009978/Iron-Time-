@@ -55,6 +55,7 @@
             align-items: center;
             margin-top: 10px;
             margin-bottom: 30px;
+            width: 100%;
         }
 
         .menu-btn {
@@ -64,6 +65,9 @@
             border: none;
             cursor: pointer;
             padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logo-title {
@@ -73,6 +77,7 @@
             letter-spacing: 2px;
             color: #ffffff;
             margin: 0;
+            text-align: center;
         }
 
         .logo-title span {
@@ -563,7 +568,8 @@
     <main id="view-home" class="app-view active">
         <div class="app-container">
             <header class="top-navbar">
-                <button class="menu-btn" onclick="openSideMenu()"><i class="fa-solid fa-bars-strikethrough"></i></button>
+                <!-- Restored Standard Hamburger Icon Menu button -->
+                <button class="menu-btn" onclick="openSideMenu()"><i class="fa-solid fa-bars"></i></button>
                 <h1 class="logo-title">IRON<span>TIME</span></h1>
                 <div style="width:32px;"></div> <!-- Alignment Counterweight -->
             </header>
