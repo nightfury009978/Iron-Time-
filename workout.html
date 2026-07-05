@@ -302,7 +302,9 @@
                 <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
                 
                 <div class="workout-gif-window">
-                    <video id="hud-video-display" autoplay loop muted playsinline type="video/mp4"></video>
+                    <video id="hud-video-display" autoplay loop muted playsinline>
+                        <source id="hud-video-source" type="video/mp4">
+                    </video>
                 </div>
             </div>
 
@@ -401,12 +403,21 @@
 
         function getUrlDay() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('day') || 'Monday';
+            const day = params.get('day') || 'Monday';
+            // Safe format conversion: Cleans spaces and matches exact casing (e.g. "tuesday " -> "Tuesday")
+            return day.trim().charAt(0).toUpperCase() + day.trim().slice(1).toLowerCase();
         }
 
         function loadWorkoutInterface() {
             chosenDay = getUrlDay();
-            const targetData = exerciseDataBank[chosenDay];
+            let targetData = exerciseDataBank[chosenDay];
+            
+            // Absolute safety fallback if parameter parsing returns an unrecognized string
+            if (!targetData) {
+                chosenDay = "Monday";
+                targetData = exerciseDataBank[chosenDay];
+            }
+            
             trackingMovesList = targetData.moves;
 
             document.getElementById('day-title-header').innerText = `${chosenDay} Routine`;
@@ -416,9 +427,9 @@
             targetVault.innerHTML = '';
 
             trackingMovesList.forEach(move => {
-                const isVideo = move.img.endsWith('.mp4');
+                const isVideo = move.img.toLowerCase().endsWith('.mp4');
                 const mediaTag = isVideo 
-                    ? `<video autoplay loop muted playsinline src="${move.img}" type="video/mp4"></video>`
+                    ? `<video autoplay loop muted playsinline><source src="${move.img}" type="video/mp4"></video>`
                     : `<img src="${move.img}" alt="${move.name}">`;
 
                 const itemHTML = `
@@ -449,12 +460,15 @@
             document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
             
             const videoDisplay = document.getElementById('hud-video-display');
+            const videoSource = document.getElementById('hud-video-source');
             
             videoDisplay.setAttribute('muted', '');
             videoDisplay.setAttribute('playsinline', '');
             videoDisplay.setAttribute('loop', '');
             videoDisplay.muted = true;
-            videoDisplay.src = currentMove.img;
+            
+            // Safely swapping mobile video elements via inner source node configuration
+            videoSource.src = currentMove.img;
             videoDisplay.load();
             
             let playPromise = videoDisplay.play();
