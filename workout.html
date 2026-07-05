@@ -302,8 +302,8 @@
                 <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
                 
                 <div class="workout-gif-window">
-                    <!-- Configured inline loop attributes -->
-                    <video id="hud-video-display" loop autoplay muted playsinline type="video/mp4"></video>
+                    <!-- Standardized mobile inline loop element -->
+                    <video id="hud-video-display" autoplay loop muted playsinline type="video/mp4"></video>
                 </div>
             </div>
 
@@ -419,7 +419,7 @@
             trackingMovesList.forEach(move => {
                 const isVideo = move.img.endsWith('.mp4');
                 const mediaTag = isVideo 
-                    ? `<video loop autoplay muted playsinline src="${move.img}#t=0.001" type="video/mp4"></video>`
+                    ? `<video autoplay loop muted playsinline src="${move.img}" type="video/mp4"></video>`
                     : `<img src="${move.img}" alt="${move.name}">`;
 
                 const itemHTML = `
@@ -451,8 +451,12 @@
             
             const videoDisplay = document.getElementById('hud-video-display');
             
+            // Explicit Javascript attribute adjustments to force mobile hardware rendering
+            videoDisplay.setAttribute('muted', '');
+            videoDisplay.setAttribute('playsinline', '');
+            videoDisplay.setAttribute('loop', '');
             videoDisplay.muted = true;
-            videoDisplay.src = currentMove.img + "#t=0.001";
+            videoDisplay.src = currentMove.img;
             videoDisplay.load();
             
             let playPromise = videoDisplay.play();
