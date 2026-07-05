@@ -139,16 +139,17 @@
         .side-drawer {
             position: fixed;
             top: 0;
-            left: -280px;
-            width: 280px;
+            left: -320px;
+            width: 320px;
             height: 100%;
             background-color: #050505;
             border-right: 1px solid #161616;
             z-index: 1000;
             transition: left 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
-            padding: 30px 20px;
+            padding: 30px 24px;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
 
         .side-drawer.open {
@@ -171,14 +172,39 @@
             display: block;
         }
 
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .drawer-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
         .close-drawer-btn {
-            align-self: flex-end;
             background: none;
             border: none;
-            color: #666666;
-            font-size: 18px;
+            color: #ffffff;
+            font-size: 20px;
             cursor: pointer;
-            margin-bottom: 40px;
+            padding: 5px;
+        }
+
+        .calendar-month-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #FF5500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 15px 0;
         }
 
         /* Drawer Nav Elements */
@@ -210,6 +236,7 @@
 
         .drawer-link i {
             color: #FF5500;
+            font-size: 14px;
         }
 
         .drawer-link:active {
@@ -229,7 +256,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            margin-top: auto;
+            margin-top: 40px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -242,11 +269,9 @@
         /* Sub-Interface Frameworks (Calendar Panel) */
         .sub-panel {
             display: none;
-            background-color: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 10px;
+            background-color: transparent;
+            padding: 5px 0;
+            margin-top: 5px;
         }
 
         .sub-panel.active {
@@ -256,29 +281,30 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-top: 15px;
+            gap: 8px;
         }
 
         .calendar-header-day {
             text-align: center;
-            font-size: 10px;
-            color: #444444;
+            font-size: 11px;
+            color: #777777;
             font-weight: 700;
             font-family: 'Orbitron', sans-serif;
+            padding-bottom: 5px;
         }
 
         .calendar-day-node {
             aspect-ratio: 1;
-            background-color: #050505;
-            border: 1px solid #161616;
-            border-radius: 4px;
+            background-color: transparent;
+            border: 1px solid #222222;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            color: #444444;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .calendar-day-node.logged {
@@ -505,22 +531,26 @@
 
     <!-- TACTICAL SIDE DRAWER -->
     <nav id="app-drawer" class="side-drawer">
-        <button class="close-drawer-btn" onclick="closeSideMenu()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="drawer-header">
+            <h2>Progress Hub</h2>
+            <button class="close-drawer-btn" onclick="closeSideMenu()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
         
         <div class="drawer-nav-container">
-            <!-- Progress Hub Accordion Control Toggle -->
+            <!-- Progress Chart Button Trigger -->
             <button class="drawer-link" onclick="toggleProgressHubPanel()">
-                <span>Progress Hub</span>
+                <span>Progress Chart</span>
                 <i id="hub-chevron" class="fa-solid fa-chevron-down"></i>
             </button>
             
-            <!-- Hidden Calendar Grid Section (Opens inside menu on request) -->
+            <!-- Hidden Calendar Mesh Area -->
             <div id="progress-hub-panel" class="sub-panel">
+                <div id="calendar-month-header" class="calendar-month-title">JULY 2026</div>
                 <div class="calendar-grid" id="drawer-calendar-mesh"></div>
             </div>
         </div>
 
-        <!-- Logout Action Placeholder (Ready for integration later) -->
+        <!-- Logout Action Placeholder -->
         <button class="logout-link" onclick="handleSecureLogoffProcess()">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </button>
@@ -690,7 +720,6 @@
             const activeView = document.getElementById(viewId);
             activeView.classList.add('active');
             
-            // Clean interface repaint check
             if (viewId === 'view-home') {
                 compileWeeklyStatusDashboard();
             }
@@ -725,7 +754,7 @@
         }
 
         function handleSecureLogoffProcess() {
-            alert("Gmail configuration terminal placeholder. Security links will be established during step finalization.");
+            alert("Configuration terminal placeholder.");
         }
 
         // Render Home Screen List Interface
@@ -746,7 +775,6 @@
                 let statusLabel = exerciseDataBank[day].focus;
                 let completionClass = "";
 
-                // Check if this explicit day was resolved today
                 if (logDatabase[dateKey] && new Date().toLocaleDateString('en-US', {weekday: 'long'}) === day) {
                     statusLabel = "COMPLETED TODAY";
                     completionClass = "completed";
@@ -770,19 +798,35 @@
             const calendarGrid = document.getElementById('drawer-calendar-mesh');
             calendarGrid.innerHTML = '';
 
-            const headers = ["M", "T", "W", "T", "F", "S", "S"];
+            const headers = ["S", "M", "T", "W", "T", "F", "S"];
             headers.forEach(h => {
                 calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-header-day">${h}</div>`);
             });
 
-            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
             const current = new Date();
-            const totalDaysInMonth = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+            const year = current.getFullYear();
+            const month = current.getMonth(); // 0-indexed month
 
+            // Set Month header text automatically (e.g., "JULY 2026")
+            const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+            document.getElementById('calendar-month-header').innerText = `${monthNames[month]} ${year}`;
+
+            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
+            
+            // Find total days in current month and first day offset
+            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDayIndex = new Date(year, month, 1).getDay(); // Sunday=0, Monday=1, etc.
+
+            // Render padding blanks for empty spaces before day 1
+            for (let i = 0; i < firstDayIndex; i++) {
+                calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-day-node" style="border:none; visibility:hidden;"></div>`);
+            }
+
+            // Populate days dynamically
             for (let d = 1; d <= totalDaysInMonth; d++) {
                 const dayString = String(d).padStart(2, '0');
-                const monthString = String(current.getMonth() + 1).padStart(2, '0');
-                const loopKey = `${current.getFullYear()}-${monthString}-${dayString}`;
+                const monthString = String(month + 1).padStart(2, '0');
+                const loopKey = `${year}-${monthString}-${dayString}`;
 
                 let loggedClass = logDatabase[loopKey] ? 'logged' : '';
                 calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-day-node ${loggedClass}">${d}</div>`);
@@ -795,14 +839,12 @@
             const targetData = exerciseDataBank[chosenDay];
             trackingMovesList = targetData.moves;
 
-            // Reset interaction indices safely
             currentExerciseIndex = 0;
             currentSetIndex = 1;
 
             document.getElementById('day-title-header').innerText = `${chosenDay} Routine`;
             document.getElementById('target-focus-value').innerText = targetData.focus;
 
-            // Hide HUD layer by default, clear list mode layers
             document.getElementById('overview-zone').style.display = 'block';
             document.getElementById('active-workout-hud').style.display = 'none';
 
@@ -949,7 +991,7 @@
             logDatabase[dateKey] = 'completed';
             localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
 
-            // FORCE REAL-TIME UPDATE OF THE PROGRESS HUB CALENDAR IMMEDIATELY
+            // Force immediate silent background grid rebuild
             buildSecureCalendarMatrix();
 
             switchActiveView('view-home');
