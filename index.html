@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRON TIME - Dashboard</title>
-    <!-- Fonts and Icons -->
+    <title>IRON TIME</title>
+    <!-- Fonts & Icon Assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Rajdhani:wght=600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -22,11 +22,23 @@
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Fluid SPA Interface Screens */
+        .app-view {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .app-view.active {
+            display: flex;
+            opacity: 1;
         }
 
         .app-container {
@@ -36,56 +48,8 @@
             position: relative;
         }
 
-        /* INTERFACE 1: SPLASH SCREEN OVERLAY */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000000;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            transition: opacity 0.5s ease, pointer-events 0.5s ease;
-        }
-
-        .splash-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: #ffffff;
-            margin: 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-
-        .splash-title span {
-            color: #FF5500;
-            text-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
-        }
-
-        /* Round Tactical Loading Spinner */
-        .loading-ring {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 85, 0, 0.1);
-            border-radius: 50%;
-            border-top-color: #FF5500;
-            animation: spin 1s cubic-bezier(0.6, 0.2, 0.2, 0.8) infinite;
-            box-shadow: 0 0 10px rgba(255, 85, 0, 0.1);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* INTERFACE 2: MAIN DASHBOARD LAYOUT */
-        .top-bar {
+        /* Top Bar Layout */
+        .top-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -93,378 +57,899 @@
             margin-bottom: 30px;
         }
 
-        .app-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        .app-title span {
-            color: #FF5500;
-        }
-
         .menu-btn {
+            font-size: 22px;
+            color: #ffffff;
             background: none;
             border: none;
-            color: #ffffff;
-            font-size: 22px;
             cursor: pointer;
             padding: 5px;
         }
 
-        .section-label {
+        .logo-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            color: #666666;
+            font-size: 24px;
+            font-weight: 900;
             letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
         }
 
-        .days-grid {
+        .logo-title span {
+            color: #FF5500;
+        }
+
+        /* Tactical Weekly Grid System */
+        .week-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
-        /* Edge-Lit Card Wrappers */
-        .day-card-wrapper {
-            position: relative;
-            border-radius: 10px;
-            padding: 1px;
-            background: #161616;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        /* Moving Border Lights */
-        .day-card-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                transparent, 
-                transparent, 
-                #FF5500, 
-                transparent, 
-                transparent
-            );
-            animation: rotateEdge 4s linear infinite;
-            z-index: 1;
-        }
-
-        @keyframes rotateEdge {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .day-card-inner {
-            position: relative;
-            background: #050505;
-            border-radius: 9px;
-            padding: 16px 20px;
+        .day-panel {
+            background-color: #050505;
+            border: 1px solid #161616;
+            border-radius: 8px;
+            padding: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 2;
-            width: 100%;
-            border: none;
-            color: #ffffff;
-            text-align: left;
-            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: border-color 0.15s, background-color 0.15s;
         }
 
-        .day-info h3 {
+        .day-panel:active {
+            background-color: #0a0a0a;
+            border-color: #FF5500;
+        }
+
+        .day-meta h3 {
             font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
             margin: 0 0 4px 0;
-            font-size: 16px;
-            font-weight: 800;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        .day-meta p {
+            margin: 0;
+            font-size: 13px;
+            color: #666666;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        .day-info p {
-            margin: 0;
-            font-size: 13px;
-            color: #888888;
-            font-weight: 600;
+        .day-panel.completed .day-meta p {
+            color: #00ff55;
         }
 
-        .go-icon {
-            color: #FF5500;
+        .action-arrow {
+            color: #333333;
             font-size: 14px;
+            transition: color 0.15s;
         }
 
-        /* INTERFACE 4: PROGRESS PANEL (SLIDE-OUT DRAWER) */
+        .day-panel:active .action-arrow {
+            color: #FF5500;
+        }
+
+        /* Tactical Drawer Terminal */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background-color: #050505;
+            border-right: 1px solid #161616;
+            z-index: 1000;
+            transition: left 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-drawer.open {
+            left: 0;
+        }
+
         .drawer-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
         }
 
-        .drawer-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
+        .drawer-overlay.visible {
+            display: block;
         }
 
-        .progress-drawer {
-            position: absolute;
-            top: 0;
-            right: -320px;
-            width: 320px;
-            height: 100%;
-            background: #050505;
-            border-left: 1px solid #161616;
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-            transition: right 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
-        }
-
-        .drawer-overlay.open .progress-drawer {
-            right: 0;
-        }
-
-        .drawer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .drawer-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            font-weight: 800;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .close-btn {
+        .close-drawer-btn {
+            align-self: flex-end;
             background: none;
             border: none;
             color: #666666;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
+            margin-bottom: 40px;
         }
 
-        .calendar-month-title {
+        /* Drawer Nav Elements */
+        .drawer-nav-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+        }
+
+        .drawer-link {
             font-family: 'Orbitron', sans-serif;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 6px;
             font-size: 14px;
-            color: #FF5500;
             font-weight: 700;
+            text-align: left;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .drawer-link i {
+            color: #FF5500;
+        }
+
+        .drawer-link:active {
+            border-color: #FF5500;
+            background-color: #111111;
+        }
+
+        .logout-link {
+            font-family: 'Orbitron', sans-serif;
+            background: none;
+            border: none;
+            color: #444444;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-link:active {
+            color: #ff3333;
+        }
+
+        /* Sub-Interface Frameworks (Calendar Panel) */
+        .sub-panel {
+            display: none;
+            background-color: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .sub-panel.active {
+            display: block;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
+            margin-top: 15px;
+        }
+
+        .calendar-header-day {
+            text-align: center;
+            font-size: 10px;
+            color: #444444;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .calendar-day-node {
+            aspect-ratio: 1;
+            background-color: #050505;
+            border: 1px solid #161616;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #444444;
+        }
+
+        .calendar-day-node.logged {
+            background-color: rgba(0, 255, 85, 0.05);
+            border-color: #00ff55;
+            color: #00ff55;
+            text-shadow: 0 0 10px rgba(0, 255, 85, 0.3);
+        }
+
+        /* --- WORKOUT VIEW STYLES --- */
+        .routine-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            font-size: 18px;
+            color: #FF5500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .meta-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background-color: #050505;
+            border: 1px solid #161616;
+            padding: 14px 10px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            gap: 5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .meta-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-label { 
+            color: #666666; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+        }
+
+        .meta-label i { color: #FF5500; font-size: 11px; }
+        .meta-value { color: #ffffff; font-weight: 800; text-transform: uppercase; font-size: 12px; }
+        #target-focus-value { color: #FF5500; }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-card {
+            background-color: #050505;
+            border: 1px solid #161616;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ex-info h4 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ex-info p { margin: 0; font-size: 14px; color: #aaaaaa; font-weight: 700; }
+        .ex-info p span { color: #FF5500; font-family: 'Orbitron', sans-serif; font-size: 13px; }
+
+        .workout-gif-window {
+            width: 100%;
+            height: 220px;
+            background-color: #111111;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #222222;
+        }
+
+        .workout-gif-window video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            background-color: #000000;
+        }
+
+        #active-workout-hud {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .hud-card {
+            background-color: #050505;
+            border: 1px solid #FF5500;
+            box-shadow: 0 0 15px rgba(255, 85, 0, 0.05);
+            width: 100%;
+            border-radius: 12px;
+            padding: 20px;
             text-align: center;
         }
 
-        .cal-header {
-            font-size: 11px;
-            font-weight: 700;
-            color: #444444;
+        .hud-exercise-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin: 0 0 10px 0;
         }
 
-        .cal-day {
-            background: #111111;
-            border: 1px solid #1a1a1a;
-            border-radius: 6px;
-            height: 38px;
+        .hud-set-metrics {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            color: #FF5500;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .timer-module {
+            background-color: #111111;
+            border: 1px solid #222222;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: #ffffff; /* Remaining / future days remain plain white */
+            cursor: pointer;
             position: relative;
+            overflow: hidden;
         }
 
-        /* Success & Failure Calibration Modes */
-        .cal-day.completed {
-            background: #001a08;
-            border-color: #00ff55;
-            color: #00ff55;
-            text-shadow: 0 0 5px rgba(0, 255, 85, 0.5);
+        .timer-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #666666;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
-        .cal-day.missed {
-            background: #1a0000;
-            border-color: #550000;
-            color: #ff3333;
+        .timer-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #ffffff;
         }
 
-        .cal-day .status-emoji {
-            font-size: 9px;
-            margin-top: 1px;
+        .timer-display.critical {
+            color: #FF5500;
+            font-size: 64px;
+            animation: criticalBlink 0.5s ease-in-out infinite alternate;
+        }
+
+        .primary-btn {
+            font-family: 'Orbitron', sans-serif;
+            width: 100%;
+            padding: 16px;
+            background-color: #FF5500;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 85, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+            background-color: #e04b00;
+        }
+
+        .primary-btn.complete-mode {
+            background-color: #00ff55;
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(0, 255, 85, 0.3);
+            text-shadow: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- INTERFACE 1: BOOT & LOAD SEQUENCE -->
-    <div id="splash-screen">
-        <h1 class="splash-title">IRON<span>TIME</span></h1>
-        <div class="loading-ring"></div>
-    </div>
+    <!-- OVERLAY SHADOW LAYER -->
+    <div id="app-overlay" class="drawer-overlay" onclick="closeSideMenu()"></div>
 
-    <!-- MAIN APP WRAPPER -->
-    <div class="app-container">
+    <!-- RECONFIGURED INTERACTIVE TACTICAL DRAWER -->
+    <nav id="app-drawer" class="side-drawer">
+        <button class="close-drawer-btn" onclick="closeSideMenu()"><i class="fa-solid fa-xmark"></i></button>
         
-        <!-- TOP APP BAR -->
-        <div class="top-bar">
-            <h1 class="app-title">IRON<span>TIME</span></h1>
-            <button class="menu-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars"></i></button>
-        </div>
-
-        <div class="section-label">Select Training Day</div>
-
-        <!-- INTERFACE 2: SELECTION GRID -->
-        <div class="days-grid">
-            <div class="day-card-wrapper" onclick="launchWorkout('Monday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Monday</h3><p>Chest & Triceps Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Tuesday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Tuesday</h3><p>Shoulder & Bicep Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Wednesday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Wednesday</h3><p>Legs Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Thursday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Thursday</h3><p>Abs (Core) Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Friday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Friday</h3><p>Chest & Triceps Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Saturday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Saturday</h3><p>Shoulder & Bicep Focus</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-            <div class="day-card-wrapper" onclick="launchWorkout('Sunday')">
-                <div class="day-card-inner"><div class="day-info"><h3>Sunday</h3><p>Rest & Recovery</p></div><i class="fa-solid fa-chevron-right go-icon"></i></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SIDE PANEL DRAWER (PROGRESS TRACKER) -->
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeOverlay(event)">
-        <div class="progress-drawer">
-            <div class="drawer-header">
-                <h2>Progress Hub</h2>
-                <button class="close-btn" onclick="toggleDrawer(false)"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="month-title" class="calendar-month-title">Loading Month...</div>
-            <div class="calendar-grid" id="calendar-matrix">
-                <div class="cal-header">S</div><div class="cal-header">M</div><div class="cal-header">T</div>
-                <div class="cal-header">W</div><div class="cal-header">T</div><div class="cal-header">F</div>
-                <div class="cal-header">S</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Automatic Splash Timeout Execution
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                splash.style.pointerEvents = 'none';
-            }, 1800); // Loads for 1.8 seconds before cross-fading
-        });
-
-        function launchWorkout(dayName) {
-            window.location.href = `workout.html?day=${dayName}`;
-        }
-
-        function toggleDrawer(open) {
-            const overlay = document.getElementById('drawer-overlay');
-            if(open) {
-                buildAutomatedCalendar();
-                overlay.classList.add('open');
-            } else {
-                overlay.classList.remove('open');
-            }
-        }
-
-        function closeOverlay(e) {
-            if(e.target.id === 'drawer-overlay') {
-                toggleDrawer(false);
-            }
-        }
-
-        function buildAutomatedCalendar() {
-            const matrix = document.getElementById('calendar-matrix');
-            const titleBox = document.getElementById('month-title');
+        <div class="drawer-nav-container">
+            <!-- Progress Hub Accordion Control Toggle -->
+            <button class="drawer-link" onclick="toggleProgressHubPanel()">
+                <span>Progress Hub</span>
+                <i id="hub-chevron" class="fa-solid fa-chevron-down"></i>
+            </button>
             
-            const headers = matrix.querySelectorAll('.cal-header');
-            matrix.innerHTML = '';
-            headers.forEach(h => matrix.appendChild(h));
+            <!-- Hidden Calendar Grid Section (Opens inside menu on request) -->
+            <div id="progress-hub-panel" class="sub-panel">
+                <div class="calendar-grid" id="drawer-calendar-mesh"></div>
+            </div>
+        </div>
 
+        <!-- Logout Action Placeholder (Ready for integration later) -->
+        <button class="logout-link" onclick="handleSecureLogoffProcess()">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+    </nav>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: HOME PLATFORM INTERFACE            -->
+    <!-- ========================================== -->
+    <main id="view-home" class="app-view active">
+        <div class="app-container">
+            <header class="top-navbar">
+                <button class="menu-btn" onclick="openSideMenu()"><i class="fa-solid fa-bars-strikethrough"></i></button>
+                <h1 class="logo-title">IRON<span>TIME</span></h1>
+                <div style="width:32px;"></div> <!-- Alignment Counterweight -->
+            </header>
+
+            <section class="week-grid" id="main-week-matrix"></section>
+        </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: WORKOUT MODULE INTERFACE          -->
+    <!-- ========================================== -->
+    <main id="view-workout" class="app-view">
+        <div class="app-container">
+            <div class="routine-header">
+                <button class="back-btn" onclick="switchActiveView('view-home')"><i class="fa-solid fa-arrow-left"></i></button>
+                <h2 id="day-title-header">Workout Plan</h2>
+            </div>
+
+            <div class="meta-container">
+                <div class="meta-box">
+                    <span class="meta-label"><i class="fa-solid fa-clock"></i> TIME:</span>
+                    <span class="meta-value">~45 MIN</span>
+                </div>
+                <div class="meta-box">
+                    <span class="meta-label"><i class="fa-solid fa-stopwatch"></i> REST:</span>
+                    <span class="meta-value">60 SEC</span>
+                </div>
+                <div class="meta-box">
+                    <span class="meta-label"><i class="fa-solid fa-dumbbell"></i> SPLIT:</span>
+                    <span id="target-focus-value" class="meta-value">LOADING</span>
+                </div>
+            </div>
+
+            <!-- List Mode Overview -->
+            <div id="overview-zone">
+                <div id="workout-vault" class="exercise-list"></div>
+                <button class="primary-btn" onclick="startInteractiveWorkout()">Start Workout</button>
+            </div>
+
+            <!-- Interactive Live HUD -->
+            <div id="active-workout-hud">
+                <div class="hud-card">
+                    <h3 id="hud-exercise-name" class="hud-exercise-title">EXERCISE NAME</h3>
+                    <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
+                    
+                    <div class="workout-gif-window">
+                        <video id="hud-video-display" autoplay loop muted playsinline>
+                            <source id="hud-video-source" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <div class="timer-module" onclick="triggerRestTimer()">
+                    <div id="timer-status-text" class="timer-label">Tap to start rest interval</div>
+                    <div id="countdown-clock" class="timer-display">60s</div>
+                </div>
+
+                <button id="hud-action-btn" class="primary-btn" onclick="skipOrAdvanceSet()">Skip Timer</button>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- APPLICATION CORE CONTROLLER JAVASCRIPT     -->
+    <!-- ========================================== -->
+    <script>
+        const exerciseDataBank = {
+            "Monday": {
+                focus: "Chest & Triceps",
+                moves: [
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
+                ]
+            },
+            "Tuesday": {
+                focus: "Shoulder & Bicep",
+                moves: [
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/699d62.mp4" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/2zncg6.mp4" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/9v5xjd.mp4" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/7a2mai.mp4" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/td39uz.mp4" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/db3ut5.mp4" }
+                ]
+            },
+            "Wednesday": {
+                focus: "Legs",
+                moves: [
+                    { name: "Dumbbell Goblet Squats", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/mce4ys.mp4" },
+                    { name: "Dumbbell Bulgarian Split Squats", stats: "12 Reps (Per Leg)", sets: 3, img: "https://files.catbox.moe/hrx0yt.mp4" },
+                    { name: "Dumbbell Romanian Deadlifts", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/m58qpu.mp4" },
+                    { name: "Walking Lunges", stats: "20 Total Steps", sets: 3, img: "https://files.catbox.moe/5eb9n4.mp4" },
+                    { name: "Calf Raises", stats: "20 Reps", sets: 4, img: "https://files.catbox.moe/ro3u86.mp4" }
+                ]
+            },
+            "Thursday": {
+                focus: "Abs (Core)",
+                moves: [
+                    { name: "Plank Shoulder Taps", stats: "45 Seconds", sets: 4, img: "https://files.catbox.moe/kf5a81.mp4" },
+                    { name: "Bicycle Crunches", stats: "20 Reps", sets: 3, img: "https://files.catbox.moe/1wtf9l.mp4" },
+                    { name: "Lying Leg Raises", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/e2va8y.mp4" },
+                    { name: "Russian Twists", stats: "20 Total Reps", sets: 3, img: "https://files.catbox.moe/e5rdnf.mp4" },
+                    { name: "Flutter Kicks", stats: "45 Seconds", sets: 3, img: "https://files.catbox.moe/e2va8y.mp4" }
+                ]
+            },
+            "Friday": {
+                focus: "Chest & Triceps",
+                moves: [
+                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
+                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
+                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
+                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
+                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
+                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
+                ]
+            },
+            "Saturday": {
+                focus: "Shoulder & Bicep",
+                moves: [
+                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/699d62.mp4" },
+                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/2zncg6.mp4" },
+                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/9v5xjd.mp4" },
+                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/7a2mai.mp4" },
+                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/td39uz.mp4" },
+                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/db3ut5.mp4" }
+                ]
+            },
+            "Sunday": {
+                focus: "Rest Day",
+                moves: [
+                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://images.unsplash.com/photo-1605296867304-46d5465a25f1?auto=format&fit=crop&w=400&q=80" }
+                ]
+            }
+        };
+
+        let currentExerciseIndex = 0;
+        let currentSetIndex = 1;
+        let countdownRunning = null;
+        let remainingSeconds = 60;
+        let chosenDay = "Monday";
+        let trackingMovesList = [];
+
+        // Smooth SPA Screen Switcher Engine
+        function switchActiveView(viewId) {
+            document.querySelectorAll('.app-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            const activeView = document.getElementById(viewId);
+            activeView.classList.add('active');
+            
+            // Clean interface repaint check
+            if (viewId === 'view-home') {
+                compileWeeklyStatusDashboard();
+            }
+        }
+
+        // Drawer Menu Controllers
+        function openSideMenu() {
+            document.getElementById('app-drawer').classList.add('open');
+            document.getElementById('app-overlay').classList.add('visible');
+            buildSecureCalendarMatrix();
+        }
+
+        function closeSideMenu() {
+            document.getElementById('app-drawer').classList.remove('open');
+            document.getElementById('app-overlay').classList.remove('visible');
+            
+            // Collapse accordion smoothly upon menu close
+            document.getElementById('progress-hub-panel').classList.remove('active');
+            document.getElementById('hub-chevron').className = "fa-solid fa-chevron-down";
+        }
+
+        function toggleProgressHubPanel() {
+            const panel = document.getElementById('progress-hub-panel');
+            const chevron = document.getElementById('hub-chevron');
+            
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                chevron.className = "fa-solid fa-chevron-up";
+            } else {
+                chevron.className = "fa-solid fa-chevron-down";
+            }
+        }
+
+        function handleSecureLogoffProcess() {
+            alert("Gmail configuration terminal placeholder. Security links will be established during step finalization.");
+        }
+
+        // Render Home Screen List Interface
+        function compileWeeklyStatusDashboard() {
             const now = new Date();
             const year = now.getFullYear();
-            const month = now.getMonth();
-            const todayDate = now.getDate();
-
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            titleBox.innerText = `${monthNames[month]} ${year}`;
-
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const totalDays = new Date(year, month + 1, 0).getDate();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(now.getDate()).padStart(2, '0');
+            const dateKey = `${year}-${month}-${dayStr}`;
 
             const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
+            const mainMatrix = document.getElementById('main-week-matrix');
+            mainMatrix.innerHTML = '';
 
-            for(let i = 0; i < firstDayIndex; i++) {
-                matrix.appendChild(document.createElement('div'));
-            }
+            const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            
+            weekDays.forEach(day => {
+                let statusLabel = exerciseDataBank[day].focus;
+                let completionClass = "";
 
-            for(let d = 1; d <= totalDays; d++) {
-                const dateCell = document.createElement('div');
-                dateCell.classList.add('cal-day');
-                dateCell.innerText = d;
-
-                const monthString = String(month + 1).padStart(2, '0');
-                const dayString = String(d).padStart(2, '0');
-                const dateKey = `${year}-${monthString}-${dayString}`;
-
-                if (logDatabase[dateKey] === 'completed') {
-                    // Scenario A: Logged complete -> Neon Green
-                    dateCell.classList.add('completed');
-                } else if (d < todayDate) {
-                    // Scenario B: Old day where 12am midnight has completely passed -> ❌
-                    dateCell.classList.add('missed');
-                    dateCell.innerHTML += `<span class="status-emoji">❌</span>`;
-                } else {
-                    // Scenario C: Today (before midnight) or Future dates -> Pristine White
-                    dateCell.style.color = '#ffffff';
+                // Check if this explicit day was resolved today
+                if (logDatabase[dateKey] && new Date().toLocaleDateString('en-US', {weekday: 'long'}) === day) {
+                    statusLabel = "COMPLETED TODAY";
+                    completionClass = "completed";
                 }
 
-                matrix.appendChild(dateCell);
+                const dayCardHTML = `
+                    <div class="day-panel ${completionClass}" onclick="loadWorkoutInterface('${day}')">
+                        <div class="day-meta">
+                            <h3>${day}</h3>
+                            <p>${statusLabel}</p>
+                        </div>
+                        <div class="action-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                `;
+                mainMatrix.insertAdjacentHTML('beforeend', dayCardHTML);
+            });
+        }
+
+        // Build Progress Calendar Panel 
+        function buildSecureCalendarMatrix() {
+            const calendarGrid = document.getElementById('drawer-calendar-mesh');
+            calendarGrid.innerHTML = '';
+
+            const headers = ["M", "T", "W", "T", "F", "S", "S"];
+            headers.forEach(h => {
+                calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-header-day">${h}</div>`);
+            });
+
+            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
+            const current = new Date();
+            const totalDaysInMonth = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+
+            for (let d = 1; d <= totalDaysInMonth; d++) {
+                const dayString = String(d).padStart(2, '0');
+                const monthString = String(current.getMonth() + 1).padStart(2, '0');
+                const loopKey = `${current.getFullYear()}-${monthString}-${dayString}`;
+
+                let loggedClass = logDatabase[loopKey] ? 'logged' : '';
+                calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-day-node ${loggedClass}">${d}</div>`);
             }
         }
+
+        // Setup Selected Workout Routine Data
+        function loadWorkoutInterface(dayName) {
+            chosenDay = dayName;
+            const targetData = exerciseDataBank[chosenDay];
+            trackingMovesList = targetData.moves;
+
+            // Reset interaction indices safely
+            currentExerciseIndex = 0;
+            currentSetIndex = 1;
+
+            document.getElementById('day-title-header').innerText = `${chosenDay} Routine`;
+            document.getElementById('target-focus-value').innerText = targetData.focus;
+
+            // Hide HUD layer by default, clear list mode layers
+            document.getElementById('overview-zone').style.display = 'block';
+            document.getElementById('active-workout-hud').style.display = 'none';
+
+            const targetVault = document.getElementById('workout-vault');
+            targetVault.innerHTML = '';
+
+            trackingMovesList.forEach(move => {
+                const isVideo = move.img.toLowerCase().endsWith('.mp4');
+                const mediaTag = isVideo 
+                    ? `<video autoplay loop muted playsinline><source src="${move.img}" type="video/mp4"></video>`
+                    : `<img src="${move.img}" alt="${move.name}">`;
+
+                const itemHTML = `
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>${move.name}</h4>
+                            <p>Target Sets: <span>${move.sets} sets x ${move.stats}</span></p>
+                        </div>
+                        <div class="workout-gif-window">
+                            ${mediaTag}
+                        </div>
+                    </div>
+                `;
+                targetVault.insertAdjacentHTML('beforeend', itemHTML);
+            });
+
+            switchActiveView('view-workout');
+        }
+
+        function startInteractiveWorkout() {
+            document.getElementById('overview-zone').style.display = 'none';
+            document.getElementById('active-workout-hud').style.display = 'flex';
+            renderHudExercise();
+        }
+
+        function renderHudExercise() {
+            const currentMove = trackingMovesList[currentExerciseIndex];
+            
+            document.getElementById('hud-exercise-name').innerText = currentMove.name;
+            document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
+            
+            const videoDisplay = document.getElementById('hud-video-display');
+            const videoSource = document.getElementById('hud-video-source');
+            
+            videoDisplay.setAttribute('muted', '');
+            videoDisplay.setAttribute('playsinline', '');
+            videoDisplay.setAttribute('loop', '');
+            videoDisplay.muted = true;
+            
+            videoSource.src = currentMove.img;
+            videoDisplay.load();
+            
+            let playPromise = videoDisplay.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    document.body.addEventListener('click', () => {
+                        videoDisplay.play();
+                    }, { once: true });
+                });
+            }
+
+            clearInterval(countdownRunning);
+            countdownRunning = null;
+            remainingSeconds = 60;
+            
+            const displayClock = document.getElementById('countdown-clock');
+            displayClock.innerText = "60s";
+            displayClock.classList.remove('critical');
+            document.getElementById('timer-status-text').innerText = "Tap to start rest interval";
+            
+            const actionBtn = document.getElementById('hud-action-btn');
+            actionBtn.innerText = "Skip Timer";
+            actionBtn.className = "primary-btn";
+            actionBtn.onclick = skipOrAdvanceSet;
+        }
+
+        function triggerRestTimer() {
+            if (countdownRunning !== null) return;
+
+            document.getElementById('timer-status-text').innerText = "REST INTERVAL ACTIVE";
+            const displayClock = document.getElementById('countdown-clock');
+
+            countdownRunning = setInterval(() => {
+                remainingSeconds--;
+                displayClock.innerText = `${remainingSeconds}s`;
+
+                if (remainingSeconds <= 3 && remainingSeconds > 0) {
+                    displayClock.classList.add('critical');
+                }
+
+                if (remainingSeconds <= 0) {
+                    clearInterval(countdownRunning);
+                    countdownRunning = null;
+                    advanceToNextSegment();
+                }
+            }, 1000);
+        }
+
+        function skipOrAdvanceSet() {
+            if (countdownRunning !== null) {
+                clearInterval(countdownRunning);
+                countdownRunning = null;
+            }
+            advanceToNextSegment();
+        }
+
+        function advanceToNextSegment() {
+            const currentMove = trackingMovesList[currentExerciseIndex];
+
+            if (currentSetIndex < currentMove.sets) {
+                currentSetIndex++;
+                renderHudExercise();
+            } else if (currentExerciseIndex < trackingMovesList.length - 1) {
+                currentExerciseIndex++;
+                currentSetIndex = 1;
+                renderHudExercise();
+            } else {
+                displayWorkoutCompletionTrigger();
+            }
+        }
+
+        function displayWorkoutCompletionTrigger() {
+            const statusText = document.getElementById('timer-status-text');
+            const clockScreen = document.getElementById('countdown-clock');
+            const actionBtn = document.getElementById('hud-action-btn');
+
+            statusText.innerText = "ROUTINE COMPLETED VECTORS ACHIEVED";
+            clockScreen.innerText = "DONE";
+            clockScreen.classList.remove('critical');
+
+            actionBtn.innerText = "COMPLETE";
+            actionBtn.classList.add('complete-mode');
+            actionBtn.onclick = commitVerificationLogToMemory;
+        }
+
+        function commitVerificationLogToMemory() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(now.getDate()).padStart(2, '0');
+            const dateKey = `${year}-${month}-${dayStr}`;
+
+            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
+            logDatabase[dateKey] = 'completed';
+            localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
+
+            switchActiveView('view-home');
+        }
+
+        window.onload = function() {
+            compileWeeklyStatusDashboard();
+        };
     </script>
 </body>
 </html>
