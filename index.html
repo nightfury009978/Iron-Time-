@@ -25,6 +25,58 @@
             overflow-x: hidden;
         }
 
+        /* ========================================== */
+        /* RESTORED: LOADING SPLASH SCREEN INTERFACE  */
+        /* ========================================== */
+        #loading-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            opacity: 1;
+            transition: opacity 0.4s ease-out, visibility 0.4s;
+        }
+
+        #loading-splash.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #ffffff;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .splash-title span {
+            color: #FF5500;
+        }
+
+        .spinner-circle {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 85, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #FF5500;
+            animation: spinEngine 0.8s linear infinite;
+        }
+
+        @keyframes spinEngine {
+            to { transform: rotate(360deg); }
+        }
+
         /* Fluid SPA Interface Screens */
         .app-view {
             display: none;
@@ -531,6 +583,12 @@
 </head>
 <body>
 
+    <!-- RESTORED: APP LOADING SPLASH LAYER -->
+    <div id="loading-splash">
+        <h1 class="splash-title">IRON<span>TIME</span></h1>
+        <div class="spinner-circle"></div>
+    </div>
+
     <!-- OVERLAY SHADOW LAYER -->
     <div id="app-overlay" class="drawer-overlay" onclick="closeSideMenu()"></div>
 
@@ -568,7 +626,7 @@
     <main id="view-home" class="app-view active">
         <div class="app-container">
             <header class="top-navbar">
-                <!-- Restored Standard Hamburger Icon Menu button -->
+                <!-- Hamburger Icon Menu button -->
                 <button class="menu-btn" onclick="openSideMenu()"><i class="fa-solid fa-bars"></i></button>
                 <h1 class="logo-title">IRON<span>TIME</span></h1>
                 <div style="width:32px;"></div> <!-- Alignment Counterweight -->
@@ -811,24 +869,20 @@
 
             const current = new Date();
             const year = current.getFullYear();
-            const month = current.getMonth(); // 0-indexed month
+            const month = current.getMonth();
 
-            // Set Month header text automatically (e.g., "JULY 2026")
             const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
             document.getElementById('calendar-month-header').innerText = `${monthNames[month]} ${year}`;
 
             const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
             
-            // Find total days in current month and first day offset
             const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
-            const firstDayIndex = new Date(year, month, 1).getDay(); // Sunday=0, Monday=1, etc.
+            const firstDayIndex = new Date(year, month, 1).getDay();
 
-            // Render padding blanks for empty spaces before day 1
             for (let i = 0; i < firstDayIndex; i++) {
                 calendarGrid.insertAdjacentHTML('beforeend', `<div class="calendar-day-node" style="border:none; visibility:hidden;"></div>`);
             }
 
-            // Populate days dynamically
             for (let d = 1; d <= totalDaysInMonth; d++) {
                 const dayString = String(d).padStart(2, '0');
                 const monthString = String(month + 1).padStart(2, '0');
@@ -997,14 +1051,18 @@
             logDatabase[dateKey] = 'completed';
             localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
 
-            // Force immediate silent background grid rebuild
             buildSecureCalendarMatrix();
-
             switchActiveView('view-home');
         }
 
         window.onload = function() {
             compileWeeklyStatusDashboard();
+
+            // Handle the Splash Screen timeout elegantly
+            setTimeout(() => {
+                const splash = document.getElementById('loading-splash');
+                splash.classList.add('hidden');
+            }, 2000); // 2000ms = 2 Seconds display time
         };
     </script>
 </body>
