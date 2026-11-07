@@ -1,57 +1,12 @@
-{
-  "id": "/iron-time/",
-  "name": "Iron Time",
-  "short_name": "Iron Time",
-  "description": "Premium home gym training planner with guided workouts, rest timer and progress tracking.",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "display_override": ["window-controls-overlay", "tabbed", "standalone"],
-  "orientation": "portrait",
-  "background_color": "#07070a",
-  "theme_color": "#07070a",
-  "lang": "en",
-  "dir": "ltr",
-  "categories": ["health", "fitness", "lifestyle"],
-  "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
-  ],
-  "shortcuts": [
-    {"name": "Today's Workout", "short_name": "Today", "url": "./index.html?day=today", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Workout Notes", "short_name": "Notes", "url": "./index.html?note=new", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
-  ],
-  "file_handlers": [
-    {"action": "./index.html", "accept": {"text/plain": [".txt"]}}
-  ],
-  "launch_handler": {"client_mode": ["navigate-existing", "auto"]},
-  "protocol_handlers": [
-    {"protocol": "web+irontime", "url": "./index.html?protocol=%s"}
-  ],
-  "share_target": {
-    "action": "./index.html",
-    "method": "GET",
-    "params": {"title": "title", "text": "text", "url": "url"}
-  },
-  "widgets": [
-    {
-      "name": "Iron Time Today",
-      "short_name": "Today",
-      "tag": "iron-time-today",
-      "description": "Your workout streak and today's plan",
-      "template": "iron-time-today",
-      "ms_ac_template": "widget/template.json",
-      "data": "widget/data.json",
-      "type": "application/json",
-      "auth": false,
-      "update": 86400,
-      "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]
-    }
-  ],
-  "edge_side_panel": {"preferred_width": 400},
-  "tab_strip": {"home_tab": "auto", "new_tab_button": {"url": "./index.html"}},
-  "note_taking": {"new_note_url": "./index.html?note=new"},
-  "prefer_related_applications": false
-}
+{"id":"https://nightfury009978.github.io/Iron-Time-/","name":"Iron Time","short_name":"Iron Time","description":"Premium home gym training planner with guided workouts, rest timer and progress tracking.","start_url":"https://nightfury009978.github.io/Iron-Time-/index.html","scope":"https://nightfury009978.github.io/Iron-Time-/","display":"standalone","display_override":["window-controls-overlay","tabbed","standalone"],"orientation":"portrait","background_color":"#f4f2ed","theme_color":"#f4f2ed","lang":"en","dir":"ltr","categories":["health","fitness","lifestyle"],
+"icons":[{"src":"https://nightfury009978.github.io/Iron-Time-/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"https://nightfury009978.github.io/Iron-Time-/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"https://nightfury009978.github.io/Iron-Time-/icon-maskable-192.png","sizes":"192x192","type":"image/png","purpose":"maskable"},{"src":"https://nightfury009978.github.io/Iron-Time-/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}],
+"shortcuts":[{"name":"Today's Workout","short_name":"Today","url":"./index.html?day=today","icons":[{"src":"https://nightfury009978.github.io/Iron-Time-/shortcut-96.png","sizes":"96x96","type":"image/png"}]},{"name":"Workout Notes","short_name":"Notes","url":"./index.html?note=new","icons":[{"src":"https://nightfury009978.github.io/Iron-Time-/shortcut-96.png","sizes":"96x96","type":"image/png"}]}],
+"file_handlers":[{"action":"./index.html","accept":{"text/plain":[".txt"]}}],
+"launch_handler":{"client_mode":["navigate-existing","auto"]},
+"protocol_handlers":[{"protocol":"web+irontime","url":"./index.html?protocol=%s"}],
+"share_target":{"action":"./index.html","method":"GET","params":{"title":"title","text":"text","url":"url"}},
+"widgets":[{"name":"Iron Time Today","short_name":"Today","tag":"iron-time-today","description":"Your workout streak and today's plan","template":"iron-time-today","ms_ac_template":"https://nightfury009978.github.io/Iron-Time-/template.json","data":"https://nightfury009978.github.io/Iron-Time-/data.json","type":"application/json","auth":false,"update":86400,"icons":[{"src":"https://nightfury009978.github.io/Iron-Time-/icon-192.png","sizes":"192x192","type":"image/png"}]}],
+"edge_side_panel":{"preferred_width":400},
+"tab_strip":{"home_tab":"auto","new_tab_button":{"url":"./index.html"}},
+"note_taking":{"new_note_url":"./index.html?note=new"},
+"prefer_related_applications":false}
