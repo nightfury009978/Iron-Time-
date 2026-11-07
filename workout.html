@@ -1,575 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRON TIME - Tracker</title>
-    <!-- Fonts and Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;800;900&family=Rajdhani:wght=600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IRON TIME - Workout</title>
+<meta name="theme-color" content="#07070a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070a;--s1:#0e0e13;--s2:#15151c;--line:rgba(255,255,255,.08);--tx:#f4f1ea;--mute:#8d8a94;--e1:#ff8a2a;--e2:#ff3d00;--gold:#f5c26b;--ok:#3ddc97}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:'Manrope',system-ui,sans-serif}
+body{min-height:100vh;overflow-x:hidden;background:radial-gradient(600px 400px at 85% -5%,rgba(255,90,20,.14),transparent 70%),radial-gradient(500px 400px at -10% 30%,rgba(245,194,107,.06),transparent 70%),var(--bg)}
+button{font-family:inherit;color:inherit;cursor:pointer}
+.grad{background:linear-gradient(120deg,#fff 0%,var(--gold) 45%,var(--e1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 14px rgba(255,100,20,.35))}
+h1,h2,h3{font-family:'Sora',sans-serif;margin:0}
+/* splash */
+#splash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .6s,visibility .6s}
+#splash.hide{opacity:0;visibility:hidden}
+#splash:before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,20,.28),transparent 65%);animation:pulse 2s ease-in-out infinite}
+.bell{position:relative;display:flex;align-items:center;gap:0;height:90px}
+.bell i{display:block;border-radius:6px;background:linear-gradient(180deg,var(--e1),var(--e2));opacity:0;transform:scale(.2)}
+.bell .p1{width:14px;height:80px;animation:pop .5s .1s forwards}.bell .p2{width:14px;height:56px;margin-left:5px;animation:pop .5s .25s forwards}
+.bell .bar{width:0;height:12px;background:linear-gradient(90deg,var(--gold),#fff,var(--gold));margin-left:5px;opacity:1;transform:none;animation:grow .6s .5s forwards}
+.bell .p3{width:14px;height:56px;margin-left:5px;animation:pop .5s .9s forwards}.bell .p4{width:14px;height:80px;margin-left:5px;animation:pop .5s 1.05s forwards}
+.sp-title{font-family:'Sora';font-weight:800;font-size:34px;letter-spacing:8px;display:flex;overflow:hidden;position:relative}
+.sp-title span{display:inline-block;transform:translateY(110%);animation:rise .6s forwards}
+.sp-sub{font-size:11px;letter-spacing:6px;color:var(--mute);opacity:0;animation:fade .8s 1.5s forwards}
+.sp-bar{width:140px;height:3px;border-radius:3px;background:var(--s2);overflow:hidden;position:relative}
+.sp-bar:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--e1),var(--e2));transform:translateX(-100%);animation:load 2.3s .2s forwards}
+@keyframes pop{to{opacity:1;transform:scale(1)}}@keyframes grow{to{width:62px}}@keyframes rise{to{transform:none}}@keyframes fade{to{opacity:1}}@keyframes load{to{transform:none}}@keyframes pulse{50%{transform:scale(1.15);opacity:.7}}
+/* layout */
+.app{max-width:440px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) 18px calc(30px + env(safe-area-inset-bottom))}
+.view{display:none}.view.on{display:block;animation:in .35s}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:6px 0 22px;app-region:drag;-webkit-app-region:drag}
+@media (display-mode:window-controls-overlay){header.top{padding-top:calc(env(titlebar-area-height,0px) + 4px)}}
+.logo{font-size:24px;font-weight:800;letter-spacing:3px}
+.icon-btn{width:44px;height:44px;border-radius:14px;background:var(--s1);border:1px solid var(--line);display:grid;place-items:center;-webkit-app-region:no-drag}
+.icon-btn svg{width:20px;height:20px;stroke:var(--tx);fill:none;stroke-width:2;stroke-linecap:round}
+.hello{color:var(--mute);font-size:13px;font-weight:600}
+.hero{position:relative;border-radius:22px;padding:22px;margin:6px 0 16px;border:1px solid rgba(255,138,42,.3);background:linear-gradient(145deg,rgba(255,138,42,.16),rgba(14,14,19,.9) 60%);overflow:hidden;box-shadow:0 20px 50px -20px rgba(255,80,0,.4)}
+.hero small{color:var(--gold);font-weight:700;letter-spacing:2px;font-size:11px}
+.hero h2{font-size:28px;margin:8px 0 4px}.hero p{margin:0 0 18px;color:var(--mute);font-size:14px}
+.btn{width:100%;border:0;border-radius:14px;padding:16px;font-family:'Sora';font-weight:800;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;color:#120800;background:linear-gradient(135deg,var(--e1),var(--e2));box-shadow:0 10px 26px -8px rgba(255,80,0,.6)}
+.btn:active{transform:scale(.98)}.btn.ghost{background:var(--s2);color:var(--tx);box-shadow:none;border:1px solid var(--line)}.btn.ok{background:linear-gradient(135deg,#6dffb8,var(--ok))}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:14px 10px;text-align:center}
+.stat b{display:block;font-family:'Sora';font-size:22px}.stat span{font-size:10px;letter-spacing:1.5px;color:var(--mute);font-weight:700}
+.sec{font-size:12px;letter-spacing:3px;margin:0 0 12px;font-weight:800}
+.week{display:flex;flex-direction:column;gap:10px}
+.day{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;border-radius:16px;background:var(--s1);border:1px solid var(--line);cursor:pointer}
+.day:active{background:var(--s2)}.day.today{border-color:rgba(255,138,42,.55)}
+.day h3{font-size:14px;letter-spacing:1px}.day p{margin:3px 0 0;font-size:12px;color:var(--mute);font-weight:600}
+.day.done p{color:var(--ok)}.tag{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--e1)}
+.chev{color:var(--mute);font-size:18px}
+/* drawer */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:.25s;z-index:900}
+.ov.on{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:-340px;width:min(330px,88vw);height:100%;background:linear-gradient(180deg,#101016,#09090d);border-left:1px solid var(--line);z-index:1000;transition:right .3s cubic-bezier(.2,.8,.2,1);padding:calc(22px + env(safe-area-inset-top)) 18px 24px;overflow-y:auto}
+.drawer.on{right:0}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.dh h2{font-size:22px;font-weight:800}
+.box{margin-bottom:12px;border-radius:14px;background:var(--s1);border:1px solid var(--line);overflow:hidden}
+.box>button{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:16px;font-family:'Sora';font-weight:700;font-size:14px;text-align:left}
+.box>button b{font-size:18px;color:var(--e1);transition:transform .2s}
+.box.open>button b{transform:rotate(90deg)}
+.sub{display:none;padding:0 16px 16px}.box.open .sub{display:block}
+.sub h4{margin:14px 0 6px;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px}
+.sub p,.sub label{font-size:13px;color:var(--mute);line-height:1.5}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal div{aspect-ratio:1;display:grid;place-items:center;font-size:11px;border-radius:8px;border:1px solid var(--line);font-weight:700}
+.cal .h{border:0;color:var(--mute);aspect-ratio:auto}.cal .l{background:rgba(61,220,151,.14);border-color:var(--ok);color:var(--ok)}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.kv:last-child{border:0}.kv b{font-family:'Sora'}
+select,textarea{width:100%;background:var(--s2);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px;font-family:inherit;font-size:14px}
+textarea{min-height:110px;resize:vertical}
+.mini{margin-top:10px;width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--s2);font-weight:700;font-size:13px}
+/* workout */
+.rh{display:flex;align-items:center;gap:14px;margin-bottom:20px}.rh h2{font-size:22px;font-weight:800}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:22px;gap:6px}
+.meta span{display:block;font-size:10px;letter-spacing:1.5px;color:var(--mute);font-weight:700}.meta b{font-family:'Sora';font-size:13px}.meta .f{color:var(--e1)}
+.ex{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:16px}
+.ex h4{font-family:'Sora';margin:2px 0 4px;font-size:15px}.ex p{margin:0 0 12px;font-size:13px;color:var(--mute);font-weight:600}.ex p span{color:var(--e1)}
+.vid{height:210px;border-radius:12px;overflow:hidden;background:#000;border:1px solid var(--line)}.vid video{width:100%;height:100%;object-fit:cover}
+.hud{display:none}
+.hcard{border:1px solid rgba(255,138,42,.4);border-radius:20px;padding:18px;text-align:center;background:linear-gradient(160deg,rgba(255,138,42,.1),var(--s1));margin-bottom:16px}
+.hcard h3{font-size:20px;margin:6px 0}.hcard .sc{color:var(--e1);font-weight:800;font-size:13px;letter-spacing:1px;margin-bottom:12px}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:12px}.dots i{width:22px;height:5px;border-radius:3px;background:var(--s2)}.dots i.on{background:var(--ok)}.dots i.cur{background:var(--e1)}
+.prog{height:4px;background:var(--s2);border-radius:4px;margin:0 0 16px;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--e1),var(--e2));width:0;transition:width .3s}
+.clock{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;margin-bottom:16px}
+.clock small{font-size:10px;letter-spacing:2px;color:var(--mute);font-weight:700}.clock .t{font-family:'Sora';font-weight:800;font-size:54px}.clock .t.crit{color:var(--e2);animation:pulse .5s infinite alternate}
+.elapsed{font-size:12px;color:var(--mute);text-align:center;margin-bottom:12px;font-weight:700;letter-spacing:1px}
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,30px);background:var(--s2);border:1px solid var(--line);padding:12px 18px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;transition:.3s;z-index:2000;pointer-events:none}.toast.on{opacity:1;transform:translate(-50%,0)}
 
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Rajdhani', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-        }
-
-        /* Header Layout */
-        .routine-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-            margin-bottom: 25px;
-        }
-
-        .back-btn {
-            font-size: 18px;
-            color: #FF5500;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .routine-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
-
-        /* Tactical Meta Box */
-        .meta-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            background-color: #050505;
-            border: 1px solid #161616;
-            padding: 14px 10px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            gap: 5px;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .meta-box {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
-
-        .meta-label { 
-            color: #666666; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            display: flex; 
-            align-items: center; 
-            gap: 4px; 
-        }
-
-        .meta-label i { color: #FF5500; font-size: 11px; }
-        .meta-value { color: #ffffff; font-weight: 800; text-transform: uppercase; font-size: 12px; }
-        #target-focus-value { color: #FF5500; }
-
-        /* Overview List Panel */
-        .exercise-list {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .exercise-card {
-            background-color: #050505;
-            border: 1px solid #161616;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .ex-info h4 {
-            font-family: 'Orbitron', sans-serif;
-            margin: 0 0 6px 0;
-            font-size: 16px;
-            font-weight: 800;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .ex-info p { margin: 0; font-size: 14px; color: #aaaaaa; font-weight: 700; }
-        .ex-info p span { color: #FF5500; font-family: 'Orbitron', sans-serif; font-size: 13px; }
-
-        /* Video Window Layout */
-        .workout-gif-window {
-            width: 100%;
-            height: 220px;
-            background-color: #111111;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #222222;
-        }
-
-        .workout-gif-window video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            background-color: #000000;
-        }
-
-        /* INTERACTIVE WORKOUT HUD */
-        #active-workout-hud {
-            display: none; 
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .hud-card {
-            background-color: #050505;
-            border: 1px solid #FF5500;
-            box-shadow: 0 0 15px rgba(255, 85, 0, 0.05);
-            width: 100%;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .hud-exercise-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin: 0 0 10px 0;
-        }
-
-        .hud-set-metrics {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 15px;
-            color: #FF5500;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        /* Rest Timer Terminal Interface */
-        .timer-module {
-            background-color: #111111;
-            border: 1px solid #222222;
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .timer-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            color: #666666;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .timer-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 42px;
-            font-weight: 900;
-            color: #ffffff;
-        }
-
-        /* Countdown Critical Pulse Animation */
-        .timer-display.critical {
-            color: #FF5500;
-            font-size: 64px;
-            animation: criticalBlink 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes criticalBlink {
-            0% { transform: scale(1); opacity: 1; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
-            100% { transform: scale(1.1); opacity: 0.6; text-shadow: 0 0 5px rgba(255, 85, 0, 0.1); }
-        }
-
-        /* Action Controls */
-        .primary-btn {
-            font-family: 'Orbitron', sans-serif;
-            width: 100%;
-            padding: 16px;
-            background-color: #FF5500;
-            color: #000000;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 85, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .primary-btn:active {
-            transform: scale(0.98);
-            background-color: #e04b00;
-        }
-
-        .primary-btn.complete-mode {
-            background-color: #00ff55;
-            color: #000000;
-            box-shadow: 0 4px 15px rgba(0, 255, 85, 0.3);
-            text-shadow: none;
-        }
-        .primary-btn.complete-mode:active {
-            background-color: #00cc44;
-        }
-    </style>
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 18px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:9px 14px;border-radius:12px;background:var(--s1);border:1px solid var(--line);font-size:12px;font-weight:800;letter-spacing:1px;text-decoration:none;color:var(--mute)}
+.chip.on{color:#120800;background:linear-gradient(135deg,var(--e1),var(--e2));border-color:transparent}
+.chip.done:not(.on){color:var(--ok);border-color:var(--ok)}
+a.btn{display:block;text-align:center;text-decoration:none}
+</style>
 </head>
 <body>
+<div class="app">
+  <div class="rh">
+    <a class="icon-btn" href="index.html" id="back" aria-label="Back home"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div><h2 id="wt" class="grad">Workout</h2><div class="hello" id="sub"></div></div>
+  </div>
+  <nav class="chips" id="chips"></nav>
+  <div class="meta"><div><span>TIME</span><b>~45 MIN</b></div><div><span>REST</span><b id="mr">60 SEC</b></div><div><span>SPLIT</span><b class="f" id="mf"></b></div></div>
 
-    <div class="app-container">
-        
-        <!-- HEADER ROUTINE PANEL -->
-        <div class="routine-header">
-            <button class="back-btn" onclick="goBackHome()"><i class="fa-solid fa-arrow-left"></i></button>
-            <h2 id="day-title-header">Workout Plan</h2>
-        </div>
+  <div id="over">
+    <div id="vault"></div>
+    <button class="btn" id="start">Start Workout</button>
+  </div>
 
-        <!-- TACTICAL DATA BAR -->
-        <div class="meta-container">
-            <div class="meta-box">
-                <span class="meta-label"><i class="fa-solid fa-clock"></i> TIME:</span>
-                <span class="meta-value">~45 MIN</span>
-            </div>
-            <div class="meta-box">
-                <span class="meta-label"><i class="fa-solid fa-stopwatch"></i> REST:</span>
-                <span class="meta-value">60 SEC</span>
-            </div>
-            <div class="meta-box">
-                <span class="meta-label"><i class="fa-solid fa-dumbbell"></i> SPLIT:</span>
-                <span id="target-focus-value" class="meta-value">LOADING</span>
-            </div>
-        </div>
-
-        <!-- OVERVIEW INTERFACE LAYER (LIST MODE) -->
-        <div id="overview-zone">
-            <div id="workout-vault" class="exercise-list"></div>
-            <button class="primary-btn" onclick="startInteractiveWorkout()">Start Workout</button>
-        </div>
-
-        <!-- INTERACTIVE LIVE TRACKER HUD LAYER -->
-        <div id="active-workout-hud">
-            <div class="hud-card">
-                <h3 id="hud-exercise-name" class="hud-exercise-title">EXERCISE NAME</h3>
-                <div id="hud-set-counter" class="hud-set-metrics">SET 1 OF 4 — 15 REPS</div>
-                
-                <div class="workout-gif-window">
-                    <video id="hud-video-display" autoplay loop muted playsinline>
-                        <source id="hud-video-source" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-
-            <!-- TAP-TO-REST TIMING MODULE -->
-            <div class="timer-module" onclick="triggerRestTimer()">
-                <div id="timer-status-text" class="timer-label">Tap to start rest interval</div>
-                <div id="countdown-clock" class="timer-display">60s</div>
-            </div>
-
-            <!-- INTERACTIVE UTILITY TRIGGER CONTROL -->
-            <button id="hud-action-btn" class="primary-btn" onclick="skipOrAdvanceSet()">Skip Timer</button>
-        </div>
-
+  <div class="hud" id="hud">
+    <div class="elapsed" id="el">TIME 00:00</div>
+    <div class="prog"><i id="pg"></i></div>
+    <div class="hcard">
+      <div class="dots" id="dots"></div>
+      <h3 id="hn"></h3>
+      <div class="sc" id="hs"></div>
+      <div class="vid"><video id="hv" autoplay loop muted playsinline></video></div>
     </div>
+    <div class="clock"><small id="cs">COMPLETE YOUR SET</small><div class="t" id="ct">--</div></div>
+    <button class="btn" id="act">Set Done &middot; Start Rest</button>
+    <button class="btn ghost" id="quit" style="margin-top:12px">End Workout</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
-    <script>
-        const exerciseDataBank = {
-            "Monday": {
-                focus: "Chest & Triceps",
-                moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
-                ]
-            },
-            "Tuesday": {
-                focus: "Shoulder & Bicep",
-                moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/699d62.mp4" },
-                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/2zncg6.mp4" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/9v5xjd.mp4" },
-                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/7a2mai.mp4" },
-                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/td39uz.mp4" },
-                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/db3ut5.mp4" }
-                ]
-            },
-            "Wednesday": {
-                focus: "Legs",
-                moves: [
-                    { name: "Dumbbell Goblet Squats", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/mce4ys.mp4" },
-                    { name: "Dumbbell Bulgarian Split Squats", stats: "12 Reps (Per Leg)", sets: 3, img: "https://files.catbox.moe/hrx0yt.mp4" },
-                    { name: "Dumbbell Romanian Deadlifts", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/m58qpu.mp4" },
-                    { name: "Walking Lunges", stats: "20 Total Steps", sets: 3, img: "https://files.catbox.moe/5eb9n4.mp4" },
-                    { name: "Calf Raises", stats: "20 Reps", sets: 4, img: "https://files.catbox.moe/ro3u86.mp4" }
-                ]
-            },
-            "Thursday": {
-                focus: "Abs (Core)",
-                moves: [
-                    { name: "Plank Shoulder Taps", stats: "45 Seconds", sets: 4, img: "https://files.catbox.moe/kf5a81.mp4" },
-                    { name: "Bicycle Crunches", stats: "20 Reps", sets: 3, img: "https://files.catbox.moe/1wtf9l.mp4" },
-                    { name: "Lying Leg Raises", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/e2va8y.mp4" },
-                    { name: "Russian Twists", stats: "20 Total Reps", sets: 3, img: "https://files.catbox.moe/e5rdnf.mp4" },
-                    { name: "Flutter Kicks", stats: "45 Seconds", sets: 3, img: "https://files.catbox.moe/e2va8y.mp4" }
-                ]
-            },
-            "Friday": {
-                focus: "Chest & Triceps",
-                moves: [
-                    { name: "Dumbbell Floor Press", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/kp27ib.mp4" },
-                    { name: "Standard Push-ups", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/s2rqzi.mp4" },
-                    { name: "Decline Push-ups", stats: "10 Reps", sets: 3, img: "https://files.catbox.moe/nwoem7.mp4" },
-                    { name: "Overhead Dumbbell Tricep Extension", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/hrpwyd.mp4" },
-                    { name: "Chair or Bench Dips", stats: "15 Reps", sets: 3, img: "https://files.catbox.moe/i4ql6k.mp4" },
-                    { name: "Diamond Push-ups", stats: "To Failure", sets: 3, img: "https://files.catbox.moe/g99k8u.mp4" }
-                ]
-            },
-            "Saturday": {
-                focus: "Shoulder & Bicep",
-                moves: [
-                    { name: "Dumbbell Shoulder Press", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/699d62.mp4" },
-                    { name: "Dumbbell Lateral Raises", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/2zncg6.mp4" },
-                    { name: "Dumbbell Rear Delt Flyes", stats: "15 Reps", sets: 4, img: "https://files.catbox.moe/9v5xjd.mp4" },
-                    { name: "Dumbbell Bicep Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/7a2mai.mp4" },
-                    { name: "Dumbbell Hammer Curls", stats: "12 Reps", sets: 4, img: "https://files.catbox.moe/td39uz.mp4" },
-                    { name: "Pike Push-ups", stats: "8-10 Reps", sets: 3, img: "https://files.catbox.moe/db3ut5.mp4" }
-                ]
-            },
-            "Sunday": {
-                focus: "Rest Day",
-                moves: [
-                    { name: "Full Recovery Rest", stats: "Prepare for Monday", sets: 1, img: "https://images.unsplash.com/photo-1605296867304-46d5465a25f1?auto=format&fit=crop&w=400&q=80" }
-                ]
-            }
-        };
+<script>
+const $=id=>document.getElementById(id),U='https://files.catbox.moe/';
+const mv=(n,s,t,v)=>({n,s,t,v:U+v+'.mp4'});
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const chest=[mv('Dumbbell Floor Press','15 Reps',4,'kp27ib'),mv('Standard Push-ups','12 Reps',4,'s2rqzi'),mv('Decline Push-ups','10 Reps',3,'nwoem7'),mv('Overhead Dumbbell Tricep Extension','12 Reps',4,'hrpwyd'),mv('Chair or Bench Dips','15 Reps',3,'i4ql6k'),mv('Diamond Push-ups','To Failure',3,'g99k8u')];
+const shoulder=[mv('Dumbbell Shoulder Press','12 Reps',4,'699d62'),mv('Dumbbell Lateral Raises','15 Reps',4,'2zncg6'),mv('Dumbbell Rear Delt Flyes','15 Reps',4,'9v5xjd'),mv('Dumbbell Bicep Curls','12 Reps',4,'7a2mai'),mv('Dumbbell Hammer Curls','12 Reps',4,'td39uz'),mv('Pike Push-ups','8-10 Reps',3,'db3ut5')];
+const BANK={Monday:{f:'Chest & Triceps',m:chest},Tuesday:{f:'Shoulder & Bicep',m:shoulder},
+Wednesday:{f:'Legs',m:[mv('Dumbbell Goblet Squats','15 Reps',4,'mce4ys'),mv('Dumbbell Bulgarian Split Squats','12 Reps (Per Leg)',3,'hrx0yt'),mv('Dumbbell Romanian Deadlifts','15 Reps',4,'m58qpu'),mv('Walking Lunges','20 Total Steps',3,'5eb9n4'),mv('Calf Raises','20 Reps',4,'ro3u86')]},
+Thursday:{f:'Abs (Core)',m:[mv('Plank Shoulder Taps','45 Seconds',4,'kf5a81'),mv('Bicycle Crunches','20 Reps',3,'1wtf9l'),mv('Lying Leg Raises','15 Reps',3,'e2va8y'),mv('Russian Twists','20 Total Reps',3,'e5rdnf'),mv('Flutter Kicks','45 Seconds',3,'e2va8y')]},
+Friday:{f:'Chest & Triceps',m:chest},Saturday:{f:'Shoulder & Bicep',m:shoulder},Sunday:{f:'Rest Day',m:[]}};
 
-        let currentExerciseIndex = 0;
-        let currentSetIndex = 1;
-        let countdownRunning = null;
-        let remainingSeconds = 60;
-        let chosenDay = "Monday";
-        let trackingMovesList = [];
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const key=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const cfg=()=>Object.assign({rest:60,alert:'on'},ld('ironTimeSettings',{}));
+const dayName=d=>DAYS[(d.getDay()+6)%7];
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2200)}
 
-        function getUrlDay() {
-            const params = new URLSearchParams(window.location.search);
-            const day = params.get('day') || 'Monday';
-            // Safe format conversion: Cleans spaces and matches exact casing (e.g. "tuesday " -> "Tuesday")
-            return day.trim().charAt(0).toUpperCase() + day.trim().slice(1).toLowerCase();
-        }
+function getDay(){let d=new URLSearchParams(location.search).get('day')||'today';d=d.trim();
+  if(d.toLowerCase()==='today')return dayName(new Date());
+  d=d.charAt(0).toUpperCase()+d.slice(1).toLowerCase();return BANK[d]?d:dayName(new Date())}
 
-        function loadWorkoutInterface() {
-            chosenDay = getUrlDay();
-            let targetData = exerciseDataBank[chosenDay];
-            
-            // Absolute safety fallback if parameter parsing returns an unrecognized string
-            if (!targetData) {
-                chosenDay = "Monday";
-                targetData = exerciseDataBank[chosenDay];
-            }
-            
-            trackingMovesList = targetData.moves;
+const day=getDay(),moves=BANK[day].m;
+let ei=0,si=1,tm=null,clk=null,rem=60,t0=0,resting=false,finished=false;
 
-            document.getElementById('day-title-header').innerText = `${chosenDay} Routine`;
-            document.getElementById('target-focus-value').innerText = targetData.focus;
+/* header + day chips */
+$('wt').textContent=day+' Routine';$('mf').textContent=BANK[day].f;$('mr').textContent=cfg().rest+' SEC';
+$('sub').textContent=moves.length?moves.length+' exercises':'Recovery day';
+document.title='IRON TIME - '+day;
+const L=ld('ironTimeLogs',{}),mon=new Date();mon.setDate(mon.getDate()-((mon.getDay()+6)%7));
+$('chips').innerHTML=DAYS.map((n,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);
+  return `<a class="chip ${n===day?'on':''} ${L[key(d)]?'done':''}" href="workout.html?day=${n}">${n.slice(0,3).toUpperCase()}</a>`}).join('');
 
-            const targetVault = document.getElementById('workout-vault');
-            targetVault.innerHTML = '';
+/* overview list */
+$('vault').innerHTML=moves.length
+ ?moves.map(m=>`<div class="ex"><h4>${m.n}</h4><p>Target: <span>${m.t} x ${m.s}</span></p><div class="vid"><video autoplay loop muted playsinline preload="metadata" src="${m.v}"></video></div></div>`).join('')
+ :'<div class="hero"><h2 class="grad">Full Recovery</h2><p>Rest, stretch, hydrate and sleep. Muscles grow while you recover.</p></div><a class="btn" href="index.html">Back to Week</a>';
+if(!moves.length)$('start').style.display='none';
 
-            trackingMovesList.forEach(move => {
-                const isVideo = move.img.toLowerCase().endsWith('.mp4');
-                const mediaTag = isVideo 
-                    ? `<video autoplay loop muted playsinline><source src="${move.img}" type="video/mp4"></video>`
-                    : `<img src="${move.img}" alt="${move.name}">`;
+/* live workout */
+function beep(){if(cfg().alert!=='on')return;try{navigator.vibrate&&navigator.vibrate(200);const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator();o.frequency.value=880;o.connect(a.destination);o.start();setTimeout(()=>o.stop(),150)}catch(e){}}
+function stopAll(){clearInterval(tm);clearInterval(clk);tm=clk=null;resting=false}
+$('start').onclick=()=>{$('over').style.display='none';$('hud').style.display='block';t0=Date.now();
+  clk=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1e3);$('el').textContent='TIME '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1e3);render()};
+function render(){const m=moves[ei];resting=false;clearInterval(tm);tm=null;
+  $('hn').textContent=m.n;$('hs').textContent=`SET ${si} OF ${m.t} — ${m.s}`;
+  $('dots').innerHTML=Array.from({length:m.t},(_,i)=>`<i class="${i<si-1?'on':i===si-1?'cur':''}"></i>`).join('');
+  const tot=moves.reduce((a,x)=>a+x.t,0),dn=moves.slice(0,ei).reduce((a,x)=>a+x.t,0)+si-1;$('pg').style.width=(dn/tot*100)+'%';
+  $('hv').src=m.v;$('hv').play().catch(()=>{});
+  $('cs').textContent='COMPLETE YOUR SET';$('ct').textContent='--';$('ct').classList.remove('crit');
+  $('act').innerHTML='Set Done &middot; Start Rest';$('act').className='btn'}
+function next(){clearInterval(tm);tm=null;const m=moves[ei];
+  if(si<m.t){si++;render()}else if(ei<moves.length-1){ei++;si=1;render()}
+  else{clearInterval(clk);resting=false;finished=true;$('pg').style.width='100%';$('cs').textContent='WORKOUT COMPLETE';$('ct').textContent='DONE';$('ct').classList.remove('crit');$('act').textContent='Finish & Save';$('act').className='btn ok';beep()}}
+$('act').onclick=()=>{
+  if(finished){const l=ld('ironTimeLogs',{});l[key(new Date())]='completed';sv('ironTimeLogs',l);stopAll();location.href='index.html';return}
+  if(!resting){
+    if(ei===moves.length-1&&si===moves[ei].t){return next()}
+    resting=true;rem=cfg().rest;$('cs').textContent='RESTING';$('ct').textContent=rem+'s';$('act').textContent='Skip Rest';$('act').className='btn ghost';
+    tm=setInterval(()=>{rem--;$('ct').textContent=rem+'s';$('ct').classList.toggle('crit',rem<=3);if(rem<=0){beep();next()}},1e3)}
+  else next()};
+$('quit').onclick=()=>{if(confirm('End this workout without saving?')){stopAll();location.href='index.html'}};
 
-                const itemHTML = `
-                    <div class="exercise-card">
-                        <div class="ex-info">
-                            <h4>${move.name}</h4>
-                            <p>Target Sets: <span>${move.sets} sets x ${move.stats}</span></p>
-                        </div>
-                        <div class="workout-gif-window">
-                            ${mediaTag}
-                        </div>
-                    </div>
-                `;
-                targetVault.insertAdjacentHTML('beforeend', itemHTML);
-            });
-        }
-
-        function startInteractiveWorkout() {
-            document.getElementById('overview-zone').style.display = 'none';
-            document.getElementById('active-workout-hud').style.display = 'flex';
-            renderHudExercise();
-        }
-
-        function renderHudExercise() {
-            const currentMove = trackingMovesList[currentExerciseIndex];
-            
-            document.getElementById('hud-exercise-name').innerText = currentMove.name;
-            document.getElementById('hud-set-counter').innerText = `SET ${currentSetIndex} OF ${currentMove.sets} — ${currentMove.stats}`;
-            
-            const videoDisplay = document.getElementById('hud-video-display');
-            const videoSource = document.getElementById('hud-video-source');
-            
-            videoDisplay.setAttribute('muted', '');
-            videoDisplay.setAttribute('playsinline', '');
-            videoDisplay.setAttribute('loop', '');
-            videoDisplay.muted = true;
-            
-            // Safely swapping mobile video elements via inner source node configuration
-            videoSource.src = currentMove.img;
-            videoDisplay.load();
-            
-            let playPromise = videoDisplay.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay caught restriction:", error);
-                    document.body.addEventListener('click', () => {
-                        videoDisplay.play();
-                    }, { once: true });
-                });
-            }
-
-            clearInterval(countdownRunning);
-            countdownRunning = null;
-            remainingSeconds = 60;
-            
-            const displayClock = document.getElementById('countdown-clock');
-            displayClock.innerText = "60s";
-            displayClock.classList.remove('critical');
-            document.getElementById('timer-status-text').innerText = "Tap to start rest interval";
-            document.getElementById('hud-action-btn').innerText = "Skip Timer";
-        }
-
-        function triggerRestTimer() {
-            if (countdownRunning !== null) return;
-
-            document.getElementById('timer-status-text').innerText = "REST INTERVAL ACTIVE";
-            const displayClock = document.getElementById('countdown-clock');
-
-            countdownRunning = setInterval(() => {
-                remainingSeconds--;
-                displayClock.innerText = `${remainingSeconds}s`;
-
-                if (remainingSeconds <= 3 && remainingSeconds > 0) {
-                    displayClock.classList.add('critical');
-                }
-
-                if (remainingSeconds <= 0) {
-                    clearInterval(countdownRunning);
-                    countdownRunning = null;
-                    advanceToNextSegment();
-                }
-            }, 1000);
-        }
-
-        function skipOrAdvanceSet() {
-            if (countdownRunning !== null) {
-                clearInterval(countdownRunning);
-                countdownRunning = null;
-            }
-            advanceToNextSegment();
-        }
-
-        function advanceToNextSegment() {
-            const currentMove = trackingMovesList[currentExerciseIndex];
-
-            if (currentSetIndex < currentMove.sets) {
-                currentSetIndex++;
-                renderHudExercise();
-            } else if (currentExerciseIndex < trackingMovesList.length - 1) {
-                currentExerciseIndex++;
-                currentSetIndex = 1;
-                renderHudExercise();
-            } else {
-                displayWorkoutCompletionTrigger();
-            }
-        }
-
-        function displayWorkoutCompletionTrigger() {
-            const statusText = document.getElementById('timer-status-text');
-            const clockScreen = document.getElementById('countdown-clock');
-            const actionBtn = document.getElementById('hud-action-btn');
-
-            statusText.innerText = "ROUTINE COMPLETED VECTORS ACHIEVED";
-            clockScreen.innerText = "DONE";
-            clockScreen.classList.remove('critical');
-
-            actionBtn.innerText = "COMPLETE";
-            actionBtn.classList.add('complete-mode');
-            actionBtn.onclick = commitVerificationLogToMemory;
-        }
-
-        function commitVerificationLogToMemory() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const dateKey = `${year}-${month}-${day}`;
-
-            const logDatabase = JSON.parse(localStorage.getItem('ironTimeLogs') || '{}');
-            logDatabase[dateKey] = 'completed';
-            localStorage.setItem('ironTimeLogs', JSON.stringify(logDatabase));
-
-            goBackHome();
-        }
-
-        function goBackHome() {
-            window.location.href = 'index.html';
-        }
-
-        window.onload = loadWorkoutInterface;
-    </script>
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
 </body>
 </html>
