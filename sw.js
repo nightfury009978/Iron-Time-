@@ -1,5 +1,5 @@
-const CACHE = 'iron-time-v2';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'iron-time-v3';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -29,7 +29,7 @@ self.addEventListener('fetch', e => {
 function remind() {
   return self.registration.showNotification('Iron Time', {
     body: "Time to train. Your workout is waiting.",
-    icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', tag: 'daily-reminder'
+    icon: 'icon-192.png', badge: 'icon-192.png', tag: 'daily-reminder'
   });
 }
 
@@ -38,7 +38,7 @@ self.addEventListener('sync', e => { if (e.tag === 'sync-logs') e.waitUntil(Prom
 self.addEventListener('push', e => {
   let t = 'Time to train. Your workout is waiting.';
   try { if (e.data) t = e.data.text(); } catch (x) {}
-  e.waitUntil(self.registration.showNotification('Iron Time', { body: t, icon: 'icons/icon-192.png', badge: 'icons/icon-192.png' }));
+  e.waitUntil(self.registration.showNotification('Iron Time', { body: t, icon: 'icon-192.png', badge: 'icon-192.png' }));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();
