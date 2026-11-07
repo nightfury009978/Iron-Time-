@@ -1,0 +1,1 @@
+{"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"IRON TIME","weight":"Bolder","size":"Large"},{"type":"TextBlock","text":"${today}","wrap":true},{"type":"TextBlock","text":"Streak: ${streak} days"}],"actions":[{"type":"Action.Execute","title":"Open","verb":"open"}]}
