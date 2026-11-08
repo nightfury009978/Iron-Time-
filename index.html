@@ -113,6 +113,27 @@ html[data-theme=platinum]{--bg:#f4f2ed;--s1:#ffffff;--s2:#ebe8e1;--line:rgba(0,0
 .tbtn{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:var(--s2);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--tx);text-align:left}
 .tbtn i{width:18px;height:18px;border-radius:50%;flex:0 0 auto}
 .tbtn.on{border-color:var(--e1);box-shadow:0 0 0 1px var(--e1)}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:22px;box-shadow:0 14px 34px -22px rgba(0,0,0,.45)}
+.goal{display:flex;align-items:center;gap:16px}.goal svg{width:84px;height:84px;flex:0 0 auto}
+.goal .tr{fill:none;stroke:var(--s2);stroke-width:8}
+.goal .pr{fill:none;stroke:url(#gg);stroke-width:8;stroke-linecap:round;stroke-dasharray:213.6;stroke-dashoffset:213.6;transform:rotate(-90deg);transform-origin:42px 42px;transition:stroke-dashoffset 1s ease}
+.goal .num{font-family:var(--fh);font-weight:800;font-size:18px;fill:var(--tx);text-anchor:middle}
+.goal b{font-family:var(--fh);font-size:17px}.goal p{margin:4px 0 0;color:var(--mute);font-size:13px;line-height:1.4}
+.wtop{display:flex;justify-content:space-between;align-items:flex-end}.wtop b{font-family:var(--fh);font-size:26px}.wtop span{font-size:12px;color:var(--mute);font-weight:600}
+#wchart{width:100%;height:80px;margin-top:10px}
+.winp{display:flex;gap:8px;margin-top:12px}.winp input,.auth input{flex:1;background:var(--s2);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:13px;font-family:var(--fb);font-size:15px;min-width:0}
+.winp .btn{width:auto;padding:0 20px;margin:0}
+.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+.badge{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--s1);opacity:.4;filter:grayscale(1)}
+.badge.on{opacity:1;filter:none;border-color:var(--e1);box-shadow:0 10px 24px -14px rgba(var(--ac),.8)}
+.badge i{font-style:normal;font-size:22px}.badge b{display:block;font-family:var(--fh);font-size:13px;margin-top:6px}.badge span{font-size:11px;color:var(--mute)}
+.auth{position:fixed;inset:0;z-index:1500;background:var(--bg);display:none;align-items:center;justify-content:center;padding:24px;overflow:auto}
+.auth.on{display:flex}.auth .in{width:100%;max-width:400px;text-align:center}
+.auth h2{font-size:30px;margin:14px 0 8px}.auth p{color:var(--mute);font-size:14px;line-height:1.6;margin:0 0 20px}
+.auth input{width:100%;margin-bottom:12px;text-align:center}.auth .msg{color:var(--e2);font-size:13px;min-height:18px;margin:10px 0}
+.auth .logo{font-size:15px;letter-spacing:6px;font-weight:800}.auth .small{font-size:12px;margin-top:16px}
+.row2{display:flex;gap:10px}.row2 .btn{margin:0}
+.mini.danger{color:var(--e2)}
 </style>
 </head>
 <body>
@@ -133,21 +154,39 @@ html[data-theme=platinum]{--bg:#f4f2ed;--s1:#ffffff;--s2:#ebe8e1;--line:rgba(0,0
   <div class="sp-bar"><i></i></div>
 </div>
 
+<div id="auth" class="auth"><div class="in">
+  <div class="logo grad">IRON TIME</div>
+  <div id="a-form">
+    <h2 class="grad">Welcome back</h2>
+    <p>Enter your email and we will send you a secure sign-in link. No password needed. New here? The same link creates your account.</p>
+    <input type="email" id="aem" placeholder="you@example.com" autocomplete="email" inputmode="email">
+    <button class="btn" id="asend">Send sign-in link</button>
+    <div class="msg" id="amsg"></div>
+    <button class="btn ghost" id="aguest">Continue as guest</button>
+    <p class="small">Guest data stays on this device only.</p>
+  </div>
+  <div id="a-sent" style="display:none">
+    <h2 class="grad">Check your inbox</h2>
+    <p>We sent a sign-in link to <b id="asentto"></b>. Open it on this device and tap the link to activate. Check spam if you do not see it.</p>
+    <button class="btn ghost" id="aback">Use a different email</button>
+  </div>
+</div></div>
 
 <div class="ov" id="ov"></div>
 <aside class="drawer" id="drawer">
   <div class="dh"><h2 class="grad">Progress Hub</h2><button class="icon-btn" id="dclose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-
-  <div class="box" id="b-cal"><button>Progress Chart <b>&gt;</b></button><div class="sub"><h4 id="calm"></h4><div class="cal" id="cal"></div></div></div>
+  <div class="box" id="b-acc"><button>Account <b>&gt;</b></button><div class="sub" id="acc"></div></div>
+  <div class="box"><button>Progress Chart <b>&gt;</b></button><div class="sub"><h4 id="calm"></h4><div class="cal" id="cal"></div></div></div>
   <div class="box"><button>Statistics <b>&gt;</b></button><div class="sub" id="statsub"></div></div>
   <div class="box"><button>Appearance <b>&gt;</b></button><div class="sub"><h4>Colour theme</h4><div class="tgrid" id="tgrid"></div><h4>Heading font</h4><select id="hf"></select><h4>Body font</h4><select id="bf"></select></div></div>
   <div class="box"><button>Workout Settings <b>&gt;</b></button><div class="sub">
-    <h4>Rest Interval</h4><select id="rest"><option value="30">30 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option><option value="90">90 seconds</option><option value="120">120 seconds</option></select>
-    <h4>Sound &amp; Vibration</h4><select id="alert"><option value="on">On</option><option value="off">Off</option></select></div></div>
+    <h4>Weekly goal</h4><select id="goal"><option value="1">1 workout</option><option value="2">2 workouts</option><option value="3">3 workouts</option><option value="4">4 workouts</option><option value="5">5 workouts</option><option value="6">6 workouts</option><option value="7">7 workouts</option></select>
+    <h4>Rest interval</h4><select id="rest"><option value="30">30 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option><option value="90">90 seconds</option><option value="120">120 seconds</option></select>
+    <h4>Sound &amp; vibration</h4><select id="alert"><option value="on">On</option><option value="off">Off</option></select></div></div>
   <div class="box" id="b-notes"><button>Workout Notes <b>&gt;</b></button><div class="sub"><h4>Your notes</h4><textarea id="notes" placeholder="Weights used, how you felt, goals..."></textarea></div></div>
   <div class="box"><button>Reminders <b>&gt;</b></button><div class="sub"><h4>Daily reminder</h4><p>Get a nudge to train. Works best once the app is installed.</p><button class="mini" id="remind">Enable reminders</button></div></div>
   <div class="box"><button>Install App <b>&gt;</b></button><div class="sub"><h4>Add to home screen</h4><p>Install Iron Time for full-screen, offline training.</p><button class="mini" id="install">Install Iron Time</button></div></div>
-  <div class="box"><button>Reset Data <b>&gt;</b></button><div class="sub"><h4>Clear history</h4><p>Removes all logged workouts and notes from this device.</p><button class="mini" id="reset">Erase everything</button></div></div>
+  <div class="box"><button>Reset Data <b>&gt;</b></button><div class="sub"><h4>Clear history</h4><p>Removes all workouts, weights and notes, including your cloud copy if signed in.</p><button class="mini danger" id="reset">Erase everything</button></div></div>
 </aside>
 
 <div class="app">
@@ -156,7 +195,15 @@ html[data-theme=platinum]{--bg:#f4f2ed;--s1:#ffffff;--s2:#ebe8e1;--line:rgba(0,0
   <button class="icon-btn" id="menu" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></header>
   <section class="hero"><small id="hk">TODAY</small><h2 id="ht" class="grad"></h2><p id="hp"></p><button class="btn" id="hgo">Open Workout</button></section>
   <section class="stats"><div class="stat"><b id="s1">0</b><span>STREAK</span></div><div class="stat"><b id="s2">0</b><span>THIS WEEK</span></div><div class="stat"><b id="s3">0</b><span>TOTAL</span></div></section>
-  <h3 class="sec grad">YOUR WEEK</h3><section class="week" id="week"></section>
+  <section class="card goal">
+    <svg viewBox="0 0 84 84"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--e1)"/><stop offset="1" style="stop-color:var(--e2)"/></linearGradient></defs><circle class="tr" cx="42" cy="42" r="34"/><circle class="pr" id="ring" cx="42" cy="42" r="34"/><text class="num" id="rnum" x="42" y="48">0/4</text></svg>
+    <div><b id="gt">Weekly goal</b><p id="gp"></p></div>
+  </section>
+  <h3 class="sec grad">YOUR WEEK</h3><section class="week" id="week" style="margin-bottom:26px"></section>
+  <h3 class="sec grad">BODY WEIGHT</h3>
+  <section class="card"><div class="wtop"><div><b id="wnow">-- kg</b><br><span id="wchg"></span></div></div><svg id="wchart" viewBox="0 0 300 80" preserveAspectRatio="none"></svg>
+    <div class="winp"><input type="number" id="winp" step="0.1" min="20" max="400" placeholder="Today's weight (kg)" inputmode="decimal"><button class="btn" id="wlog">Log</button></div></section>
+  <h3 class="sec grad">ACHIEVEMENTS</h3><section class="badges" id="badges"></section>
 </main>
 
 <main class="view" id="v-work">
@@ -164,12 +211,11 @@ html[data-theme=platinum]{--bg:#f4f2ed;--s1:#ffffff;--s2:#ebe8e1;--line:rgba(0,0
   <div class="meta"><div><span>TIME</span><b>~45 MIN</b></div><div><span>REST</span><b id="mr">60 SEC</b></div><div><span>SPLIT</span><b class="f" id="mf"></b></div></div>
   <div id="over"><div id="vault"></div><button class="btn" id="start">Start Workout</button></div>
   <div class="hud" id="hud">
-    <div class="elapsed" id="el">00:00</div><div class="prog"><i id="pg"></i></div>
-    <div class="hcard"><div class="dots" id="dots"></div><h3 id="hn"></h3><div class="sc" id="hs"></div>
-      <div class="vid"><video id="hv" autoplay loop muted playsinline></video></div></div>
+    <div class="elapsed" id="el">TIME 00:00</div><div class="prog"><i id="pg"></i></div>
+    <div class="hcard"><div class="dots" id="dots"></div><h3 id="hn"></h3><div class="sc" id="hs"></div><div class="vid"><video id="hv" autoplay loop muted playsinline></video></div></div>
     <div class="clock"><small id="cs">COMPLETE YOUR SET</small><div class="t" id="ct">--</div></div>
-    <button class="btn" id="act">Set Done · Start Rest</button>
-    <button class="btn ghost" id="quit" style="margin-top:12px">End Workout</button>
+    <button class="btn" id="act">Set Done &middot; Start Rest</button>
+    <div class="row2" style="margin-top:12px"><button class="btn ghost" id="prev">Previous Set</button><button class="btn ghost" id="quit">End Workout</button></div>
   </div>
 </main>
 </div>
@@ -186,63 +232,91 @@ Wednesday:{f:'Legs',m:[mv('Dumbbell Goblet Squats','15 Reps',4,'mce4ys'),mv('Dum
 Thursday:{f:'Abs (Core)',m:[mv('Plank Shoulder Taps','45 Seconds',4,'kf5a81'),mv('Bicycle Crunches','20 Reps',3,'1wtf9l'),mv('Lying Leg Raises','15 Reps',3,'e2va8y'),mv('Russian Twists','20 Total Reps',3,'e5rdnf'),mv('Flutter Kicks','45 Seconds',3,'e2va8y')]},
 Friday:{f:'Chest & Triceps',m:chest},Saturday:{f:'Shoulder & Bicep',m:shoulder},Sunday:{f:'Rest Day',m:[]}};
 
-/* storage */
-const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
-const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+/* storage + cloud sync hook */
+const SK=['ironTimeLogs','ironTimeNotes','ironTimeSettings','ironTimeLook2','ironTimeWeights'];
+const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v===null||v===undefined?d:v}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));if(SK.includes(k)){localStorage.setItem('ironTimeMod',String(Date.now()));schedulePush()}}catch(e){}};
 const key=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const logs=()=>ld('ironTimeLogs',{});
-const cfg=()=>Object.assign({rest:60,alert:'on'},ld('ironTimeSettings',{}));
+const cfg=()=>Object.assign({rest:60,alert:'on',goal:4},ld('ironTimeSettings',{}));
 const dayName=d=>DAYS[(d.getDay()+6)%7];
-function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2200)}
-
-/* splash */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2600)}
 setTimeout(()=>$('splash').classList.add('hide'),3200);
 
 /* stats */
 function streak(){const L=logs();let d=new Date(),n=0;if(!L[key(d)])d.setDate(d.getDate()-1);while(L[key(d)]){n++;d.setDate(d.getDate()-1)}return n}
-function bestStreak(){const ks=Object.keys(logs()).sort();let b=0,c=0,p=null;ks.forEach(k=>{const d=new Date(k+'T00:00');c=p&&(d-p)===864e5?c+1:1;b=Math.max(b,c);p=d});return b}
+function bestStreak(){const ks=Object.keys(logs()).sort();let b=0,c=0,p=null;ks.forEach(k=>{const d=new Date(k+'T00:00');c=p&&Math.round((d-p)/864e5)===1?c+1:1;b=Math.max(b,c);p=d});return b}
 function weekDates(){const n=new Date(),m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7));return DAYS.map((_,i)=>{const d=new Date(m);d.setDate(m.getDate()+i);return d})}
+function totals(){let s=0,n=0;Object.values(logs()).forEach(v=>{if(v&&typeof v==='object'){s+=v.s||0;n+=v.n||0}});return{s,n}}
+const fmt=s=>s>=3600?Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m':Math.floor(s/60)+'m';
+const weekDone=()=>weekDates().filter(d=>logs()[key(d)]).length;
 
 /* home */
 function home(){
-  const L=logs(),now=new Date(),h=now.getHours(),today=dayName(now);
-  $('hello').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', champion';
+  const L=logs(),now=new Date(),h=now.getHours(),today=dayName(now),goal=cfg().goal;
+  const nm=fbUser&&fbUser.email?fbUser.email.split('@')[0].replace(/[._-]+/g,' '):'champion';
+  $('hello').textContent=(h<12?'Good morning':h<18?'Good afternoon':'Good evening')+', '+nm;
   const T=BANK[today];$('ht').textContent=T.f;
   $('hp').textContent=T.m.length?`${T.m.length} exercises · ~45 min`:'Recovery matters. Stretch, hydrate, sleep well.';
   $('hk').textContent=L[key(now)]?'TODAY · COMPLETED':'TODAY · '+today.toUpperCase();
-  $('hgo').textContent=T.m.length?'Open Workout':'View Rest Day';
-  $('hgo').onclick=()=>openDay(today);
-  const wd=weekDates();$('s1').textContent=streak();
-  $('s2').textContent=wd.filter(d=>L[key(d)]).length;$('s3').textContent=Object.keys(L).length;
-  $('week').innerHTML=wd.map((d,i)=>{const n=DAYS[i],done=L[key(d)],isT=n===today;
-    return `<div class="day ${done?'done':''} ${isT?'today':''}" onclick="openDay('${n}')"><div><h3>${n.toUpperCase()}</h3><p>${done?'COMPLETED':BANK[n].f}</p></div><div>${isT?'<span class="tag">TODAY</span>':'<span class="chev">&gt;</span>'}</div></div>`}).join('');
+  $('hgo').textContent=T.m.length?'Open Workout':'View Rest Day';$('hgo').onclick=()=>openDay(today);
+  const wd=weekDates(),done=wd.filter(d=>L[key(d)]).length;
+  $('s1').textContent=streak();$('s2').textContent=done;$('s3').textContent=Object.keys(L).length;
+  $('rnum').textContent=done+'/'+goal;$('ring').style.strokeDashoffset=213.6*(1-Math.min(1,done/goal));
+  $('gt').textContent=done>=goal?'Goal reached!':'Weekly goal';
+  $('gp').textContent=done>=goal?'You trained '+done+' times this week. Outstanding.':(goal-done)+' more workout'+(goal-done>1?'s':'')+' to hit your goal of '+goal+'.';
+  $('week').innerHTML=wd.map((d,i)=>{const n=DAYS[i],dn=L[key(d)],isT=n===today;
+    return `<div class="day ${dn?'done':''} ${isT?'today':''}" onclick="openDay('${n}')"><div><h3>${n.toUpperCase()}</h3><p>${dn?'COMPLETED':BANK[n].f}</p></div><div>${isT?'<span class="tag">TODAY</span>':'<span class="chev">&gt;</span>'}</div></div>`}).join('');
+  weightUI();badgesUI();
 }
+function weightUI(){const W=ld('ironTimeWeights',{}),ks=Object.keys(W).sort();
+  $('wnow').textContent=ks.length?W[ks[ks.length-1]]+' kg':'-- kg';
+  if(ks.length>1){const d=W[ks[ks.length-1]]-W[ks[0]];$('wchg').textContent=(d>0?'+':'')+d.toFixed(1)+' kg since start'}else $('wchg').textContent=ks.length?'First weigh-in logged':'Log your first weigh-in';
+  const v=ks.slice(-14).map(k=>W[k]);let g='';
+  if(v.length>1){const mn=Math.min(...v),mx=Math.max(...v),pt=v.map((x,i)=>[2+i/(v.length-1)*296,70-((x-mn)/((mx-mn)||1))*58]);
+    g=`<polyline fill="none" stroke="var(--e1)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" points="${pt.map(p=>p.join(',')).join(' ')}"/>`}
+  $('wchart').innerHTML=g}
+$('wlog').onclick=()=>{const x=parseFloat($('winp').value);if(!(x>=20&&x<=400))return toast('Enter a weight between 20 and 400 kg');
+  const W=ld('ironTimeWeights',{});W[key(new Date())]=Math.round(x*10)/10;sv('ironTimeWeights',W);$('winp').value='';weightUI();toast('Weight logged')};
+function badgesUI(){const n=Object.keys(logs()).length,b=bestStreak(),t=totals().s,g=weekDone()>=cfg().goal;
+  const B=[['🏁','First rep','Complete a workout',n>=1],['🔥','On fire','3-day streak',b>=3],['⚡','Week warrior','7-day streak',b>=7],['💪','Committed','10 workouts',n>=10],['🏆','Iron habit','30 workouts',n>=30],['👑','Centurion','100 workouts',n>=100],['🎯','Goal crusher','Hit your weekly goal',g],['⏱️','Hour of power','60 min trained',t>=3600]];
+  $('badges').innerHTML=B.map(x=>`<div class="badge ${x[3]?'on':''}"><i>${x[0]}</i><b>${x[1]}</b><span>${x[2]}</span></div>`).join('')}
 
-/* drawer */
-const open=()=>{buildCal();buildStats();$('drawer').classList.add('on');$('ov').classList.add('on')};
-const close=()=>{$('drawer').classList.remove('on');$('ov').classList.remove('on')};
-$('menu').onclick=open;$('dclose').onclick=close;$('ov').onclick=close;
+/* views + history (fixes the back button) */
+let drawerOpen=false,live=false;
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0)}
+function route(st){if(st&&st.v==='work'){renderDay(st.d);show('v-work')}else{show('v-home');home()}}
+window.addEventListener('popstate',e=>{
+  if(drawerOpen){uiCloseDrawer();return}
+  if(live){if(confirm('End this workout? Progress will not be saved.')){endLive();route(e.state)}else history.pushState({v:'live'},'');return}
+  route(e.state)});
+function openDrawer(){buildCal();buildStats();$('drawer').classList.add('on');$('ov').classList.add('on');drawerOpen=true;history.pushState({v:'drawer'},'')}
+function uiCloseDrawer(){drawerOpen=false;$('drawer').classList.remove('on');$('ov').classList.remove('on')}
+function closeDrawer(){if(drawerOpen)history.back()}
+$('menu').onclick=openDrawer;$('dclose').onclick=closeDrawer;$('ov').onclick=closeDrawer;
 document.querySelectorAll('.box>button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+
+/* drawer content */
 function buildCal(){const n=new Date(),y=n.getFullYear(),m=n.getMonth(),L=logs();
   $('calm').textContent=n.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
   let h=['S','M','T','W','T','F','S'].map(x=>`<div class="h">${x}</div>`).join('');
   for(let i=0;i<new Date(y,m,1).getDay();i++)h+='<div style="border:0"></div>';
   for(let d=1;d<=new Date(y,m+1,0).getDate();d++)h+=`<div class="${L[key(new Date(y,m,d))]?'l':''}">${d}</div>`;
   $('cal').innerHTML=h}
-function buildStats(){const L=logs(),n=new Date(),mo=Object.keys(L).filter(k=>k.startsWith(key(n).slice(0,7))).length;
-  $('statsub').innerHTML=[['Current streak',streak()+' days'],['Best streak',bestStreak()+' days'],['This month',mo],['All time',Object.keys(L).length]].map(r=>`<div class="kv"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}
-const S=cfg();$('rest').value=S.rest;$('alert').value=S.alert;
-$('rest').onchange=$('alert').onchange=()=>{sv('ironTimeSettings',{rest:+$('rest').value,alert:$('alert').value});toast('Settings saved')};
-$('notes').value=ld('ironTimeNotes','');$('notes').oninput=()=>sv('ironTimeNotes',$('notes').value);
-$('reset').onclick=()=>{if(confirm('Erase all workouts and notes on this device?')){['ironTimeLogs','ironTimeNotes'].forEach(k=>localStorage.removeItem(k));$('notes').value='';home();buildCal();buildStats();toast('Data cleared')}};
+function buildStats(){const L=logs(),n=new Date(),mo=Object.keys(L).filter(k=>k.startsWith(key(n).slice(0,7))).length,t=totals();
+  $('statsub').innerHTML=[['Current streak',streak()+' days'],['Best streak',bestStreak()+' days'],['This month',mo],['All time',Object.keys(L).length],['Time trained',fmt(t.s)],['Sets completed',t.n]].map(r=>`<div class="kv"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}
+function setSettings(){const c=cfg();sv('ironTimeSettings',{rest:+$('rest').value,alert:$('alert').value,goal:+$('goal').value});home();toast('Settings saved')}
+['rest','alert','goal'].forEach(i=>$(i).onchange=setSettings);
+$('notes').oninput=()=>sv('ironTimeNotes',$('notes').value);
+$('reset').onclick=async()=>{if(confirm('Erase all workouts, weights and notes? This also clears your cloud copy.')){SK.filter(k=>k!=='ironTimeLook2').forEach(k=>localStorage.removeItem(k));localStorage.setItem('ironTimeMod',String(Date.now()));applyAll();await push();toast('Data cleared')}};
 let dip;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e});
 $('install').onclick=async()=>{if(dip){dip.prompt();dip=null}else toast('Use your browser menu: Add to Home screen')};
 $('remind').onclick=async()=>{try{
   if(!('Notification' in window))return toast('Notifications not supported');
   if(await Notification.requestPermission()!=='granted')return toast('Permission not granted');
-  const r=await navigator.serviceWorker.ready;
-  try{await r.periodicSync.register('daily-reminder',{minInterval:864e5})}catch(e){}
-  r.showNotification('Iron Time',{body:'Reminders are on. Let\'s train.',icon:'icon-192.png'});toast('Reminders enabled')}catch(e){toast('Could not enable reminders')}};
+  const r=await navigator.serviceWorker.ready;try{await r.periodicSync.register('daily-reminder',{minInterval:864e5})}catch(e){}
+  r.showNotification('Iron Time',{body:"Reminders are on. Let's train.",icon:'icon-192.png'});toast('Reminders enabled')}catch(e){toast('Could not enable reminders')}};
 
 /* appearance */
 const THEMES=[['ember','Obsidian Ember','#ff8a2a','#ff3d00'],['royal','Midnight Royal','#8b7bff','#5b3df5'],['gold','Carbon Gold','#f0c35a','#b8841a'],['emerald','Emerald Steel','#3ee6b0','#0f9d7a'],['crimson','Crimson Noir','#ff4d6d','#c9184a'],['platinum','Platinum Light','#c98a2b','#8a4b00']];
@@ -256,19 +330,21 @@ $('hf').innerHTML=HF.map(f=>`<option>${f}</option>`).join('');$('bf').innerHTML=
 $('tgrid').onclick=e=>{const b=e.target.closest('.tbtn');if(b){sv('ironTimeLook2',Object.assign(look(),{t:b.dataset.t}));applyLook()}};
 $('hf').onchange=()=>{sv('ironTimeLook2',Object.assign(look(),{h:$('hf').value}));applyLook()};
 $('bf').onchange=()=>{sv('ironTimeLook2',Object.assign(look(),{b:$('bf').value}));applyLook()};
-applyLook();
+function applyAll(){const c=cfg();$('rest').value=c.rest;$('alert').value=c.alert;$('goal').value=c.goal;$('notes').value=ld('ironTimeNotes','');applyLook();home()}
 
-/* views */
-function view(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);if(id==='v-home')home()}
-let day,moves=[],ei=0,si=1,tm=null,rem=60,t0=0,clk=null,resting=false;
-function openDay(d){stopAll();day=d;moves=BANK[d].m;ei=0;si=1;
+/* workout */
+let day,moves=[],ei=0,si=1,tm=null,rem=60,t0=0,clk=null,resting=false,finished=false,wl=null;
+function renderDay(d){day=d;moves=BANK[d].m;ei=0;si=1;finished=false;
   $('wt').textContent=d+' Routine';$('mf').textContent=BANK[d].f;$('mr').textContent=cfg().rest+' SEC';
   $('over').style.display='block';$('hud').style.display='none';
   $('vault').innerHTML=moves.length?moves.map(m=>`<div class="ex"><h4>${m.n}</h4><p>Target: <span>${m.t} x ${m.s}</span></p><div class="vid"><video autoplay loop muted playsinline preload="metadata" src="${m.v}"></video></div></div>`).join(''):'<div class="hero"><h2 class="grad">Full Recovery</h2><p>Rest, stretch, hydrate and sleep. Muscles grow while you recover.</p></div>';
-  $('start').style.display=moves.length?'block':'none';view('v-work')}
-function stopAll(){clearInterval(tm);clearInterval(clk);tm=clk=null;resting=false}
-$('back').onclick=()=>{stopAll();view('v-home')};
-$('start').onclick=()=>{$('over').style.display='none';$('hud').style.display='block';t0=Date.now();
+  $('start').style.display=moves.length?'block':'none'}
+function openDay(d){stopAll();renderDay(d);show('v-work');history.pushState({v:'work',d},'')}
+function stopAll(){clearInterval(tm);clearInterval(clk);tm=clk=null;resting=false;try{wl&&wl.release()}catch(e){}wl=null}
+function endLive(){live=false;stopAll();$('over').style.display='block';$('hud').style.display='none'}
+$('back').onclick=()=>history.back();
+$('start').onclick=async()=>{$('over').style.display='none';$('hud').style.display='block';t0=Date.now();live=true;history.pushState({v:'live'},'');
+  try{wl=await navigator.wakeLock.request('screen')}catch(e){}
   clk=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1e3);$('el').textContent='TIME '+String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},1e3);render()};
 function render(){const m=moves[ei];resting=false;clearInterval(tm);tm=null;
   $('hn').textContent=m.n;$('hs').textContent=`SET ${si} OF ${m.t} — ${m.s}`;
@@ -276,29 +352,90 @@ function render(){const m=moves[ei];resting=false;clearInterval(tm);tm=null;
   const tot=moves.reduce((a,x)=>a+x.t,0),dn=moves.slice(0,ei).reduce((a,x)=>a+x.t,0)+si-1;$('pg').style.width=(dn/tot*100)+'%';
   $('hv').src=m.v;$('hv').play().catch(()=>{});
   $('cs').textContent='COMPLETE YOUR SET';$('ct').textContent='--';$('ct').classList.remove('crit');
-  $('act').textContent='Set Done · Start Rest';$('act').className='btn'}
-function beep(){const c=cfg();if(c.alert!=='on')return;try{navigator.vibrate&&navigator.vibrate(200);const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator();o.frequency.value=880;o.connect(a.destination);o.start();setTimeout(()=>o.stop(),150)}catch(e){}}
-$('act').onclick=()=>{
-  if(!resting){resting=true;rem=cfg().rest;$('cs').textContent='RESTING';$('ct').textContent=rem+'s';$('act').textContent='Skip Rest';$('act').className='btn ghost';
-    if(ei===moves.length-1&&si===moves[ei].t){return next()}
-    tm=setInterval(()=>{rem--;$('ct').textContent=rem+'s';$('ct').classList.toggle('crit',rem<=3);if(rem<=0){beep();next()}},1e3)}
-  else next()};
+  $('act').innerHTML='Set Done &middot; Start Rest';$('act').className='btn'}
+function beep(){if(cfg().alert!=='on')return;try{navigator.vibrate&&navigator.vibrate(200);const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator();o.frequency.value=880;o.connect(a.destination);o.start();setTimeout(()=>o.stop(),150)}catch(e){}}
 function next(){clearInterval(tm);tm=null;const m=moves[ei];
   if(si<m.t){si++;render()}else if(ei<moves.length-1){ei++;si=1;render()}
-  else{clearInterval(clk);resting=false;$('pg').style.width='100%';$('cs').textContent='WORKOUT COMPLETE';$('ct').textContent='DONE';$('ct').classList.remove('crit');$('act').textContent='Finish & Save';$('act').className='btn ok';$('act').onclick=finish;beep()}}
-function finish(){const L=logs();L[key(new Date())]='completed';sv('ironTimeLogs',L);$('act').onclick=actDefault;stopAll();toast('Workout saved. Great job!');view('v-home')}
-const actDefault=$('act').onclick;
-$('quit').onclick=()=>{if(confirm('End this workout without saving?')){$('act').onclick=actDefault;stopAll();view('v-home')}};
+  else{clearInterval(clk);resting=false;finished=true;$('pg').style.width='100%';$('cs').textContent='WORKOUT COMPLETE';$('ct').textContent='DONE';$('ct').classList.remove('crit');$('act').textContent='Finish & Save';$('act').className='btn ok';beep()}}
+$('act').onclick=()=>{
+  if(finished)return finish();
+  if(!resting){
+    if(ei===moves.length-1&&si===moves[ei].t)return next();
+    resting=true;rem=cfg().rest;$('cs').textContent='RESTING';$('ct').textContent=rem+'s';$('act').textContent='Skip Rest';$('act').className='btn ghost';
+    tm=setInterval(()=>{rem--;$('ct').textContent=rem+'s';$('ct').classList.toggle('crit',rem<=3);if(rem<=0){beep();next()}},1e3)}
+  else next()};
+$('prev').onclick=()=>{if(finished)return;if(si>1)si--;else if(ei>0){ei--;si=moves[ei].t}render()};
+function finish(){const L=logs(),k=key(new Date()),p=L[k]&&typeof L[k]==='object'?L[k]:{s:0,n:0},secs=Math.floor((Date.now()-t0)/1e3);
+  L[k]={s:(p.s||0)+secs,n:(p.n||0)+moves.reduce((a,x)=>a+x.t,0),e:moves.length,f:BANK[day].f};sv('ironTimeLogs',L);
+  live=false;stopAll();toast('Workout saved. Great job!');history.go(-2)}
+$('quit').onclick=()=>{if(confirm('End this workout without saving?')){live=false;stopAll();history.go(-2)}};
 
-/* launch params: shortcut, share target, protocol, file handler */
-(function(){const p=new URLSearchParams(location.search);home();
+/* ---------- account + cloud sync (Firebase email-link sign-in) ---------- */
+let FB=null,fbUser=null,syncText='Not synced',pushT=null;
+function setSync(t){syncText=t;const e=$('sstat');if(e)e.textContent=t}
+function schedulePush(){clearTimeout(pushT);pushT=setTimeout(push,1500)}
+async function push(){if(!FB||!fbUser)return;
+  try{setSync('Syncing...');const o={email:fbUser.email,mod:+localStorage.getItem('ironTimeMod')||Date.now()};SK.forEach(k=>o[k]=ld(k,null));
+    await FB.Fs.setDoc(FB.Fs.doc(FB.db,'users',fbUser.uid),o);setSync('Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}))}catch(e){setSync('Sync failed')}}
+async function pull(){
+  try{setSync('Syncing...');const s=await FB.Fs.getDoc(FB.Fs.doc(FB.db,'users',fbUser.uid));
+    if(!s.exists()){await push();applyAll();return}
+    const C=s.data(),Lm=+localStorage.getItem('ironTimeMod')||0,cn=(C.mod||0)>=Lm;
+    const mg=k=>{const a=ld(k,{})||{},b=C[k]||{};return cn?Object.assign({},a,b):Object.assign({},b,a)};
+    ['ironTimeLogs','ironTimeWeights'].forEach(k=>localStorage.setItem(k,JSON.stringify(mg(k))));
+    ['ironTimeNotes','ironTimeSettings','ironTimeLook2'].forEach(k=>{const a=ld(k,null),b=C[k]===undefined?null:C[k],v=cn?(b!==null?b:a):(a!==null?a:b);if(v!==null)localStorage.setItem(k,JSON.stringify(v))});
+    localStorage.setItem('ironTimeMod',String(Math.max(Lm,C.mod||0)));
+    applyAll();await push()}catch(e){setSync('Sync failed')}}
+function renderAccount(){const a=$('acc');
+  if(!FB){a.innerHTML='<p>Cloud sync is not set up yet. Add your Firebase details to firebase-config.js to turn on email sign-in and backup.</p>';return}
+  if(fbUser)a.innerHTML=`<h4>Signed in</h4><p>${esc(fbUser.email)}</p><div class="kv"><span>Status</span><b id="sstat">${esc(syncText)}</b></div><button class="mini" onclick="push()">Sync now</button><button class="mini" onclick="signOutNow()">Sign out</button>`;
+  else a.innerHTML='<h4>Guest mode</h4><p>Your data stays on this device only.</p><button class="mini" onclick="showAuth()">Sign in with email</button>'}
+function authState(s){$('a-form').style.display=s==='form'?'block':'none';$('a-sent').style.display=s==='sent'?'block':'none'}
+function showAuth(){$('auth').classList.add('on');authState('form');if(drawerOpen)closeDrawer()}
+function hideAuth(){$('auth').classList.remove('on')}
+function authErr(e){const c=e&&e.code||'';
+  if(c==='auth/unauthorized-continue-uri'||c==='auth/invalid-continue-uri')return 'This website is not authorised in Firebase yet (Authentication > Settings > Authorized domains).';
+  if(c==='auth/invalid-email')return 'That email address looks invalid.';if(c==='auth/too-many-requests')return 'Too many attempts. Please wait a few minutes.';
+  if(c==='auth/operation-not-allowed')return 'Email link sign-in is not enabled in Firebase yet.';
+  if(c==='auth/invalid-action-code'||c==='auth/expired-action-code')return 'That link expired or was already used. Request a new one.';
+  return 'Something went wrong ('+(c||'unknown')+').'}
+$('asend').onclick=async()=>{const em=$('aem').value.trim().toLowerCase();
+  if(!/^\S+@\S+\.\S+$/.test(em)){$('amsg').textContent='Please enter a valid email address.';return}
+  $('asend').disabled=true;$('amsg').textContent='';
+  try{await FB.Au.sendSignInLinkToEmail(FB.auth,em,{url:location.origin+location.pathname,handleCodeInApp:true});localStorage.setItem('ironTimeEmail',em);$('asentto').textContent=em;authState('sent')}
+  catch(e){$('amsg').textContent=authErr(e)}
+  $('asend').disabled=false};
+$('aback').onclick=()=>authState('form');
+$('aguest').onclick=()=>{localStorage.setItem('ironTimeGuest','1');hideAuth();renderAccount()};
+async function signOutNow(){if(!confirm('Sign out? Your data stays safe in your account.'))return;
+  await push();try{await FB.Au.signOut(FB.auth)}catch(e){}
+  SK.concat(['ironTimeMod','ironTimeGuest']).forEach(k=>localStorage.removeItem(k));applyAll()}
+async function initFirebase(){
+  try{const cfgm=(await import('./firebase-config.js')).default;
+    if(!cfgm||!cfgm.apiKey||/PASTE|YOUR/i.test(cfgm.apiKey)){renderAccount();return}
+    const V='https://www.gstatic.com/firebasejs/10.12.2/';
+    const [A,Au,Fs]=await Promise.all([import(V+'firebase-app.js'),import(V+'firebase-auth.js'),import(V+'firebase-firestore.js')]);
+    const app=A.initializeApp(cfgm);FB={Au,Fs,auth:Au.getAuth(app),db:Fs.getFirestore(app)}}
+  catch(e){renderAccount();return}
+  try{if(FB.Au.isSignInWithEmailLink(FB.auth,location.href)){
+      const em=localStorage.getItem('ironTimeEmail')||prompt('Confirm your email address to finish signing in');
+      if(em){await FB.Au.signInWithEmailLink(FB.auth,em.trim().toLowerCase(),location.href);localStorage.removeItem('ironTimeEmail');toast('Signed in. Welcome!')}
+      history.replaceState({v:'home'},'',location.pathname)}}
+  catch(e){toast(authErr(e));history.replaceState({v:'home'},'',location.pathname)}
+  FB.Au.onAuthStateChanged(FB.auth,u=>{fbUser=u;renderAccount();
+    if(u){localStorage.removeItem('ironTimeGuest');hideAuth();pull()}
+    else if(!localStorage.getItem('ironTimeGuest'))showAuth()})}
+
+/* boot + launch params */
+(function(){history.replaceState({v:'home'},'');applyAll();renderAccount();
+  const p=new URLSearchParams(location.search);
   if(p.get('day')){let d=p.get('day');d=d==='today'?dayName(new Date()):d.charAt(0).toUpperCase()+d.slice(1).toLowerCase();if(BANK[d])openDay(d)}
-  if(p.get('note')==='new'){open();$('b-notes').classList.add('open')}
+  if(p.get('note')==='new'){openDrawer();$('b-notes').classList.add('open')}
   const sh=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
-  if(sh){$('notes').value+=(($('notes').value?'\n':'')+sh);sv('ironTimeNotes',$('notes').value);open();$('b-notes').classList.add('open')}
-  if(p.get('protocol')){toast(decodeURIComponent(p.get('protocol')))}
-})();
-if('launchQueue' in window)launchQueue.setConsumer(async lp=>{for(const h of lp.files||[]){const t=await(await h.getFile()).text();$('notes').value+=(($('notes').value?'\n':'')+t);sv('ironTimeNotes',$('notes').value);open();$('b-notes').classList.add('open')}});
+  if(sh){$('notes').value+=(($('notes').value?'\n':'')+sh);sv('ironTimeNotes',$('notes').value);openDrawer();$('b-notes').classList.add('open')}
+  if(p.get('protocol'))toast(decodeURIComponent(p.get('protocol')));
+  initFirebase()})();
+if('launchQueue' in window)launchQueue.setConsumer(async lp=>{for(const h of lp.files||[]){const t=await(await h.getFile()).text();$('notes').value+=(($('notes').value?'\n':'')+t);sv('ironTimeNotes',$('notes').value);openDrawer();$('b-notes').classList.add('open')}});
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
