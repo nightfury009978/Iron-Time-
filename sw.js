@@ -1,4 +1,4 @@
-const CACHE = 'iron-time-v3';
+const CACHE = 'iron-time-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -12,6 +12,9 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.method !== 'GET' || r.headers.has('range')) return;
+  const u = new URL(r.url);
+  const ok = u.origin === location.origin || u.hostname === 'fonts.googleapis.com' || u.hostname === 'fonts.gstatic.com' || u.href.startsWith('https://www.gstatic.com/firebasejs/');
+  if (!ok) return;
   if (r.mode === 'navigate') {
     e.respondWith(fetch(r).then(res => { const c = res.clone(); caches.open(CACHE).then(x => x.put('./index.html', c)); return res; })
       .catch(() => caches.match('./index.html')));
